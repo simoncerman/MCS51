@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+
+    </head>
+    <body style="display: flex; flex-direction: row;">
+        <div style="display: flex; flex-direction: column;">
+            <article>Font size:</article>
+            <article style="margin-top: 7px;">Font family:</article>
+        </div>
+        <div style="display: flex; flex-direction: column; margin-left: 10px;">
+            <article style="align-self: flex-end;"><input id="size_inp" type="number" style="width: 50px;" value="20"/></article>
+            
+            <article>
+                <select name="fonts" id="font-select" style="align-self: flex-end; margin-top: 5px;">
+                </select>
+            </article>
+            <button id="ok_btn" style="width: 50px; align-self: flex-end; margin-top: 5px;" onclick="btnClick()">OK</button>
+        </div>
+    </body>
+    <!-- Include Scripts -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../scripts/jquery-3.5.1.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+    <script>
+        const {ipcRenderer} = require('electron');
+        var fontsArray = ["Roboto Mono", "Courier Pro"];
+        for (let i = 0; i < fontsArray.length; i++) {
+            $("#font-select").append("<option value='" + fontsArray[i] + "'>" + fontsArray[i] + "</option>");
+        }
+
+        function btnClick(){
+            let fontSize = $("#size_inp").val();
+            let fontFamily = $("#font-select").val();
+            console.log("Size: " + fontSize + ", Family: " + fontFamily);
+            ipcRenderer.send('sendNewFont', [fontSize, fontFamily]);
+        }
+    </script>
+</html>

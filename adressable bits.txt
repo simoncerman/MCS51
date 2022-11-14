@@ -1,0 +1,51 @@
+B.0.....
+A.0.....
+P0.0....
+P1.0....
+P2.0....
+P3.0....
+
+TCON
+	TF0
+	TF1
+	TR0
+	TR1
+	IE0
+	IE1
+	IT0
+	IT1
+
+SCON
+	SM0
+	SM1
+	SM2
+	REN
+	TB8
+	RB8
+	TI
+	RI
+
+IE
+	EA
+	ES
+	ET1
+	EX1
+	ET0
+	EX0
+
+IP
+	PX0
+	PX1
+	PT0
+	PT1
+	PT2
+	PS
+
+PSW
+	CY
+	AC
+	F0
+	RS1
+	RS0
+	OV
+	P

@@ -1,0 +1,1 @@
+electron-packager . --overwrite --platform=win32 --out=./builds/

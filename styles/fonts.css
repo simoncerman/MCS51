@@ -1,0 +1,29 @@
+
+@font-face {
+    font-family: 'Courier Pro';
+    src: url(../fonts/Courier_Prime/CourierPrime-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+	src: url(../fonts/Roboto_Mono/RobotoMono-Regular.ttf);
+}
+
+@font-face {
+	font-family: 'Roboto Mono';
+	src: url(../fonts/Roboto_Mono/RobotoMono-Bold.ttf);
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Roboto Mono';
+	src: url(../fonts/Roboto_Mono/RobotoMono-MediumItalic.ttf);
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Roboto Mono';
+	src: url(../fonts/Roboto_Mono/RobotoMono-BoldItalic.ttf);
+	font-weight: bold;
+	font-style: italic;
+}
