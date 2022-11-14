@@ -37,51 +37,55 @@
             <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
         </header>
         <div class="input">
-            <div class="data">
-
-                <div class="sContainer">
-                    <div style="align-self: center;">SBUF</div>
-                    <div style="display: flex; flex-direction: row;">
-                        <div class="vertItem">R/O<input type="text" id="ro" size="1" disabled></div>
-                        <div class="vertItem">W/O<input type="text" id="wo" size="1"></div>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <div class="vertItem">RXD<input type="text" id="rxd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
-                        <div class="vertItem">TXD<input type="text" id="txd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
-                    </div>
-                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">SCON<input title="0x98" type="text" id="scon" size="3"></div>
-                    <div class="pContainer"></div>
-                </div>
-                <div class="tContainer">
-                    <div style="display: flex; flex-direction: row;">
-                        <div class="vertItem">TH0<input title="0x8C" type="text" id="th0" size="3"></div>
-                        <div class="vertItem">TL0<input title="0x8A" type="text" id="tl0" size="3"></div>
-                    </div>
-                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">TMOD<input title="0x89" type="text" id="tmod" size="3"></div>
-                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">TCON<input title="0x88" type="text" id="tcon" size="3"></div>
-                    <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                        <div class="vertItem">TH1<input title="0x8D" type="text" id="th1" size="3"></div>
-                        <div class="vertItem">TL1<input title="0x8B" type="text" id="tl1" size="3"></div>
-                    </div>
-                    <div class="regItem" style="width: 100%; justify-content: space-around;">PC<input type="text" id="pc" size="5"></div>
-                </div>
-                <div class="rContainer"></div>
-                <div class="specContainer"></div>
-                <div class="tableContainer">
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <div style="display: flex; flex-direction: row; align-items: flex-end;">
-                            <div class="tableTabBtn" id="dataTab">Data</div>
-                            <div class="tableTabBtn" id="codeTab">Code</div>
-                            <div class="tableTabBtn" id="extTab">Ext.</div>
+            <div class="left-data">
+                <div class="data">
+                    <div class="sContainer">
+                        <div style="align-self: center;">SBUF</div>
+                        <div style="display: flex; flex-direction: row;">
+                            <div class="vertItem">R/O<input type="text" id="ro" size="1" disabled></div>
+                            <div class="vertItem">W/O<input type="text" id="wo" size="1"></div>
                         </div>
-                        <div style="align-self: flex-end;">
-                            <input type="text" class="scrollBtn" style="height: 17px;" id="gotoInput" size="5" disabled value="0x0000">
-                            <button class="scrollBtn" style="margin-left: -8px; text-transform:uppercase" onclick="onGoClick()" disabled>Go</button>
-                            <button class="scrollBtn" onclick="scrollTableLeft()" disabled>←</button>
-                            <button class="scrollBtn" style="margin-left: -8px;" onclick="scrollTableRight()" disabled>→</button>
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <div class="vertItem">RXD<input type="text" id="rxd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
+                            <div class="vertItem">TXD<input type="text" id="txd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
                         </div>
+                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">SCON<input title="0x98" type="text" id="scon" size="3"></div>
+                        <div class="pContainer"></div>
                     </div>
-                    <table id="dataTable"></table>
+                    <div class="tContainer">
+                        <div style="display: flex; flex-direction: row;">
+                            <div class="vertItem">TH0<input title="0x8C" type="text" id="th0" size="3"></div>
+                            <div class="vertItem">TL0<input title="0x8A" type="text" id="tl0" size="3"></div>
+                        </div>
+                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">TMOD<input title="0x89" type="text" id="tmod" size="3"></div>
+                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">TCON<input title="0x88" type="text" id="tcon" size="3"></div>
+                        <div style="display: flex; flex-direction: row; justify-content: flex-start;">
+                            <div class="vertItem">TH1<input title="0x8D" type="text" id="th1" size="3"></div>
+                            <div class="vertItem">TL1<input title="0x8B" type="text" id="tl1" size="3"></div>
+                        </div>
+                        <div class="regItem" style="width: 100%; justify-content: space-around;">PC<input type="text" id="pc" size="5"></div>
+                    </div>
+                    <div class="rContainer"></div>
+                    <div class="specContainer"></div>
+                    <div class="tableContainer">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <div style="display: flex; flex-direction: row; align-items: flex-end;">
+                                <div class="tableTabBtn" id="dataTab">Data</div>
+                                <div class="tableTabBtn" id="codeTab">Code</div>
+                                <div class="tableTabBtn" id="extTab">Ext.</div>
+                            </div>
+                            <div style="align-self: flex-end;">
+                                <input type="text" class="scrollBtn" style="height: 17px;" id="gotoInput" size="5" disabled value="0x0000">
+                                <button class="scrollBtn" style="margin-left: -8px; text-transform:uppercase" onclick="onGoClick()" disabled>Go</button>
+                                <button class="scrollBtn" onclick="scrollTableLeft()" disabled>←</button>
+                                <button class="scrollBtn" style="margin-left: -8px;" onclick="scrollTableRight()" disabled>→</button>
+                            </div>
+                        </div>
+                        <table id="dataTable"></table>
+                    </div>
+                </div>
+                <div class="perifery">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum excepturi maiores repudiandae! Adipisci blanditiis impedit labore minus natus nesciunt nostrum officia porro, quibusdam, quod ratione, reiciendis voluptates! Eius impedit, sit?</p>
                 </div>
             </div>
             <textarea id="code" name="code"></textarea>
@@ -136,7 +140,7 @@
         };
         var editor = CodeMirror.fromTextArea(code, opts);
 
-        editor.setSize("100%", $(window).height()-$(".top-bar").height() - 2 * pI($(".CodeMirror").css("margin-top")) - 1);
+        editor.setSize("30%", $(window).height()-$(".top-bar").height() - 2 * pI($(".CodeMirror").css("margin-top")) - 1);
         editor.on("gutterClick", function(cm, n) {
             var info = cm.lineInfo(n);
             cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());

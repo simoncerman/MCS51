@@ -7,6 +7,10 @@ body {
 	font-family:  "Roboto Mono"; /*monospace;*/
 }
 
+*{
+	box-sizing: border-box;
+}
+
 .input {
 	/*margin-left: 45%;*/
 	display: flex;
@@ -15,9 +19,8 @@ body {
 }
 
 .data {
-	width: 250%;
-	height: 100%;
-	margin: 25px;
+	width: 100%;
+	padding: 25px;
 }
 
 .CodeMirror {
@@ -169,4 +172,12 @@ input {
 .scrollBtn {
 	height: 20px;
 	text-align: center;
+}
+
+.left-data {
+	width: 80%;
+}
+
+.perifery{
+	padding: 25px;
 }
