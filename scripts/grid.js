@@ -12,13 +12,16 @@ class Grid {
         let newPeripheryName = document.getElementById("addPeripheryValue").value;
         let newPeriphery = null;
 
+        // TODO: Add a switch case for each periphery type
         if (newPeripheryName === ""){
             alert("Periphery name cannot be empty");
-        } else if(newPeripheryName === "LED")){
-            newPeriphery = new LED("p1");
+        } else if(newPeripheryName === "LED"){
+            newPeriphery = new LED("p"+ this.elements.length)
         }
 
-        if(!newPeriphery){
+
+
+        if(newPeriphery){
             this.elements.push(newPeriphery);
             this.updateGrid();
         }
