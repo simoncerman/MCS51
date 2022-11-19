@@ -178,6 +178,11 @@ input {
 	width: 80%;
 }
 
-.perifery{
+.peripheries{
 	padding: 25px;
+}
+
+.controls{
+	display: flex;
+	flex-direction: row;
 }

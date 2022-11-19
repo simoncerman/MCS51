@@ -84,8 +84,17 @@
                         <table id="dataTable"></table>
                     </div>
                 </div>
-                <div class="perifery">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum excepturi maiores repudiandae! Adipisci blanditiis impedit labore minus natus nesciunt nostrum officia porro, quibusdam, quod ratione, reiciendis voluptates! Eius impedit, sit?</p>
+                <div class="peripheries">
+                    <div class="controls">
+                        <p>Add:</p>
+                        <select name="addPeriphery" id="addPeripheryValue">
+                            <option value="LED">LED</option>
+                        </select>
+                        <button id="addPeripheryButton">Add</button>
+                    </div>
+                    <div id="peripheriesGrid">
+
+                    </div>
                 </div>
             </div>
             <textarea id="code" name="code"></textarea>
@@ -120,6 +129,9 @@
     <script src="scripts/execution-functions.js"></script>
     <script src="scripts/translation-functions.js"></script>
     <script src="scripts/json/instructions.js"></script>
+    <script src="scripts/grid.js"></script>
+
+    <script src="scripts/extra.js"></script>
     <script>if (window.module) module = window.module;</script>
 
     <!-- Local Scripts -->
