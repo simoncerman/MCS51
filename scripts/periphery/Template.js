@@ -3,6 +3,16 @@ class Template {
         this.name = "Template";
         this.description = "Template";
         this.peripheryId = peripheryId;
+        this.pins = {
+            0: {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 0,
+                    y: 0
+                },
+            }
+        };
 
     }
     prepare()  {
@@ -15,5 +25,13 @@ class Template {
 
     getHTML() {
         // return the html code for the component
+    }
+
+    getSVG() {
+        // return the svg code for the component
+    }
+
+    getPinConnections() {
+        // return the pin connections as selectors
     }
 }

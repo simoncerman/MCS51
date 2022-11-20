@@ -4,15 +4,25 @@ class LED{
         this.description = "A light emitting diode";
         this.peripheryId = peripheryId;
 
-        this.pins = {
-            0: null,
-            1: null
-        };
 
-        this.pinValues = {
-            0: null,
-            1: null
-        }
+        this.pins = {
+            0: {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: -4,
+                    y: 138
+                },
+            },
+            1: {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 25,
+                    y: 111
+                },
+            },
+        };
 
         this.ledColor = ledColor; // if null -> default color
         this.isGlowing = false;
@@ -33,18 +43,28 @@ class LED{
         var oDOM = oParser.parseFromString(str, "image/svg+xml");
         var root = oDOM.documentElement;
 
+        // create outer object and append svg
+        let peripheryObject = document.createElement("div");
+        peripheryObject.classList.add("periphery-object");
+        peripheryObject.appendChild(root);
+
+        // add pin connections selectors to the object
+        let pinConnections = getPinConnections(this.pins);
+        for (let i = 0; i < pinConnections.length; i++) {
+            peripheryObject.appendChild(pinConnections[i]);
+        }
+
         this.ledColor = "yellow";
 
         root.getElementsByClassName("led-color")[0].style.fill = this.ledColor;
-        return root;
 
+        return peripheryObject;
     }
 
 
 
     on(){
         this.isGlowing = true;
-        document.getElementById(this.peripheryId).style.backgroundColor = "yellow";
         // set glow element to color of the LED
     }
     off(){
@@ -70,7 +90,7 @@ class LED{
             </style>
           </defs>
           <g id="Vrstva_2-2" data-name="Vrstva 2">
-            <path class="cls-1" d="M229.05,67.31C211.97,27.14,172.12,1.38,129.05,2.54,87.96,3.64,50.96,29.04,34.73,67.31V241.17H229.05V67.31Z"/>
+            <path class="cls-1 led-light" d="M229.05,67.31C211.97,27.14,172.12,1.38,129.05,2.54,87.96,3.64,50.96,29.04,34.73,67.31V241.17H229.05V67.31Z"/>
             <rect class="cls-1 led-color" x="2.5" y="241.17" width="258.77" height="52.39"/>
             <rect class="cls-1" x="74.14" y="293.56" width="32.08" height="317.58"/>
             <rect class="cls-1" x="157.55" y="293.56" width="32.08" height="217.07"/>

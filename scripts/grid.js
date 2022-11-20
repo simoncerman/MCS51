@@ -19,8 +19,6 @@ class Grid {
             newPeriphery = new LED("p"+ this.elements.length)
         }
 
-
-
         if(newPeriphery){
             this.elements.push(newPeriphery);
             this.updateGrid();

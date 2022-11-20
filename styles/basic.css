@@ -186,3 +186,11 @@ input {
 	display: flex;
 	flex-direction: row;
 }
+
+.periphery-object{
+	position: relative;
+}
+
+.pin-connection-selector{
+	position: absolute;
+}
