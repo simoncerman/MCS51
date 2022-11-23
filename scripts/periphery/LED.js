@@ -1,13 +1,12 @@
 class LED{
-    constructor(peripheryId, ledColor = null){
+    constructor(peripheryId, ledColor = "yellow"){
         this.name = "LED";
         this.description = "A light emitting diode";
         this.peripheryId = peripheryId;
 
-
         this.pins = {
             0: {
-                connectedTo: null,
+                connectedTo: "P0.0",
                 pinValue : null,
                 pinPosition: {
                     x: -4,
@@ -15,7 +14,7 @@ class LED{
                 },
             },
             1: {
-                connectedTo: null,
+                connectedTo: "GND",
                 pinValue : null,
                 pinPosition: {
                     x: 25,
@@ -30,6 +29,10 @@ class LED{
 
     prepare(){
         // get values from pins and pass them to pinValues
+        for (let i = 0; i < this.pins; i++) {
+            this.pins[i].pinValue = getDataValueFrom(retrieveCodeSpecialBit(this.pins[i].connectedTo));
+        }
+        console.log(this.pins);
     }
 
     execute(){
@@ -43,6 +46,7 @@ class LED{
         var oDOM = oParser.parseFromString(str, "image/svg+xml");
         var root = oDOM.documentElement;
 
+
         // create outer object and append svg
         let peripheryObject = document.createElement("div");
         peripheryObject.classList.add("periphery-object");
@@ -54,14 +58,16 @@ class LED{
             peripheryObject.appendChild(pinConnections[i]);
         }
 
-        this.ledColor = "yellow";
-
+        // seting led color
         root.getElementsByClassName("led-color")[0].style.fill = this.ledColor;
+
+        // seting led light
+        if(this.isGlowing) {
+            root.getElementsByClassName("led-light")[0].style.fill = this.ledColor;
+        }
 
         return peripheryObject;
     }
-
-
 
     on(){
         this.isGlowing = true;

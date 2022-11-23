@@ -4,6 +4,7 @@ class Grid {
         this.setListeners();
 
     }
+
     setListeners(){
         document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()})
     }
@@ -26,6 +27,17 @@ class Grid {
     }
 
     updateGrid(){
+        // prepares data in every element by input values
+        this.elements.forEach((element) => {
+            element.prepare();
+        });
+
+        // execute the data in every element
+        this.elements.forEach((element) => {
+            element.execute();
+        });
+
+        // update the grid
         let grid = document.getElementById("peripheriesGrid");
         grid.innerHTML = "";
         this.elements.forEach((element) => {

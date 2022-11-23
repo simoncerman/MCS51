@@ -77,6 +77,7 @@ function onStepBtnClick(){
 function onClockSignal() {
         if (!checkForBreakPoint()){
             doInstructionStep();
+            grid.updateGrid();
             clearGutter();
             if(getClockInterval() >= 100)
                 highlightActiveLine();
