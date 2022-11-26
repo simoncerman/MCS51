@@ -29,10 +29,31 @@ class LED{
 
     prepare(){
         // get values from pins and pass them to pinValues
-        for (let i = 0; i < this.pins; i++) {
-            this.pins[i].pinValue = getDataValueFrom(retrieveCodeSpecialBit(this.pins[i].connectedTo));
+        for (let pin in this.pins) {
+            if(this.pins[pin].connectedTo != null){
+                switch (this.pins[pin].connectedTo) {
+                    case "GND":
+                        this.pins[pin].pinValue = 0;
+                        break;
+
+                    case "V+": // 5V
+                        this.pins[pin].pinValue = 1;
+                        break;
+
+                    case null:
+                        this.pins[pin].pinValue = null;
+                        break;
+
+                    case undefined:
+                        this.pins[pin].pinValue = null;
+                        break;
+
+                    default:
+                        this.pins[pin].pinValue = getDataValueFrom(retrieveCodeSpecialBit(this.pins[pin].connectedTo));
+                }
+            }
         }
-        console.log(this.pins);
+        console.log(this.pins)
     }
 
     execute(){

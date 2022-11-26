@@ -15,6 +15,7 @@ function getAllConnectionOptions()
         "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7",
         "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
         "P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7",
+        "GND", "V+"
     ];
 
     for (let i = 0; i < optionsPorts.length; i++){
@@ -38,13 +39,11 @@ function getPinConnections(pins){
 
         //prepare all options
         let options = getAllConnectionOptions();
-        if (pins[pin].connectedTo != null){
-            selector.value = pins[pin].connectedTo;
-        } else {
-            for (let i = 0; i < options.length; i++) {
-                selector.appendChild(options[i]);
-            }
+        for (let i = 0; i < options.length; i++) {
+            selector.appendChild(options[i]);
         }
+        if (pins[pin].connectedTo != null) selector.value = pins[pin].connectedTo;
+
         connections.push(selector);
     }
     return connections;
