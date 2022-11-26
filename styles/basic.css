@@ -194,3 +194,9 @@ input {
 .pin-connection-selector{
 	position: absolute;
 }
+
+#peripheriesGrid{
+	display: flex;
+	flex-direction: row;
+	gap: .25rem;
+}

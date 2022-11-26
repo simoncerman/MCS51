@@ -28,26 +28,25 @@ function getAllConnectionOptions()
     return options;
 }
 
-function getPinConnections(pins){
+function getPinConnections(pin){
     // connections are selectors with options representing pins for I/O
-    let connections = [];
-    for(let pin in pins){
-        let selector = document.createElement("select");
-        selector.classList.add("pin-connection-selector");
-        selector.style.left = pins[pin].pinPosition.x + "px";
-        selector.style.top = pins[pin].pinPosition.y + "px";
+    let selector = document.createElement("select");
+    selector.classList.add("pin-connection-selector");
+    selector.style.left = pin.pinPosition.x + "px";
+    selector.style.top = pin.pinPosition.y + "px";
 
-        //prepare all options
-        let options = getAllConnectionOptions();
-        for (let i = 0; i < options.length; i++) {
-            selector.appendChild(options[i]);
-        }
-        if (pins[pin].connectedTo != null) selector.value = pins[pin].connectedTo;
-
-        connections.push(selector);
+    //prepare all options
+    let options = getAllConnectionOptions();
+    for (let i = 0; i < options.length; i++) {
+        selector.appendChild(options[i]);
     }
-    return connections;
+    if (pin.connectedTo != null) selector.value = pin.connectedTo;
+
+    return selector;
 }
+
+
+
 
 
 // Load all periphery scripts

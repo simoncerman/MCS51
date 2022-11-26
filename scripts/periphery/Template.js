@@ -11,6 +11,7 @@ class Template {
                     x: 0,
                     y: 0
                 },
+                optionSelector: null,
             }
         };
 

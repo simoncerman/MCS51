@@ -44,6 +44,16 @@ class Grid {
             grid.appendChild(element.getHTML());
         });
     }
+
+    updatePinConnections(peripheryId, pinNumber, connectedTo){
+        console.log("updatePinConnections", peripheryId, pinNumber, connectedTo);
+        this.elements.forEach((element) => {
+            if(element.peripheryId === peripheryId){
+                element.updatePinConnection(pinNumber, connectedTo);
+            }
+        });
+    }
+
 }
 
 let grid = new Grid();

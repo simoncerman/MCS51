@@ -12,6 +12,7 @@ class LED{
                     x: -4,
                     y: 138
                 },
+                optionSelector : null
             },
             1: {
                 connectedTo: "GND",
@@ -20,6 +21,7 @@ class LED{
                     x: 25,
                     y: 111
                 },
+                optionSelector: null
             },
         };
 
@@ -33,7 +35,7 @@ class LED{
             if(this.pins[pin].connectedTo != null){
                 switch (this.pins[pin].connectedTo) {
                     case "GND":
-                        this.pins[pin].pinValue = 0;
+                        this.pins[pin].pinValue = "GND";
                         break;
 
                     case "V+": // 5V
@@ -58,6 +60,7 @@ class LED{
 
     execute(){
         // make stuff by reading pin values
+        this.isGlowing = this.pins[0].pinValue === 1 && this.pins[1].pinValue === "GND";
     }
 
     getHTML(){
@@ -74,9 +77,13 @@ class LED{
         peripheryObject.appendChild(root);
 
         // add pin connections selectors to the object
-        let pinConnections = getPinConnections(this.pins);
-        for (let i = 0; i < pinConnections.length; i++) {
-            peripheryObject.appendChild(pinConnections[i]);
+        for (let pinsKey in this.pins) {
+            let optionSelector = getPinConnections(this.pins[pinsKey]);
+
+            optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
+
+            this.pins[pinsKey].optionSelector = optionSelector;
+            peripheryObject.appendChild(optionSelector);
         }
 
         // seting led color
@@ -88,18 +95,6 @@ class LED{
         }
 
         return peripheryObject;
-    }
-
-    on(){
-        this.isGlowing = true;
-        // set glow element to color of the LED
-    }
-    off(){
-        this.isGlowing = false;
-        // set glow element to white color
-    }
-    toggle(){
-        this.isGlowing = !this.isGlowing;
     }
 
     getSVG() {
@@ -126,5 +121,10 @@ class LED{
           </g>
         </svg>
         `;
+    }
+
+    updatePinConnection(pinNumber, newConnection){
+        console.log("updating pin connection");
+        this.pins[pinNumber].connectedTo = newConnection;
     }
 }
