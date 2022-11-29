@@ -1,9 +1,8 @@
-class LED{
+class LED extends Periphery{
     constructor(peripheryId, ledColor = "yellow"){
+        super(peripheryId);
         this.name = "LED";
-        this.description = "A light emitting diode";
         this.peripheryId = peripheryId;
-
         this.pins = {
             0: {
                 connectedTo: "P0.0",
@@ -24,38 +23,8 @@ class LED{
                 optionSelector: null
             },
         };
-
         this.ledColor = ledColor; // if null -> default color
         this.isGlowing = false;
-    }
-
-    prepare(){
-        // get values from pins and pass them to pinValues
-        for (let pin in this.pins) {
-            if(this.pins[pin].connectedTo != null){
-                switch (this.pins[pin].connectedTo) {
-                    case "GND":
-                        this.pins[pin].pinValue = "GND";
-                        break;
-
-                    case "V+": // 5V
-                        this.pins[pin].pinValue = 1;
-                        break;
-
-                    case null:
-                        this.pins[pin].pinValue = null;
-                        break;
-
-                    case undefined:
-                        this.pins[pin].pinValue = null;
-                        break;
-
-                    default:
-                        this.pins[pin].pinValue = getDataValueFrom(retrieveCodeSpecialBit(this.pins[pin].connectedTo));
-                }
-            }
-        }
-        console.log(this.pins)
     }
 
     execute(){
@@ -121,10 +90,5 @@ class LED{
           </g>
         </svg>
         `;
-    }
-
-    updatePinConnection(pinNumber, newConnection){
-        console.log("updating pin connection");
-        this.pins[pinNumber].connectedTo = newConnection;
     }
 }

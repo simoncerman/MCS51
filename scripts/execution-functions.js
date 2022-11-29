@@ -98,12 +98,16 @@ function retrieveSpecialBit(operand) {
         switch(port){
             case 0: 
                 address = 0x80;
+                break;
             case 1:
                 address = 0x90;
+                break
             case 2:
                 address = 0xA0;
+                break
             case 3:
                 address = 0xB0;
+                break
                     
         }
         return {
