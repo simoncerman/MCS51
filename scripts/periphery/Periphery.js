@@ -62,4 +62,10 @@ class Periphery {
     updatePinConnection(pinNumber, newConnection){
         this.pins[pinNumber].connectedTo = newConnection;
     }
+
+    setPinValuesToDefault(){
+        for (let pin in this.pins) {
+            this.pins[pin].pinValue = null;
+        }
+    }
 }

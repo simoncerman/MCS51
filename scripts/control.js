@@ -24,6 +24,7 @@ function onRunBtnClick(){
         updateTableData();
         fillUpSpecials();
         timeElapsed = 0;
+        grid.resetPinValues();
         clearInterval(interval);
     }
 }

@@ -2,7 +2,6 @@ class Grid {
     constructor(){
         this.elements = [];
         this.setListeners();
-
     }
 
     setListeners(){
@@ -54,6 +53,12 @@ class Grid {
         });
     }
 
+    resetPinValues(){
+        this.elements.forEach((element) => {
+            element.setPinValuesToDefault();
+        });
+        this.updateGrid();
+    }
 }
 
 let grid = new Grid();
