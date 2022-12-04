@@ -52,3 +52,4 @@ function getPinConnections(pin){
 // Load all periphery scripts
 loadScript("scripts/periphery/Periphery.js");
 loadScript("scripts/periphery/LED.js");
+loadScript("scripts/periphery/SevenSegmentDisplay.js");

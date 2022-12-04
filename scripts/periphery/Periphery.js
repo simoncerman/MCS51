@@ -15,6 +15,7 @@ class Periphery {
         };
 
     }
+
     prepare(){
         // get values from pins and pass them to pinValues
         for (let pin in this.pins) {
@@ -49,14 +50,43 @@ class Periphery {
         // need to be implemented in the child class
     }
 
-    getHTML() {
-        // return the html code for the component
-        // need to be implemented in the child class
+    getHTML(){
+        // load svg into image element
+        let str = this.getSVG();
+        let oParser = new DOMParser();
+        let oDOM = oParser.parseFromString(str, "image/svg+xml");
+        let root = oDOM.documentElement;
+
+
+        // create outer object and append svg
+        let peripheryObject = document.createElement("div");
+        peripheryObject.classList.add("periphery-object");
+        peripheryObject.appendChild(root);
+
+        // add pin connections selectors to the object
+        for (let pinsKey in this.pins) {
+            let optionSelector = getPinConnections(this.pins[pinsKey]);
+
+            optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
+
+            this.pins[pinsKey].optionSelector = optionSelector;
+            peripheryObject.appendChild(optionSelector);
+        }
+
+        root = this.applySpecials(root);
+
+        return peripheryObject;
     }
 
     getSVG() {
         // return the svg code for the component
         // need to be implemented in the child class
+    }
+
+    applySpecials(root){
+        // apply special functions to the svg
+        // need to be implemented in the child class
+        return root;
     }
 
     updatePinConnection(pinNumber, newConnection){

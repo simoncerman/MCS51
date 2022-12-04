@@ -17,6 +17,8 @@ class Grid {
             alert("Periphery name cannot be empty");
         } else if(newPeripheryName === "LED"){
             newPeriphery = new LED("p"+ this.elements.length)
+        } else if(newPeripheryName === "sevenSegment"){
+            newPeriphery = new SevenSegmentDisplay("p"+ this.elements.length)
         }
 
         if(newPeriphery){

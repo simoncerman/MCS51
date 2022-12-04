@@ -32,29 +32,7 @@ class LED extends Periphery{
         this.isGlowing = this.pins[0].pinValue === 1 && this.pins[1].pinValue === "GND";
     }
 
-    getHTML(){
-        // load svg into image element
-        let str = this.getSVG();
-        var oParser = new DOMParser();
-        var oDOM = oParser.parseFromString(str, "image/svg+xml");
-        var root = oDOM.documentElement;
-
-
-        // create outer object and append svg
-        let peripheryObject = document.createElement("div");
-        peripheryObject.classList.add("periphery-object");
-        peripheryObject.appendChild(root);
-
-        // add pin connections selectors to the object
-        for (let pinsKey in this.pins) {
-            let optionSelector = getPinConnections(this.pins[pinsKey]);
-
-            optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
-
-            this.pins[pinsKey].optionSelector = optionSelector;
-            peripheryObject.appendChild(optionSelector);
-        }
-
+    applySpecials(root) {
         // seting led color
         root.getElementsByClassName("led-color")[0].style.fill = this.ledColor;
 
@@ -62,8 +40,7 @@ class LED extends Periphery{
         if(this.isGlowing) {
             root.getElementsByClassName("led-light")[0].style.fill = this.ledColor;
         }
-
-        return peripheryObject;
+        return root;
     }
 
     getSVG() {
