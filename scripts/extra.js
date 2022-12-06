@@ -1,7 +1,7 @@
 function loadScript(url)
 {
     let head = document.getElementsByTagName('head')[0];
-    let script = document.createElement('script');
+        let script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;
     head.appendChild(script);
@@ -45,11 +45,19 @@ function getPinConnections(pin){
     return selector;
 }
 
-
-
-
+function generateSelector(options){
+    let selector = document.createElement("select");
+    for (const optionsKey in options) {
+        let option = document.createElement('option');
+        option.value = options[optionsKey];
+        option.text = options[optionsKey];
+        selector.appendChild(option);
+    }
+    return selector;
+}
 
 // Load all periphery scripts
 loadScript("scripts/periphery/Periphery.js");
 loadScript("scripts/periphery/LED.js");
 loadScript("scripts/periphery/SevenSegmentDisplay.js");
+

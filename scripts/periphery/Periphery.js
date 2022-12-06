@@ -13,6 +13,7 @@ class Periphery {
                 optionSelector: null,
             }
         };
+        this.properties = {}
 
     }
 
@@ -96,6 +97,46 @@ class Periphery {
     setPinValuesToDefault(){
         for (let pin in this.pins) {
             this.pins[pin].pinValue = null;
+        }
+    }
+
+    getPropertiesHTML() {
+        // return htm   l of the LED properties
+        let propertiesRows = [];
+        for (let propertiesKey in this.properties) {
+            let property = this.properties[propertiesKey];
+            let tr = document.createElement("tr");
+
+            let insertion = null;
+            if(property.type === "select"){
+                let selector = generateSelector(property.options);
+                selector.id = propertiesKey;
+                selector.value = property.value;
+                insertion = selector;
+            } else{
+                let input = document.createElement("input");
+                input.type = property.type;
+                input.id = propertiesKey;
+                input.value = property.value;
+                insertion = input;
+            }
+
+
+            let td1 = document.createElement("td");
+            td1.innerHTML = property.name;
+            let td2 = document.createElement("td");
+            td2.appendChild(insertion);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            propertiesRows.push(tr);
+        }
+        if (propertiesRows.length === 0){
+            let tr = document.createElement("tr");
+            tr.innerHTML = "This component has no properties! You can use the properties to add custom properties to the component.";
+            return [tr];
+        } else {
+            return propertiesRows;
         }
     }
 }

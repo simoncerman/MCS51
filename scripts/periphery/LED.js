@@ -23,6 +23,15 @@ class LED extends Periphery{
                 optionSelector: null
             },
         };
+        this.properties = {
+            ledColor: {
+                name: "LED color",
+                type: "select",
+                options: ["red", "green", "blue", "yellow", "white"],
+                value: ledColor,
+                propertyKey: "ledColor"
+            }
+        }
         this.ledColor = ledColor; // if null -> default color
         this.isGlowing = false;
     }

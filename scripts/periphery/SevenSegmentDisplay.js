@@ -108,7 +108,7 @@ class SevenSegmentDisplay extends Periphery{
 
     getSVG() {
         return`
-            <svg style="width: 150px;" id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730.1 974.7">
+            <svg style="width: 250px;" id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730.1 974.7">
               <defs>
                 <style>
                   .cls-1 {

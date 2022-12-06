@@ -183,12 +183,25 @@ input {
 }
 
 .controls{
+	background-color: #d0d0d0;
+	border: 1px solid black;
+	border-radius: .25rem;
+	padding: .5rem;
 	display: flex;
 	flex-direction: row;
+	width: fit-content;
+	flex-direction: column;
 }
 
 .periphery-object{
 	position: relative;
+}
+
+.controls, *{
+	margin-block-start: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
 }
 
 .pin-connection-selector{
@@ -199,4 +212,12 @@ input {
 	display: flex;
 	flex-direction: row;
 	gap: .25rem;
+}
+
+#peripheryProperties{
+	width: fit-content;
+}
+
+#peripheryProperties > *{
+	text-align: left;
 }

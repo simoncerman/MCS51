@@ -5,7 +5,9 @@ class Grid {
     }
 
     setListeners(){
-        document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()})
+        document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()});
+        document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
+
     }
 
     addPeriphery(){
@@ -16,7 +18,8 @@ class Grid {
         if (newPeripheryName === ""){
             alert("Periphery name cannot be empty");
         } else if(newPeripheryName === "LED"){
-            newPeriphery = new LED("p"+ this.elements.length)
+            let ledColor = document.getElementById("ledColor").value;
+            newPeriphery = new LED("p"+ this.elements.length, ledColor);
         } else if(newPeripheryName === "sevenSegment"){
             newPeriphery = new SevenSegmentDisplay("p"+ this.elements.length)
         }
@@ -60,6 +63,17 @@ class Grid {
             element.setPinValuesToDefault();
         });
         this.updateGrid();
+    }
+
+    showPeripheryProperties(){
+        let peripheryName = document.getElementById("addPeripheryValue").value;
+        let peripheryProperties = document.getElementById("peripheryProperties");
+        peripheryProperties.innerHTML = "";
+        if(peripheryName === "LED"){
+            peripheryProperties.appendChild(...new LED().getPropertiesHTML());
+        } else if(peripheryName === "sevenSegment"){
+            peripheryProperties.appendChild(...new SevenSegmentDisplay().getPropertiesHTML());
+        }
     }
 }
 
