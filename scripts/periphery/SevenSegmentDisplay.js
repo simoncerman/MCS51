@@ -1,68 +1,75 @@
 class SevenSegmentDisplay extends Periphery{
     constructor(peripheryId) {
         super(peripheryId);
-        this.name = "Seven Segment";
+        this.name = "SevenSegmentDisplay";
         this.pins = {
+            // A
             0: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 145,
                     y: 0
                 },
                 optionSelector: null,
 
             },
+            // B
             1: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 200,
                     y: 0
                 },
                 optionSelector: null,
 
             },
+            // C
             2: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
-                    y: 0
+                    x: 145,
+                    y: 315
                 },
                 optionSelector: null,
 
             },
+            // D
             3: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
-                    y: 0
+                    x: 55,
+                    y: 315
                 },
                 optionSelector: null,
 
             },
+            // E
             4: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
                     x: 0,
-                    y: 0
+                    y: 315
                 },
                 optionSelector: null,
 
             },
+            // F
             5: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 55,
                     y: 0
                 },
                 optionSelector: null,
 
             },
+            // G
             6: {
                 connectedTo: null,
                 pinValue : null,
@@ -73,37 +80,95 @@ class SevenSegmentDisplay extends Periphery{
                 optionSelector: null,
 
             },
+            // DP
             7: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
-                    y: 0
+                    x: 200,
+                    y: 315
                 },
                 optionSelector: null,
 
             },
+            // COM
             8: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 100,
                     y: 0
                 },
                 optionSelector: null,
 
             },
+            // COM
             9: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
-                    y: 0
+                    x: 100,
+                    y: 315
                 },
                 optionSelector: null,
-
+            }
+        };
+        this.pinLit = [0,0,0,0,0,0,0];
+        this.litAreas = {
+            0: {
+                lit: false,
+                litArea: "areaA"
             },
+            1: {
+                lit: false,
+                litArea: "areaB"
+            },
+            2: {
+                lit: false,
+                litArea: "areaC"
+            },
+            3: {
+                lit: false,
+                litArea: "areaD"
+            },
+            4: {
+                lit: false,
+                litArea: "areaE"
+            },
+            5: {
+                lit: false,
+                litArea: "areaF"
+            },
+            6: {
+                lit: false,
+                litArea: "areaG"
+            }
         }
+    }
+
+    execute() {
+        if(this.pins[8].pinValue === "GND" && this.pins[9].pinValue === "GND") {
+            for (let litAreaKey in this.litAreas) {
+                this.litAreas[litAreaKey].lit = false;
+            }
+        } else {
+            for (let i = 0; i < 6; i++) {
+                this.litAreas[i].lit = this.pins[i].pinValue === 1;
+
+            }
+        }
+    }
+
+    applySpecials(root) {
+        for (const litAreasKey in this.litAreas) {
+            const litArea = this.litAreas[litAreasKey];
+            if (litArea.lit) {
+                root.getElementsByClassName(litArea.litArea)[0].setAttribute("fill", "red");
+            } else {
+                root.getElementsByClassName(litArea.litArea)[0].setAttribute("fill", "black");
+            }
+        }
+        return root;
     }
 
     getSVG() {
