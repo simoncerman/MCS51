@@ -11,6 +11,7 @@ function getAllConnectionOptions()
 {
     let options = [];
     let optionsPorts = [
+        " ",
         "P0.0", "P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",
         "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7",
         "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
@@ -32,8 +33,8 @@ function getPinConnections(pin){
     // connections are selectors with options representing pins for I/O
     let selector = document.createElement("select");
     selector.classList.add("pin-connection-selector");
-    selector.style.left = pin.pinPosition.x + "px";
-    selector.style.top = pin.pinPosition.y + "px";
+    selector.style.left = pin.pinPosition.x + "%";
+    selector.style.top = pin.pinPosition.y + "%";
 
     //prepare all options
     let options = getAllConnectionOptions();
@@ -43,6 +44,17 @@ function getPinConnections(pin){
     if (pin.connectedTo != null) selector.value = pin.connectedTo;
 
     return selector;
+}
+
+function getTextPinConnections(pin){
+    // connections are selectors with options representing pins for I/O
+    let pinText = document.createElement("p");
+    pinText.classList.add("pin-connection-text");
+    pinText.style.left = pin.pinPosition.x + "%";
+    pinText.style.top = pin.pinPosition.y + "%";
+    if (pin.connectedTo != null) pinText.innerHTML = pin.connectedTo;
+    else pinText.innerHTML = "";
+    return pinText;
 }
 
 function generateSelector(options){
@@ -55,6 +67,9 @@ function generateSelector(options){
     }
     return selector;
 }
+
+// load modal script
+loadScript("scripts/modal.js");
 
 // Load all periphery scripts
 loadScript("scripts/periphery/Periphery.js");

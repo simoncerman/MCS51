@@ -5,22 +5,24 @@ class LED extends Periphery{
         this.peripheryId = peripheryId;
         this.pins = {
             0: {
-                connectedTo: "P0.0",
+                connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: -4,
-                    y: 138
+                    x: -10,
+                    y: 85
                 },
-                optionSelector : null
+                optionSelector : null,
+                textNode: null
             },
             1: {
-                connectedTo: "GND",
+                connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 25,
-                    y: 111
+                    x: 40,
+                    y: 70
                 },
-                optionSelector: null
+                optionSelector: null,
+                textNode: null
             },
         };
         this.properties = {
@@ -34,6 +36,7 @@ class LED extends Periphery{
         }
         this.ledColor = ledColor; // if null -> default color
         this.isGlowing = false;
+        this.zoomable = false;
     }
 
     execute(){

@@ -207,11 +207,15 @@ input {
 .pin-connection-selector{
 	position: absolute;
 }
+.pin-connection-text{
+	position: absolute;
+}
 
 #peripheriesGrid{
 	display: flex;
 	flex-direction: row;
 	gap: .25rem;
+	align-items: center;
 }
 
 #peripheryProperties{
@@ -220,4 +224,34 @@ input {
 
 #peripheryProperties > *{
 	text-align: left;
+}
+
+#modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#modal-content{
+	z-index: 9999;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	border: 1px solid black;
+	border-radius: .25rem;
+	padding: .5rem;
+}
+#modal-background{
+	z-index: 9998;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
 }

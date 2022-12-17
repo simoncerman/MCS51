@@ -8,10 +8,11 @@ class SevenSegmentDisplay extends Periphery{
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 145,
+                    x: 61,
                     y: 0
                 },
                 optionSelector: null,
+                textNode: null
 
             },
             // B
@@ -19,101 +20,101 @@ class SevenSegmentDisplay extends Periphery{
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 200,
+                    x: 80,
                     y: 0
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // C
             2: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 145,
-                    y: 315
+                    x: 61,
+                    y: 97
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // D
             3: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 55,
-                    y: 315
+                    x: 27,
+                    y: 97
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // E
             4: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
-                    y: 315
+                    x: 10,
+                    y: 97
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // F
             5: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 55,
+                    x: 27,
                     y: 0
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // G
             6: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 10,
                     y: 0
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // DP
             7: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 200,
-                    y: 315
+                    x: 80,
+                    y: 97
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // COM
             8: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 100,
+                    x: 44,
                     y: 0
                 },
                 optionSelector: null,
-
+                textNode: null
             },
             // COM
             9: {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 100,
-                    y: 315
+                    x: 44,
+                    y: 97
                 },
                 optionSelector: null,
+                textNode: null
             }
         };
-        this.pinLit = [0,0,0,0,0,0,0];
         this.litAreas = {
             0: {
                 lit: false,
@@ -144,6 +145,9 @@ class SevenSegmentDisplay extends Periphery{
                 litArea: "areaG"
             }
         }
+        this.zoomable = true;
+        this.width = 150;
+        this.zoomWidth = 500;
     }
 
     execute() {
@@ -171,9 +175,9 @@ class SevenSegmentDisplay extends Periphery{
         return root;
     }
 
-    getSVG() {
+    getSVG(width = 70) {
         return`
-            <svg style="width: 250px;" id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730.1 974.7">
+            <svg style="width: ${width}px;" id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730.1 974.7">
               <defs>
                 <style>
                   .cls-1 {

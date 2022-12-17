@@ -14,6 +14,9 @@ class Periphery {
             }
         };
         this.properties = {}
+        this.zoomable = false;
+        this.width = 100;
+        this.zoomWidth = 100;
 
     }
 
@@ -51,9 +54,14 @@ class Periphery {
         // need to be implemented in the child class
     }
 
-    getHTML(){
+    getHTML(getFull = false){
         // load svg into image element
-        let str = this.getSVG();
+        let str;
+        if (getFull){
+            str = this.getSVG(this.zoomWidth);
+        } else {
+            str = this.getSVG(this.width);
+        }
         let oParser = new DOMParser();
         let oDOM = oParser.parseFromString(str, "image/svg+xml");
         let root = oDOM.documentElement;
@@ -64,18 +72,33 @@ class Periphery {
         peripheryObject.classList.add("periphery-object");
         peripheryObject.appendChild(root);
 
-        // add pin connections selectors to the object
-        for (let pinsKey in this.pins) {
-            let optionSelector = getPinConnections(this.pins[pinsKey]);
 
-            optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
+        if(!this.zoomable || getFull){
+            // add pin connections selectors to the object
+            for (let pinsKey in this.pins) {
+                let optionSelector = getPinConnections(this.pins[pinsKey]);
 
-            this.pins[pinsKey].optionSelector = optionSelector;
-            peripheryObject.appendChild(optionSelector);
+                optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
+
+                this.pins[pinsKey].optionSelector = optionSelector;
+                peripheryObject.appendChild(optionSelector);
+            }
+        } else{
+            for (let pinsKey in this.pins) {
+                let pinDescriptions = getTextPinConnections(this.pins[pinsKey]);
+                this.pins[pinsKey].textNode = pinDescriptions;
+                peripheryObject.appendChild(pinDescriptions);
+            }
+        }
+
+        // if object is zoomable -> on click on periphery object -> zoom in and move it to modal with all setup
+        if(this.zoomable && getFull === false){
+            peripheryObject.addEventListener("click", (e) => {
+                modal.open(this.getHTML(true));
+            }, false);
         }
 
         root = this.applySpecials(root);
-
         return peripheryObject;
     }
 
@@ -101,7 +124,7 @@ class Periphery {
     }
 
     getPropertiesHTML() {
-        // return htm   l of the LED properties
+        // return html of the properties
         let propertiesRows = [];
         for (let propertiesKey in this.properties) {
             let property = this.properties[propertiesKey];
