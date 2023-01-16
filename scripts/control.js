@@ -41,6 +41,7 @@ function onStopBtnClick(){
         changeGUIToNotPaused();
         clearGutter();
         doInstructionStep();
+        grid.updateGrid();
         clearGutter();
         if(getClockInterval() >= 100)
             highlightActiveLine();
@@ -64,12 +65,14 @@ function onStepBtnClick(){
         removeLabels();             //Odstranění labelů
         prepareForExecution();      
         doInstructionStep();
+        grid.updateGrid();
         clearGutter();
         highlightActiveLine();
     }
     else {
         //Do Step
         doInstructionStep();
+        grid.updateGrid();
         clearGutter();
         highlightActiveLine();
     }

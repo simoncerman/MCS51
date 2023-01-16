@@ -23,7 +23,7 @@ class LED extends Periphery{
                 },
                 optionSelector: null,
                 textNode: null
-            },
+            }
         };
         this.properties = {
             ledColor: {

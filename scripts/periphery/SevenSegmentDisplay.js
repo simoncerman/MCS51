@@ -5,21 +5,21 @@ class SevenSegmentDisplay extends Periphery{
         this.pins = {
             // A
             0: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 61,
                     y: 0
                 },
-                optionSelector: null,
+                optionSelector : null,
                 textNode: null
 
             },
             // B
             1: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 80,
                     y: 0
                 },
@@ -28,96 +28,96 @@ class SevenSegmentDisplay extends Periphery{
             },
             // C
             2: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 61,
                     y: 97
                 },
-                optionSelector: null,
+                optionSelector : null,
                 textNode: null
             },
             // D
             3: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 27,
                     y: 97
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // E
             4: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 10,
                     y: 97
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // F
             5: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 27,
                     y: 0
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // G
             6: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 10,
                     y: 0
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // DP
             7: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 80,
                     y: 97
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // COM
             8: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 44,
                     y: 0
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             },
             // COM
             9: {
-                connectedTo: null,
+                connectedTo : null,
                 pinValue : null,
-                pinPosition: {
+                pinPosition : {
                     x: 44,
                     y: 97
                 },
-                optionSelector: null,
-                textNode: null
+                optionSelector : null,
+                textNode : null
             }
         };
         this.litAreas = {
             0: {
-                lit: false,
+                lit: true,
                 litArea: "areaA"
             },
             1: {
@@ -143,6 +143,10 @@ class SevenSegmentDisplay extends Periphery{
             6: {
                 lit: false,
                 litArea: "areaG"
+            },
+            7: {
+                lit: false,
+                litArea: "areaDP"
             }
         }
         this.zoomable = true;
@@ -151,14 +155,14 @@ class SevenSegmentDisplay extends Periphery{
     }
 
     execute() {
-        if(this.pins[8].pinValue === "GND" && this.pins[9].pinValue === "GND") {
-            for (let litAreaKey in this.litAreas) {
-                this.litAreas[litAreaKey].lit = false;
-            }
-        } else {
-            for (let i = 0; i < 6; i++) {
+        if(this.pins[8].pinValue === "GND" || this.pins[9].pinValue === "GND") {
+            for (let i = 0; i < 8; i++) {
                 this.litAreas[i].lit = this.pins[i].pinValue === 1;
 
+            }
+        } else {
+            for (let litAreaKey in this.litAreas) {
+                this.litAreas[litAreaKey].lit = false;
             }
         }
     }
@@ -167,9 +171,9 @@ class SevenSegmentDisplay extends Periphery{
         for (const litAreasKey in this.litAreas) {
             const litArea = this.litAreas[litAreasKey];
             if (litArea.lit) {
-                root.getElementsByClassName(litArea.litArea)[0].setAttribute("fill", "red");
+                root.getElementsByClassName(litArea.litArea)[0].style.fill = "red";
             } else {
-                root.getElementsByClassName(litArea.litArea)[0].setAttribute("fill", "black");
+                root.getElementsByClassName(litArea.litArea)[0].style.fill = "white";
             }
         }
         return root;

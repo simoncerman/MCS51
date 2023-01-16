@@ -216,6 +216,7 @@ input {
 	flex-direction: row;
 	gap: .25rem;
 	align-items: center;
+	flex-wrap: wrap;
 }
 
 #peripheryProperties{
@@ -255,3 +256,9 @@ input {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 }
+
+p.pin-connection-text{
+	font-size: .7rem;
+	background-color: white;
+}
+

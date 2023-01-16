@@ -11,6 +11,7 @@ class Periphery {
                     y: 0
                 },
                 optionSelector: null,
+                textNode: null
             }
         };
         this.properties = {}
