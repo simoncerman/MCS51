@@ -44,7 +44,13 @@ class Periphery {
 
                     default:
                         let bitData = retrieveSpecialBit(this.pins[pin].connectedTo);
-                        this.pins[pin].pinValue = bitData.value;
+                        console.log(this.pins[pin].connectedTo)
+                        console.log(bitData);
+                        if(bitData.value === 0){
+                            this.pins[pin].pinValue = "GND";
+                        } else{
+                            this.pins[pin].pinValue = bitData.value;
+                        }
                 }
             }
         }

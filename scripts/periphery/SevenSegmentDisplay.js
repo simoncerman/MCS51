@@ -158,7 +158,6 @@ class SevenSegmentDisplay extends Periphery{
         if(this.pins[8].pinValue === "GND" || this.pins[9].pinValue === "GND") {
             for (let i = 0; i < 8; i++) {
                 this.litAreas[i].lit = this.pins[i].pinValue === 1;
-
             }
         } else {
             for (let litAreaKey in this.litAreas) {

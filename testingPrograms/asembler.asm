@@ -18,7 +18,6 @@ MOV P0, #01111001b; E
 MOV P0, #01110001b; F
 
 
-
 ; moving single bit to debug
 MOV P0, #00000000b;
 MOV P0, #00000001b;
@@ -29,3 +28,10 @@ MOV P0, #00010000b;
 MOV P0, #00100000b;
 MOV P0, #01000000b;
 MOV P0, #10000000b;
+
+; prepare all bits as GND (0)
+MOV P0, #00000000b;
+MOV P1, #00000000b;
+MOV P2, #00000000b;
+MOV P3, #00000000b;
+
