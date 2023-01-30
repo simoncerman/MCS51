@@ -188,7 +188,6 @@ input {
 	border-radius: .25rem;
 	padding: .5rem;
 	display: flex;
-	flex-direction: row;
 	width: fit-content;
 	flex-direction: column;
 }
@@ -262,3 +261,29 @@ p.pin-connection-text{
 	background-color: white;
 }
 
+.dc-rotor{
+	position: absolute;
+	height: 10px;
+	width: 50px;
+	background-color: black;
+	top: 45px;
+	left: 25px;
+	transform-origin: center;
+}
+
+@keyframes spin-right {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+@keyframes spin-left {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
+}

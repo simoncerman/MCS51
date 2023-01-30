@@ -40,8 +40,6 @@ class LED extends Periphery{
     }
 
     execute(){
-        console.log("LED execute");
-        console.log(this.pins[0].pinValue, this.pins[1].pinValue);
         // make stuff by reading pin values
         this.isGlowing = this.pins[0].pinValue === 1 && this.pins[1].pinValue === "GND";
     }

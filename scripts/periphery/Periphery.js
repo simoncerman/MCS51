@@ -105,6 +105,12 @@ class Periphery {
             }, false);
         }
 
+        // append extra elements to the object
+        let extraElements = this.getExtraElements();
+        if (extraElements !== null && extraElements !== undefined){
+            peripheryObject.appendChild(extraElements);
+        }
+
         root = this.applySpecials(root);
         return peripheryObject;
     }
@@ -168,5 +174,10 @@ class Periphery {
         } else {
             return propertiesRows;
         }
+    }
+
+    getExtraElements(){
+        // return extra elements for the component
+        // need to be implemented in the child class
     }
 }

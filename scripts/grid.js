@@ -14,7 +14,6 @@ class Grid {
         let newPeripheryName = document.getElementById("addPeripheryValue").value;
         let newPeriphery = null;
 
-        // TODO: Add a switch case for each periphery type
         if (newPeripheryName === ""){
             alert("Periphery name cannot be empty");
         } else if(newPeripheryName === "LED"){
@@ -22,6 +21,8 @@ class Grid {
             newPeriphery = new LED("p"+ this.elements.length, ledColor);
         } else if(newPeripheryName === "sevenSegment"){
             newPeriphery = new SevenSegmentDisplay("p"+ this.elements.length)
+        } else if(newPeripheryName === "motorDC"){
+            newPeriphery = new MotorDC("p"+ this.elements.length)
         }
 
         if(newPeriphery){
@@ -56,6 +57,8 @@ class Grid {
                 element.updatePinConnection(pinNumber, connectedTo);
             }
         });
+        this.updateGrid();
+
     }
 
     resetPinValues(){
@@ -73,6 +76,8 @@ class Grid {
             peripheryProperties.appendChild(...new LED().getPropertiesHTML());
         } else if(peripheryName === "sevenSegment"){
             peripheryProperties.appendChild(...new SevenSegmentDisplay().getPropertiesHTML());
+        } else  if(peripheryName === "motorDC"){
+            peripheryProperties.appendChild(...new MotorDC().getPropertiesHTML());
         }
     }
 }
