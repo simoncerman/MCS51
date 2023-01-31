@@ -31,6 +31,7 @@ function getAllConnectionOptions()
 
 function getPinConnections(pin){
     // connections are selectors with options representing pins for I/O
+    console.log(pin);
     let selector = document.createElement("select");
     selector.classList.add("pin-connection-selector");
     selector.style.left = pin.pinPosition.x + "%";
@@ -76,3 +77,4 @@ loadScript("scripts/periphery/Periphery.js");
 loadScript("scripts/periphery/LED.js");
 loadScript("scripts/periphery/SevenSegmentDisplay.js");
 loadScript("scripts/periphery/MotorDC.js");
+loadScript("scripts/periphery/LEDMatrix.js");

@@ -23,6 +23,11 @@ class Grid {
             newPeriphery = new SevenSegmentDisplay("p"+ this.elements.length)
         } else if(newPeripheryName === "motorDC"){
             newPeriphery = new MotorDC("p"+ this.elements.length)
+        } else if(newPeripheryName === "ledMatrix"){
+            let ledMatrixWidth = document.getElementById("matrixWidth").value;
+            let ledMatrixHeight = document.getElementById("matrixHeight").value;
+            let ledMatrixType = document.getElementById("matrixType").value;
+            newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType)
         }
 
         if(newPeriphery){
@@ -78,6 +83,10 @@ class Grid {
             peripheryProperties.appendChild(...new SevenSegmentDisplay().getPropertiesHTML());
         } else  if(peripheryName === "motorDC"){
             peripheryProperties.appendChild(...new MotorDC().getPropertiesHTML());
+        } else if (peripheryName === "ledMatrix") {
+            new LEDMatrix().getPropertiesHTML().map((element) => {
+                peripheryProperties.appendChild(element);
+            });
         }
     }
 }

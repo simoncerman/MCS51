@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375.23 416.68">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #ff0;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+        stroke-width: 5px;
+      }
+
+      .cls-2 {
+        stroke: red;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        stroke: #000;
+      }
+    </style>
+  </defs>
+  <g id="Vrstva_1-2" data-name="Vrstva 1">
+    <path class="cls-3" d="M171.36,115.58c13.24-31.15,44.14-51.13,77.55-50.23,31.86,.85,60.56,20.55,73.14,50.23V250.41H171.36V115.58Z"/>
+    <rect class="cls-3" x="146.37" y="250.41" width="200.67" height="40.63" transform="translate(493.42 541.45) rotate(180)"/>
+    <rect class="cls-3" x="266.61" y="291.04" width="24.88" height="123.14" transform="translate(558.1 705.22) rotate(180)"/>
+    <rect class="cls-3" x="201.93" y="291.04" width="24.88" height="61.57" transform="translate(428.74 643.65) rotate(180)"/>
+    <polygon class="cls-3" points="291.49 250.41 291.49 119.11 274.07 119.11 250.85 135.14 248.64 144.82 269.1 153.11 269.1 250.41 291.49 250.41"/>
+    <polygon class="cls-3" points="191.43 250.41 228.74 250.41 245.6 219.17 245.6 158.91 230.4 138.18 262.19 119.11 191.43 119.11 191.43 250.41"/>
+    <line class="cls-2" x1="214.37" y1="352.61" y2="352.61"/>
+    <line class="cls-1" x1="372.73" y1="414.18" x2="279.05" y2="414.18"/>
+    <line class="cls-1" x1="372.73" y1="409.63" x2="372.73"/>
+  </g>
+</svg>
