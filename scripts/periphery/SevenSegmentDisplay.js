@@ -2,9 +2,9 @@ class SevenSegmentDisplay extends Periphery{
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "SevenSegmentDisplay";
-        this.pins = {
+        this.pins = [
             // A
-            0: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -16,7 +16,7 @@ class SevenSegmentDisplay extends Periphery{
 
             },
             // B
-            1: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -27,7 +27,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode: null
             },
             // C
-            2: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -38,7 +38,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode: null
             },
             // D
-            3: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -49,7 +49,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // E
-            4: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -60,7 +60,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // F
-            5: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -71,7 +71,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // G
-            6: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -82,7 +82,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // DP
-            7: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -93,7 +93,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // COM
-            8: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -104,7 +104,7 @@ class SevenSegmentDisplay extends Periphery{
                 textNode : null
             },
             // COM
-            9: {
+            {
                 connectedTo : null,
                 pinValue : null,
                 pinPosition : {
@@ -112,9 +112,8 @@ class SevenSegmentDisplay extends Periphery{
                     y: 97
                 },
                 optionSelector : null,
-                textNode : null
-            }
-        };
+                textNode : null}
+            ]
         this.litAreas = {
             0: {
                 lit: true,
