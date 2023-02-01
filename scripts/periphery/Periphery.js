@@ -2,8 +2,8 @@ class Periphery {
     constructor(peripheryId) {
         this.name = "Periphery name";
         this.peripheryId = peripheryId;
-        this.pins = {
-            0: {
+        this.pins = [
+            {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
@@ -13,7 +13,7 @@ class Periphery {
                 optionSelector: null,
                 textNode: null
             }
-        };
+        ];
         this.properties = {}
         this.zoomable = false;
         this.width = 100;
@@ -23,7 +23,7 @@ class Periphery {
 
     prepare(){
         // get values from pins and pass them to pinValues
-        for (let pin in this.pins) {
+        for (let pin = 0; pin < this.pins.length; pin++) {
             if(this.pins[pin].connectedTo != null){
                 switch (this.pins[pin].connectedTo) {
                     case "GND":
@@ -39,6 +39,10 @@ class Periphery {
                         break;
 
                     case undefined:
+                        this.pins[pin].pinValue = null;
+                        break;
+
+                    case " ":
                         this.pins[pin].pinValue = null;
                         break;
 
@@ -69,20 +73,25 @@ class Periphery {
         } else {
             str = this.getSVG(this.width);
         }
-        let oParser = new DOMParser();
-        let oDOM = oParser.parseFromString(str, "image/svg+xml");
-        let root = oDOM.documentElement;
 
+        let root;
+        // check if str is not dom element
+        if (str instanceof Element){
+            root = str;
+        } else {
+            let oParser = new DOMParser();
+            let oDOM = oParser.parseFromString(str, "image/svg+xml");
+            root = oDOM.documentElement;
+        }
 
         // create outer object and append svg
         let peripheryObject = document.createElement("div");
         peripheryObject.classList.add("periphery-object");
         peripheryObject.appendChild(root);
 
-
         if(!this.zoomable || getFull){
             // add pin connections selectors to the object
-            for (let pinsKey in this.pins) {
+            for (let pinsKey = 0; pinsKey < this.pins.length; pinsKey++) {
                 let optionSelector = getPinConnections(this.pins[pinsKey]);
 
                 optionSelector.addEventListener("change", (e) => {grid.updatePinConnections(this.peripheryId, pinsKey, optionSelector.value)},false);
@@ -91,7 +100,7 @@ class Periphery {
                 peripheryObject.appendChild(optionSelector);
             }
         } else{
-            for (let pinsKey in this.pins) {
+            for (let pinsKey = 0; pinsKey < this.pins.length; pinsKey++) {
                 let pinDescriptions = getTextPinConnections(this.pins[pinsKey]);
                 this.pins[pinsKey].textNode = pinDescriptions;
                 peripheryObject.appendChild(pinDescriptions);
@@ -131,7 +140,7 @@ class Periphery {
     }
 
     setPinValuesToDefault(){
-        for (let pin in this.pins) {
+        for (let pin = 0; pin < this.pins.length; pin++) {
             this.pins[pin].pinValue = null;
         }
     }

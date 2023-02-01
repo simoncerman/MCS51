@@ -271,6 +271,19 @@ p.pin-connection-text{
 	transform-origin: center;
 }
 
+.led-matrix-table{
+	table-layout: fixed;
+}
+
+.matrix-field{
+	width: auto;
+	height: auto;
+}
+
+.matrix-field-first{
+	width: 60px;
+}
+
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

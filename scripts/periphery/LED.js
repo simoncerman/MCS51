@@ -3,8 +3,8 @@ class LED extends Periphery{
         super(peripheryId);
         this.name = "LED";
         this.peripheryId = peripheryId;
-        this.pins = {
-            0: {
+        this.pins = [
+            {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
@@ -14,7 +14,7 @@ class LED extends Periphery{
                 optionSelector : null,
                 textNode: null
             },
-            1: {
+            {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
@@ -24,7 +24,7 @@ class LED extends Periphery{
                 optionSelector: null,
                 textNode: null
             }
-        };
+        ];
         this.properties = {
             ledColor: {
                 name: "LED color",
