@@ -30,6 +30,8 @@ class Grid {
             newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType)
         } else if(newPeripheryName === "stepEngine"){
             newPeriphery = new StepEngine("p"+ this.elements.length)
+        } else if(newPeripheryName === "LCD16x2Display"){
+            newPeriphery = new LCD16x2Display("p"+ this.elements.length)
         }
 
         if(newPeriphery){
@@ -55,6 +57,8 @@ class Grid {
         this.elements.forEach((element) => {
             grid.appendChild(element.getHTML());
         });
+
+        modal.open(null);
     }
 
     updatePinConnections(peripheryId, pinNumber, connectedTo){

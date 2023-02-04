@@ -293,6 +293,40 @@ p.pin-connection-text{
 	transform-origin: right;
 }
 
+.display{
+	border: 1px solid black;
+	display: flex;
+	flex-direction: column;
+}
+
+.display-inner{
+	border: 1px solid yellowgreen;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.display-inner > .row{
+	display: flex;
+	flex-direction: row;
+	height: 50%;
+}
+
+.char {
+	width: 6.25%;
+	border: 1px solid black;
+}
+
+.pin-descriptions{
+	font-size: .7rem;
+	height: 2rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+
+
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

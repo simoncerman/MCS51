@@ -116,7 +116,7 @@ class Periphery {
         // if object is zoomable -> on click on periphery object -> zoom in and move it to modal with all setup
         if(this.zoomable && getFull === false){
             peripheryObject.addEventListener("click", (e) => {
-                modal.open(this.getHTML(true));
+                modal.open(this);
             }, false);
         }
 
