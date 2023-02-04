@@ -1,0 +1,5 @@
+MOR R5,#5
+skok:
+MOV P1,#0
+MOV P1,#255
+DJNZ R5,skok

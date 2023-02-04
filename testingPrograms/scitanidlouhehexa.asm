@@ -1,0 +1,47 @@
+MOV 30h, #156h
+MOV 31h, #17h
+MOV 32h, #5h
+MOV 33h, #21h
+MOV 34h, #12h
+MOV 35h, #15h
+MOV 36h, #87h
+MOV 37h, #21h
+MOV 38h, #22h
+MOV 39h, #3h
+MOV 40h, #7h
+MOV 41h, #9h
+MOV 42h, #10h
+MOV 43h, #11h
+MOV 44h, #6h
+MOV 45h, #23h
+MOV 46h, #99h
+MOV 47h, #69h
+MOV 48h, #54h
+MOV 49h, #57h
+
+MOV R3, #10
+MOV R0, #39h
+MOV R1, #49h
+SETB RS0
+MOV R1, #59h
+CLR RS0
+
+
+dokola:
+MOV A, @R0
+ADDC A, @R1
+
+DEC R0
+DEC R1
+SETB RS0
+MOV @R1, A
+DEC R1
+CLR RS0
+DJNZ R3, dokola
+
+
+
+
+
+
+

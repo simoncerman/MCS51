@@ -283,6 +283,15 @@ p.pin-connection-text{
 .matrix-field-first{
 	width: 60px;
 }
+.step-engine-rotator{
+	position: absolute;
+	height: 10px;
+	width: 100px;
+	background-color: black;
+	top: 95px;
+	left: 0;
+	transform-origin: right;
+}
 
 @keyframes spin-right {
 	0% {

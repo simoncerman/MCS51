@@ -18,6 +18,12 @@ class Periphery {
         this.zoomable = false;
         this.width = 100;
         this.zoomWidth = 100;
+        this.margin = {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
+        }
 
     }
 
@@ -82,6 +88,8 @@ class Periphery {
             root = oDOM.documentElement;
         }
 
+
+
         // create outer object and append svg
         let peripheryObject = document.createElement("div");
         peripheryObject.classList.add("periphery-object");
@@ -118,6 +126,12 @@ class Periphery {
             peripheryObject.appendChild(extraElements);
         }
 
+        // apply margin to the object
+        peripheryObject.style.marginTop = this.margin.top + "px";
+        peripheryObject.style.marginRight = this.margin.right + "px";
+        peripheryObject.style.marginBottom = this.margin.bottom + "px";
+        peripheryObject.style.marginLeft = this.margin.left + "px";
+
         root = this.applySpecials(root);
         return peripheryObject;
     }
@@ -134,6 +148,9 @@ class Periphery {
     }
 
     updatePinConnection(pinNumber, newConnection){
+        console.log("update pin connection")
+        console.log(pinNumber, newConnection)
+        console.log("------------------");
         this.pins[pinNumber].connectedTo = newConnection;
     }
 

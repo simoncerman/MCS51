@@ -23,7 +23,7 @@ class LEDMatrix extends Periphery{
 
         // set min width and height
         if(matrixWidth < 1) matrixWidth = 1;
-        if(matrixHeight < 1) matrixHeight = 1;
+        if(matrixHeight < 1 ) matrixHeight = 1;
 
         // set width and height
         this.matrixWidth = matrixWidth;

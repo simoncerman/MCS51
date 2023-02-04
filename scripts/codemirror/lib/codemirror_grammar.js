@@ -42,8 +42,8 @@ A_DEFINED = 10, A_NOTDEFINED = 11, A_UNIQUE = 12,
 A_CTXSTART = 16, A_CTXEND = 17,
 A_HYPCTXSTART = 18, A_HYPCTXEND = 19,
 A_MCHSTART = 32, A_MCHEND = 33,
-A_FOLDSTART = 64, A_FOLDEND = 65, /*TODO*/
-A_INDENT = 128, A_OUTDENT = 129, /*TODO*/
+A_FOLDSTART = 64, A_FOLDEND = 65,
+A_INDENT = 128, A_OUTDENT = 129,
 
 // pattern types
 P_SIMPLE = 2,
@@ -54,7 +54,7 @@ P_BLOCK = 8,
 T_ACTION = 4,
 T_SOF = 8, T_FNBL = 9, T_EOL = 16/*=T_NULL*/, T_SOL = 32, T_EOF = 64,
 T_EMPTY = 128, T_NONSPACE = 256,
-T_INDENTATION = 129, T_DEDENTATION = 130, /*TODO*/
+T_INDENTATION = 129, T_DEDENTATION = 130,
 T_SIMPLE = 512,
 T_BLOCK = 1024, T_COMMENT = 1025,
 T_ALTERNATION = 2048,
@@ -3234,22 +3234,18 @@ function t_action( a, stream, state, token )
 
     /*else if ( A_INDENT === action )
     {
-        // TODO
     }
 
     else if ( A_OUTDENT === action )
     {
-        // TODO
     }
 
     else if ( A_FOLDSTART === action )
     {
-        // TODO
     }
 
     else if ( A_FOLDEND === action )
     {
-        // TODO
     }*/
 
     return true;
@@ -3606,7 +3602,6 @@ function t_composite( t, stream, state, token )
 
     tokens_required = 0; tokens_err = 0;
     
-    // TODO: a better error handling and recovery method
     // it should error recover to minimum/closest state
     // i.e generate only the minimum/necessary error notices
     if ( T_SUBGRAMMAR === type )
@@ -4702,7 +4697,6 @@ var Folder = {
     // adapted from codemirror
     
      Pattern: function( S, E, T ) {
-        // TODO
         return function fold_pattern( ){ };
     }
     
@@ -4850,7 +4844,6 @@ var Matcher = {
     // adapted from ace
     
      Pattern: function( S, E, T ) {
-        // TODO
         return function( ){ };
     }
     
@@ -4904,7 +4897,6 @@ var Matcher = {
     }
     
     ,MarkedUp: function( T, L, R, S, M ) {
-        // TODO
         return function( ){ };
     }
      
@@ -5169,7 +5161,6 @@ var CodeMirrorParser = Class(Parser, {
     // adapted from codemirror
     ,indent: function( state, textAfter, fullLine, conf, parserConf, CodeMirror ) {
         //var indentUnit = conf.indentUnit || 4;
-        // TODO
         return CodeMirror.Pass;
     }
     

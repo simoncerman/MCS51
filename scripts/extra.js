@@ -77,3 +77,4 @@ loadScript("scripts/periphery/LED.js");
 loadScript("scripts/periphery/SevenSegmentDisplay.js");
 loadScript("scripts/periphery/MotorDC.js");
 loadScript("scripts/periphery/LEDMatrix.js");
+loadScript("scripts/periphery/StepEngine.js");

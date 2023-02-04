@@ -1,0 +1,33 @@
+MOV 30h, #10001000b
+MOV 31h, #10001001b
+MOV 32h, #11000000b
+MOV 33h, #11110001b
+
+MOV 40h, #10000111b
+MOV 41h, #10000110b
+MOV 42h, #10010010b
+MOV 43h, #10000111b
+
+MOV 50h, #10000011b
+MOV 51h, #11000001b
+MOV 52h, #10100001b
+MOV 53h, #10000110b
+
+dokola:
+MOV R0, #30h
+JNB P2.1, pis
+MOV R0, #40h
+JNB P2.2, pis
+MOV R0, #50h
+JNB P2.3, pis
+MOV P1, #255
+JMP dokola
+
+pis:
+MOV R5, #4
+
+zobraz:
+MOV P1, @R0
+INC R0
+DJNZ R5, zobraz
+JMP dokola

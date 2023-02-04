@@ -28,6 +28,8 @@ class Grid {
             let ledMatrixHeight = document.getElementById("matrixHeight").value;
             let ledMatrixType = document.getElementById("matrixType").value;
             newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType)
+        } else if(newPeripheryName === "stepEngine"){
+            newPeriphery = new StepEngine("p"+ this.elements.length)
         }
 
         if(newPeriphery){
