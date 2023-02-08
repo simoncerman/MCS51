@@ -11,11 +11,31 @@ class LCD16x2Display extends Periphery{
         this.zoomWidth = 1000;
 
         // generate data base of display characters
+        this.row0 = null;
         this.row1 = null;
-        this.row2 = null;
+
+        // rows data
+        this.rows = [
+            [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+            [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+        ];
+
         this.chars = [];
-        this.display = null;
+        this.displayPowered = false;
+        this.display = {
+            objectDisplay: null,
+            isOn : true,
+        }
         this.generateDisplay();
+
+        // cursor stuff
+        this.cursor = {
+            isOn: true,
+            position: 0,
+            row: 1,
+            isBlinking: false,
+        }
+
 
         // set margins
         this.margin = {
@@ -189,24 +209,38 @@ class LCD16x2Display extends Periphery{
 
     generateDisplay() {
         // generate display
-        this.display = document.createElement("div");
-        this.display.classList.add("display");
+        this.display.objectDisplay = document.createElement("div");
+        this.display.objectDisplay.classList.add("display");
 
         // pin descriptions
         let pinDescriptions = this.generatePinDescriptions();
 
         // append top pin descriptions
-        this.display.appendChild(pinDescriptions[0]);
+        this.display.objectDisplay.appendChild(pinDescriptions[0]);
 
         // append display
         let displayInner = document.createElement("div");
         displayInner.classList.add("display-inner");
-        this.display.appendChild(displayInner);
+        this.display.objectDisplay.appendChild(displayInner);
 
         // append bottom pin descriptions
-        this.display.appendChild(pinDescriptions[1]);
+        this.display.objectDisplay.appendChild(pinDescriptions[1]);
 
         // first row
+        let row0 = document.createElement("div");
+        row0.classList.add("row");
+        displayInner.appendChild(row0);
+
+        this.row0 = []
+        for (let i = 0; i < 16; i++) {
+            let char = document.createElement("div");
+            char.classList.add("char");
+            char.classList.add("char-" + i);
+            row0.appendChild(char);
+            this.row0.push(char);
+        }
+
+        // second row
         let row1 = document.createElement("div");
         row1.classList.add("row");
         displayInner.appendChild(row1);
@@ -215,26 +249,12 @@ class LCD16x2Display extends Periphery{
         for (let i = 0; i < 16; i++) {
             let char = document.createElement("div");
             char.classList.add("char");
-            char.classList.add("char-" + i);
+            char.classList.add("char-" + (i + 16));
             row1.appendChild(char);
             this.row1.push(char);
         }
 
-        // second row
-        let row2 = document.createElement("div");
-        row2.classList.add("row");
-        displayInner.appendChild(row2);
-
-        this.row2 = []
-        for (let i = 0; i < 16; i++) {
-            let char = document.createElement("div");
-            char.classList.add("char");
-            char.classList.add("char-" + (i + 16));
-            row2.appendChild(char);
-            this.row2.push(char);
-        }
-
-        console.log(this.display);
+        console.log(this.display.objectDisplay);
 
     }
     generatePinDescriptions() {
@@ -265,12 +285,299 @@ class LCD16x2Display extends Periphery{
     }
 
     execute() {
-        super.execute();
+        let GND = this.pins[0].pinValue; // ground
+        let VCC = this.pins[1].pinValue; // power
+        let VEE = this.pins[2].pinValue; // contrast -> opacity
+        let RS = this.pins[3].pinValue; // register select -> 0: command mode, 1: data mode
+        let RW = this.pins[4].pinValue; // read/write -> 0: write, 1: read
+        let E = this.pins[5].pinValue; // enable -> 0: disable, 1: enable : Always 1 to write data
+        let DB = [
+            this.pins[6].pinValue,
+            this.pins[7].pinValue,
+            this.pins[8].pinValue,
+            this.pins[9].pinValue,
+            this.pins[10].pinValue,
+            this.pins[11].pinValue,
+            this.pins[12].pinValue,
+            this.pins[13].pinValue]; // data bits
+
+        // check if the display is powered
+        if(GND === "GND" && VCC === 1) {
+            this.displayPowered = true;
+        } else {
+            this.displayPowered = false;
+            this.clearDisplay();
+            return;
+        }
+
+        // check contrast/opacity of the display
+        this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
+
+        // command mode
+        if (RS === "GND") {
+            // check if the display is enabled
+            if (E === 1) {
+                // check if the display is in write mode
+                if (RW === "GND") {
+                    // write command
+                    this.writeCommand(DB);
+                }
+            }
+        } else {
+            // check if the display is enabled
+            if (E === 1) {
+                // check if the display is in write mode
+                if (RW === "GND") {
+                    // write data
+                    this.writeData(DB);
+                }
+            }
+        }
+    }
+
+    // write command
+    writeCommand(DB) {
+        let command = 0;
+        for (let i = 0; i < DB.length; i++) {
+            command += DB[i] * Math.pow(2, i);
+        }
+
+        // command switch
+        switch (command) {
+            // Clear display
+            case 0x01: // clear display
+                this.clearDisplay();
+                break;
+
+            // Return home
+            case 0x02: // return home
+                this.returnHome();
+                break;
+
+            // Entry mode set
+            case 0x04: // cursor shift left
+                this.cursorShiftLeft();
+                break;
+            case 0x06: // cursor shift right
+                this.cursorShiftRight();
+                break;
+            case 0x05: // display shift right
+                this.displayShiftRight();
+                break;
+            case 0x07: // display shift left
+                this.displayShiftLeft();
+                break;
+
+            // Display on/off control
+            case 0x08: // display off, cursor off, cursor blinking off
+                this.displayOff();
+                this.cursorOff();
+                this.cursorBlinkingOff();
+                break;
+            case 0x09: // display off, cursor off, cursor blinking on
+                this.displayOff();
+                this.cursorOff();
+                this.cursorBlinkingOn();
+                break;
+            case 0x0A: // display off, cursor on, cursor blinking off
+                this.displayOff();
+                this.cursorOn();
+                this.cursorBlinkingOff();
+                break;
+            case 0x0B: // display off, cursor on, cursor blinking on
+                this.displayOff();
+                this.cursorOn();
+                this.cursorBlinkingOn();
+                break;
+            case 0x0C: // display on, cursor off, cursor blinking off
+                this.displayOn();
+                this.cursorOff();
+                this.cursorBlinkingOff();
+                break;
+            case 0x0D: // display on, cursor off, cursor blinking on
+                this.displayOn();
+                this.cursorOff();
+                this.cursorBlinkingOn();
+                break;
+            case 0x0E: // display on, cursor on, cursor blinking off
+                this.displayOn();
+                this.cursorOn();
+                this.cursorBlinkingOff();
+                break;
+            case 0x0F: // display on, cursor on, cursor blinking on
+                this.displayOn();
+                this.cursorOn();
+                this.cursorBlinkingOn();
+                break;
+
+            // Cursor or display shift
+            case 0x10: // cursor move left
+                this.cursorShiftLeftWithRowJump()
+                break;
+            case 0x14: // cursor move right
+                this.cursorShiftRightWithRowJump()
+                break;
+            case 0x18: // shift entire display left with cursor
+                this.displayShiftLeft();
+                this.cursorShiftLeft()
+                break;
+            case 0x1C: // shift entire display right with cursor
+                this.displayShiftRight();
+                this.cursorShiftRight()
+                break;
+
+            // Function set
+            case 0x80: // Force cursor to the beginning ( 1st line)
+                break;
+            case 0xC0: // Force cursor to the beginning ( 2nd line)
+        }
+
+    }
+    writeData(DB) {
+        let data = 0;
+        for (let i = 0; i < DB.length; i++) {
+            data += DB[i] * Math.pow(2, i);
+        }
+
+        // write data to the display
+        this.rows[this.cursor.row][this.cursor.position] = data;
+        this.cursorShiftRightWithRowJump();
+    }
+
+
+    // will clear the display data
+    clearDisplay() {
+        for (let i = 0; i < 16; i++) {
+            this.rows[0][i] = 0x20;
+            this.rows[1][i] = 0x20;
+        }
+        this.cursor.position = 0;
+        this.cursor.row = 0;
+    }
+
+    returnHome() {
+        this.cursor.position = 0;
+        this.cursor.row = 0;
+    }
+
+    cursorShiftLeft() {
+        if (this.cursor.position > 0) {
+            this.cursor.position--;
+        }
+    }
+
+    cursorShiftRight() {
+        if (this.cursor.position < 15) {
+            this.cursor.position++;
+        }
+    }
+
+    displayShiftLeft() {
+        for (let i = 0; i < this.row0.length; i++) {
+            this.rows[0][i] = this.rows[0][i + 1];
+            this.rows[1][i] = this.rows[1][i + 1];
+        }
+    }
+
+    displayShiftRight() {
+        for (let i = 15; i > 0; i--) {
+            this.rows[0][i] = this.rows[0][i - 1];
+            this.rows[1][i] = this.rows[1][i - 1];
+        }
+    }
+
+    cursorShiftLeftWithRowJump() {
+        if (this.cursor.position === 0 && this.cursor.row === 1){
+            this.cursor = 0;
+            this.cursor.position = 15;
+        } else {
+            this.cursorShiftLeft();
+        }
+    }
+
+    cursorShiftRightWithRowJump() {
+        if (this.cursor.position === 15 && this.cursor.row === 0){
+            this.cursor = 1;
+            this.cursor.position = 0;
+        } else {
+            this.cursorShiftRight();
+        }
+    }
+
+    displayOff() {
+        this.display.isOn = false;
+        this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#FFFFFF";
+    }
+    displayOn() {
+        this.display.isOn = true;
+        this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#179CE5";
+    }
+    cursorOff() {
+        this.cursor.isOn = false;
+    }
+    cursorOn() {
+        this.cursor.isOn = true;
+    }
+    cursorBlinkingOff() {
+        this.cursor.isBlinking = false;
+    }
+    cursorBlinkingOn() {
+        this.cursor.isBlinking = true;
+    }
+
+    // convert hex ascii to char
+    asciiToChar(hex) {
+        return String.fromCharCode(hex);
+    }
+
+    updateViewFromData() {
+        // remove cursor class from all elements
+        for (let i = 0; i < 16; i++) {
+            this.row0[i].classList.remove("cursor");
+            this.row1[i].classList.remove("cursor");
+            // remove cursor blinking class
+            this.row0[i].classList.remove("cursor-blinking");
+            this.row1[i].classList.remove("cursor-blinking");
+        }
+
+        if (!this.displayPowered) {
+            console.log("Power off");
+            this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#ffffff";
+
+        } else {
+            console.log("Power on");
+            this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#179CE5";
+
+            // update the display with the data
+            for (let i = 0; i < 16; i++) {
+                this.row0[i].innerHTML = this.asciiToChar(this.rows[0][i]);
+                this.row1[i].innerHTML = this.asciiToChar(this.rows[1][i]);
+            }
+
+            // add cursor class to the current cursor position
+            if (this.cursor.isOn) {
+                if (this.cursor.row === 0) {
+                    this.row0[this.cursor.position].classList.add("cursor");
+                } else {
+                    this.row1[this.cursor.position].classList.add("cursor");
+                }
+            }
+
+            // add cursor blinking class to the current cursor position
+            if (this.cursor.isBlinking) {
+                if (this.cursor.row === 0) {
+                    this.row0[this.cursor.position].classList.add("cursor-blinking");
+                } else {
+                    this.row1[this.cursor.position].classList.add("cursor-blinking");
+                }
+            }
+        }
     }
 
     getSVG(width) {
-        this.display.style.width = width + "px";
-        this.display.style.height = width * 0.25 + "px";
-        return this.display;
+        this.updateViewFromData();
+        this.display.objectDisplay.style.width = width + "px";
+        this.display.objectDisplay.style.height = width * 0.25 + "px";
+        return this.display.objectDisplay;
     }
 }

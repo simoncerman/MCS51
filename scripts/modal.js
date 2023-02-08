@@ -11,6 +11,7 @@ class Modal{
         this.actualObject = null;
     }
     open(actualObject){
+        if (this.actualObject === null && !actualObject) return;
         if (actualObject === null){
             actualObject = this.actualObject;
         }

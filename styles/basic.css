@@ -297,6 +297,7 @@ p.pin-connection-text{
 	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
+	background-color: #1F7B34;
 }
 
 .display-inner{
@@ -304,6 +305,7 @@ p.pin-connection-text{
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	background-color: #FFFFFF;
 }
 
 .display-inner > .row{
@@ -315,6 +317,9 @@ p.pin-connection-text{
 .char {
 	width: 6.25%;
 	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .pin-descriptions{
@@ -341,5 +346,15 @@ p.pin-connection-text{
 	}
 	100% {
 		transform: rotate(-360deg);
+	}
+}
+
+.cursor-blinking {
+	animation: blick 1s linear infinite;
+}
+
+@keyframes blick {
+	50% {
+		background-color: #0047cc;
 	}
 }
