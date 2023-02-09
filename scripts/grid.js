@@ -7,7 +7,31 @@ class Grid {
     setListeners(){
         document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()});
         document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
+        document.getElementById('addDefaultPeripheries').addEventListener('click', () => {this.defaultPeripheries()});
+    }
 
+    defaultPeripheries(){
+        let display = new LCD16x2Display("p0");
+        this.elements = [display
+        ];
+        display.pins[0].connectedTo = "GND";
+        display.pins[1].connectedTo = "V+";
+        display.pins[2].connectedTo = "V+";
+        display.pins[3].connectedTo = "P1.1";
+        display.pins[4].connectedTo = "P1.0";
+        display.pins[5].connectedTo = "V+";
+
+        display.pins[6].connectedTo = "P0.0";
+        display.pins[7].connectedTo = "P0.1";
+        display.pins[8].connectedTo = "P0.2";
+        display.pins[9].connectedTo = "P0.3";
+        display.pins[10].connectedTo = "P0.4";
+        display.pins[11].connectedTo = "P0.5";
+        display.pins[12].connectedTo = "P0.6";
+        display.pins[13].connectedTo = "P0.7";
+
+
+        this.updateGrid();
     }
 
     addPeriphery(){

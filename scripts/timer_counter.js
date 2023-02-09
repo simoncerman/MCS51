@@ -22,7 +22,7 @@ function TTSetUp(){
 //Časovač = 0; Čítač = 1
 function incrementTT(signal){
 
-    console.log("increment called");
+    //console.log("increment called");
     if(TT0.signal == signal && signal == 0 && TT0.running){
         switch(TT0.mode){
             case 0:

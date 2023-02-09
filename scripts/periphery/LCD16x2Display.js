@@ -10,7 +10,7 @@ class LCD16x2Display extends Periphery{
         this.width = 400;
         this.zoomWidth = 1000;
 
-        // generate data base of display characters
+        // generate data-based of display characters
         this.row0 = null;
         this.row1 = null;
 
@@ -32,7 +32,7 @@ class LCD16x2Display extends Periphery{
         this.cursor = {
             isOn: true,
             position: 0,
-            row: 1,
+            row: 0,
             isBlinking: false,
         }
 
@@ -253,9 +253,6 @@ class LCD16x2Display extends Periphery{
             row1.appendChild(char);
             this.row1.push(char);
         }
-
-        console.log(this.display.objectDisplay);
-
     }
     generatePinDescriptions() {
         // top pin descriptions
@@ -313,6 +310,19 @@ class LCD16x2Display extends Periphery{
         // check contrast/opacity of the display
         this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
 
+
+        // check if all db pins has value null -> no data -> return
+        let allNull = true;
+        for (let i = 0; i < DB.length; i++) {
+            if (DB[i] !== null) {
+                allNull = false;
+                break;
+            }
+        }
+        if (allNull) {
+            return;
+        }
+
         // command mode
         if (RS === "GND") {
             // check if the display is enabled
@@ -333,14 +343,29 @@ class LCD16x2Display extends Periphery{
                 }
             }
         }
+
+        // reset all pins values to null
+        for (let i = 0; i < this.pins.length; i++) {
+            this.pins[i].pinValue = null;
+        }
+
     }
 
     // write command
     writeCommand(DB) {
+        // convert all "GND" to 0 and all 1 to 1
+        for (let i = 0; i < DB.length; i++) {
+            if (DB[i] === "GND") {
+                DB[i] = 0;
+            }
+        }
+
+
         let command = 0;
         for (let i = 0; i < DB.length; i++) {
             command += DB[i] * Math.pow(2, i);
         }
+
 
         // command switch
         switch (command) {
@@ -434,6 +459,13 @@ class LCD16x2Display extends Periphery{
 
     }
     writeData(DB) {
+        // convert all "GND" to 0 and all 1 to 1
+        for (let i = 0; i < DB.length; i++) {
+            if (DB[i] === "GND") {
+                DB[i] = 0;
+            }
+        }
+
         let data = 0;
         for (let i = 0; i < DB.length; i++) {
             data += DB[i] * Math.pow(2, i);
@@ -488,7 +520,7 @@ class LCD16x2Display extends Periphery{
 
     cursorShiftLeftWithRowJump() {
         if (this.cursor.position === 0 && this.cursor.row === 1){
-            this.cursor = 0;
+            this.cursor.row = 0;
             this.cursor.position = 15;
         } else {
             this.cursorShiftLeft();
@@ -497,7 +529,7 @@ class LCD16x2Display extends Periphery{
 
     cursorShiftRightWithRowJump() {
         if (this.cursor.position === 15 && this.cursor.row === 0){
-            this.cursor = 1;
+            this.cursor.row = 1;
             this.cursor.position = 0;
         } else {
             this.cursorShiftRight();

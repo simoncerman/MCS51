@@ -276,7 +276,7 @@ function highlightActiveLine() {
 		document.getElementsByClassName('CodeMirror-linenumber')[currentLine + errorBit].style.backgroundColor = gutterFontColor;
 	}
 	catch {
-		console.log("Text ouf of range");
+		//console.log("Text ouf of range");
 	}
 
 	/*document.getElementsByClassName('CodeMirror-linenumber')[currentInstruction.line + errorBit].style.color = gutterBackColor;

@@ -330,7 +330,9 @@ p.pin-connection-text{
 	justify-content: space-evenly;
 }
 
-
+.cursor{
+	background-color: #0047cc;
+}
 
 @keyframes spin-right {
 	0% {
@@ -355,6 +357,6 @@ p.pin-connection-text{
 
 @keyframes blick {
 	50% {
-		background-color: #0047cc;
+		background-color: #2eff5c;
 	}
 }
