@@ -79,3 +79,4 @@ loadScript("scripts/periphery/MotorDC.js");
 loadScript("scripts/periphery/LEDMatrix.js");
 loadScript("scripts/periphery/StepEngine.js");
 loadScript("scripts/periphery/LCD16x2Display.js");
+loadScript("scripts/periphery/Button.js");

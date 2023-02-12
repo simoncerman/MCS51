@@ -27,11 +27,32 @@ MOV P0, #01001111b
 MOV P0, #01001010b
 ; write '!' to display
 MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
+; write '!' to display
+MOV P0, #00100001b
 ; empty pins
 MOV P0, #00000000b
 
 ; command mode
 MOV P1, #00000000b
+; shift cursor right - new line
+MOV P0, #00010100b
+
 
 
 

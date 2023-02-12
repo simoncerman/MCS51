@@ -53,12 +53,18 @@ class Periphery {
                         break;
 
                     default:
+                        if(grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] !== null){
+                            this.pins[pin].pinValue = grid.leadingEdgeValuesArray[this.pins[pin].connectedTo];
+                            break;
+                        }
+
                         let bitData = retrieveSpecialBit(this.pins[pin].connectedTo);
                         if(bitData.value === 0){
                             this.pins[pin].pinValue = "GND";
                         } else{
                             this.pins[pin].pinValue = bitData.value;
                         }
+                        break;
                 }
             }
         }

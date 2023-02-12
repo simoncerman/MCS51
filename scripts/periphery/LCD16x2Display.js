@@ -360,7 +360,6 @@ class LCD16x2Display extends Periphery{
             }
         }
 
-
         let command = 0;
         for (let i = 0; i < DB.length; i++) {
             command += DB[i] * Math.pow(2, i);

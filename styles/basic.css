@@ -334,6 +334,16 @@ p.pin-connection-text{
 	background-color: #0047cc;
 }
 
+.button-clicker{
+	background-color: yellowgreen;
+	position: absolute;
+	width: 50%;
+	height: 50%;
+	left: 25%;
+	top: 22%;
+	opacity: 0;
+}
+
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

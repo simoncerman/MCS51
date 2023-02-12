@@ -2,6 +2,40 @@ class Grid {
     constructor(){
         this.elements = [];
         this.setListeners();
+        this.leadingEdgeValuesArray = {
+            "P0.0": null,
+            "P0.1": null,
+            "P0.2": null,
+            "P0.3": null,
+            "P0.4": null,
+            "P0.5": null,
+            "P0.6": null,
+            "P0.7": null,
+            "P1.0": null,
+            "P1.1": null,
+            "P1.2": null,
+            "P1.3": null,
+            "P1.4": null,
+            "P1.5": null,
+            "P1.6": null,
+            "P1.7": null,
+            "P2.0": null,
+            "P2.1": null,
+            "P2.2": null,
+            "P2.3": null,
+            "P2.4": null,
+            "P2.5": null,
+            "P2.6": null,
+            "P2.7": null,
+            "P3.0": null,
+            "P3.1": null,
+            "P3.2": null,
+            "P3.3": null,
+            "P3.4": null,
+            "P3.5": null,
+            "P3.6": null,
+            "P3.7": null
+        }
     }
 
     setListeners(){
@@ -11,6 +45,7 @@ class Grid {
     }
 
     defaultPeripheries(){
+        /*
         let display = new LCD16x2Display("p0");
         this.elements = [display
         ];
@@ -29,7 +64,9 @@ class Grid {
         display.pins[11].connectedTo = "P0.5";
         display.pins[12].connectedTo = "P0.6";
         display.pins[13].connectedTo = "P0.7";
-
+        */
+        let button = new Button();
+        this.elements = [button];
 
         this.updateGrid();
     }
@@ -51,11 +88,13 @@ class Grid {
             let ledMatrixWidth = document.getElementById("matrixWidth").value;
             let ledMatrixHeight = document.getElementById("matrixHeight").value;
             let ledMatrixType = document.getElementById("matrixType").value;
-            newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType)
+            newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType);
         } else if(newPeripheryName === "stepEngine"){
-            newPeriphery = new StepEngine("p"+ this.elements.length)
+            newPeriphery = new StepEngine("p"+ this.elements.length);
         } else if(newPeripheryName === "LCD16x2Display"){
-            newPeriphery = new LCD16x2Display("p"+ this.elements.length)
+            newPeriphery = new LCD16x2Display("p"+ this.elements.length);
+        } else if(newPeripheryName === "button"){
+            newPeriphery = new Button("p"+ this.elements.length);
         }
 
         if(newPeriphery){
@@ -65,14 +104,26 @@ class Grid {
     }
 
     updateGrid(){
+        // priority properties what are of class Button do first
+        this.elements.forEach((element) => {
+            if(element instanceof Button){
+                element.prepare();
+                element.execute();
+            }
+        });
+
         // prepares data in every element by input values
         this.elements.forEach((element) => {
-            element.prepare();
+            if (!(element instanceof Button)){
+                element.prepare();
+            }
         });
 
         // execute the data in every element
         this.elements.forEach((element) => {
-            element.execute();
+            if (!(element instanceof Button)){
+                element.execute();
+            }
         });
 
         // update the grid
