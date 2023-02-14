@@ -343,6 +343,16 @@ p.pin-connection-text{
 	top: 22%;
 	opacity: 0;
 }
+.switch-clicker{
+	background-color: yellowgreen;
+	position: absolute;
+	width: 50%;
+	height: 50%;
+	left: 25%;
+	top: 22%;
+	opacity: 0;
+}
+
 
 @keyframes spin-right {
 	0% {

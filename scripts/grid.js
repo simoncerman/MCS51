@@ -46,6 +46,7 @@ class Grid {
 
     defaultPeripheries(){
         /*
+        TESTING ONLY
         let display = new LCD16x2Display("p0");
         this.elements = [display
         ];
@@ -65,8 +66,14 @@ class Grid {
         display.pins[12].connectedTo = "P0.6";
         display.pins[13].connectedTo = "P0.7";
         */
+
+        /*
         let button = new Button();
         this.elements = [button];
+        *//**/
+
+        let switchP = new Switch("p0");
+        this.elements = [switchP];
 
         this.updateGrid();
     }
@@ -95,6 +102,8 @@ class Grid {
             newPeriphery = new LCD16x2Display("p"+ this.elements.length);
         } else if(newPeripheryName === "button"){
             newPeriphery = new Button("p"+ this.elements.length);
+        } else if(newPeripheryName === "switch"){
+            newPeriphery = new Switch("p"+ this.elements.length);
         }
 
         if(newPeriphery){
@@ -103,10 +112,18 @@ class Grid {
         }
     }
 
+    clearLeadingEdgeValuesArray(){
+        for(let key in this.leadingEdgeValuesArray){
+            this.leadingEdgeValuesArray[key] = null;
+        }
+    }
+
     updateGrid(){
+        this.clearLeadingEdgeValuesArray();
+
         // priority properties what are of class Button do first
         this.elements.forEach((element) => {
-            if(element instanceof Button){
+            if(element instanceof Button || element instanceof Switch){
                 element.prepare();
                 element.execute();
             }
@@ -114,14 +131,14 @@ class Grid {
 
         // prepares data in every element by input values
         this.elements.forEach((element) => {
-            if (!(element instanceof Button)){
+            if (!(element instanceof Button && !(element instanceof Switch))){
                 element.prepare();
             }
         });
 
         // execute the data in every element
         this.elements.forEach((element) => {
-            if (!(element instanceof Button)){
+            if (!(element instanceof Button && !(element instanceof Switch))){
                 element.execute();
             }
         });
