@@ -72,8 +72,13 @@ class Grid {
         this.elements = [button];
         *//**/
 
+        /*
         let switchP = new Switch("p0");
         this.elements = [switchP];
+        */
+
+        let dac = new DAC("p0");
+        this.elements = [dac];
 
         this.updateGrid();
     }
@@ -104,6 +109,10 @@ class Grid {
             newPeriphery = new Button("p"+ this.elements.length);
         } else if(newPeripheryName === "switch"){
             newPeriphery = new Switch("p"+ this.elements.length);
+        } else if(newPeripheryName === "serialMonitor"){
+            newPeriphery = new SerialMonitor("p"+ this.elements.length);
+        } else if (newPeripheryName === "DAC"){
+            newPeriphery = new DAC("p"+ this.elements.length);
         }
 
         if(newPeriphery){
