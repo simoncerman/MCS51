@@ -83,3 +83,4 @@ loadScript("scripts/periphery/Button.js");
 loadScript("scripts/periphery/Switch.js");
 loadScript("scripts/periphery/SerialMonitor.js");
 loadScript("scripts/periphery/DAC.js");
+loadScript("scripts/periphery/ADC.js");

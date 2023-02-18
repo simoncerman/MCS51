@@ -77,8 +77,13 @@ class Grid {
         this.elements = [switchP];
         */
 
+        /*
         let dac = new DAC("p0");
         this.elements = [dac];
+        */
+
+        let adc = new ADC("p0");
+        this.elements = [adc];
 
         this.updateGrid();
     }
@@ -113,6 +118,8 @@ class Grid {
             newPeriphery = new SerialMonitor("p"+ this.elements.length);
         } else if (newPeripheryName === "DAC"){
             newPeriphery = new DAC("p"+ this.elements.length);
+        } else if (newPeripheryName === "ADC"){
+            newPeriphery = new ADC("p"+ this.elements.length);
         }
 
         if(newPeriphery){

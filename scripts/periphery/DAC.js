@@ -1,4 +1,7 @@
 class DAC extends Periphery {
+    // TODO: real reading from the pins
+    // TODO: add ground and vcc pins to the DAC and check if they are connected
+    // if no, then the DAC is not working
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "DAC";
@@ -98,6 +101,7 @@ class DAC extends Periphery {
         this.analogValue = 0;
         this.analogSetValue = 50;
         this.analogDisplay = null;
+        this.stepSize = 0;
         this.drawArea = null;
         this.dots = [];
         this.dotValues= [];
@@ -154,10 +158,10 @@ class DAC extends Periphery {
     update() {
         // calculate the new value
         if (this.analogValue < this.analogSetValue) {
-            this.analogValue += 2;
+            this.analogValue += 1;
         }
         else if (this.analogValue > this.analogSetValue) {
-            this.analogValue -= 2;
+            this.analogValue -= 1;
         }
 
         // update main dot

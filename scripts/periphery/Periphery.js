@@ -16,8 +16,6 @@ class Periphery {
         ];
         this.properties = {}
         this.zoomable = false;
-        this.width = 100;
-        this.zoomWidth = 100;
         this.margin = {
             top: 0,
             right: 0,

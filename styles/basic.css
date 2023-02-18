@@ -396,6 +396,37 @@ p.pin-connection-text{
 	background-color: rgba(128, 128, 128, 0.35);
 }
 
+.adc-holder{
+	border-radius: .25rem;
+	width: 150px;
+	height: 150px;
+	display: flex;
+	background-color: #919191;
+	flex-direction: column;
+	padding: 1rem;
+	align-items: center;
+	justify-content: center;
+}
+.adc-output-holder{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-evenly;
+}
+
+.adc-output-holder > *{
+	padding: .1rem;
+	background-color: white;
+}
+
+.adc-voltage{
+	content: "0";
+	background-color: white;
+	margin-bottom: .1rem;
+}
+.adc-pin-description{
+	position: absolute;
+}
 
 @keyframes spin-right {
 	0% {
