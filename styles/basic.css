@@ -428,6 +428,9 @@ p.pin-connection-text{
 	position: absolute;
 }
 
+.dac-pin-description{
+	position: absolute;
+}
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

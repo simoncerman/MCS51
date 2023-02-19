@@ -86,6 +86,27 @@ class DAC extends Periphery {
                 },
                 optionSelector: null,
                 textNode: null
+            },
+            // V+ and GND pins
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 1,
+                    y: -9
+                },
+                optionSelector: null,
+                textNode: "V+"
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 85,
+                    y: -9
+                },
+                optionSelector: null,
+                textNode: "GND"
             }
         ];
         this.properties = {}
@@ -99,17 +120,33 @@ class DAC extends Periphery {
             left: 20
         }
         this.analogValue = 0;
-        this.analogSetValue = 50;
+        this.analogSetValue = 0;
         this.analogDisplay = null;
         this.stepSize = 0;
+        this.analogOff = false;
+        this.step = 0;
         this.drawArea = null;
         this.dots = [];
         this.dotValues= [];
         this.mainDot = null;
         this.interval = null;
+        this.handChangeValue = null;
     }
 
     execute() {
+        // check if the pins VCC and GND are 1 and GND
+        if (this.pins[8].pinValue !== 1 || this.pins[9].pinValue !== "GND") {
+            this.analogOff = true;
+            this.analogValue = 0;
+            this.analogSetValue = 0;
+            this.step = 0;
+            this.stepSize = 0;
+            this.handChangeValue = null;
+            return;
+        } else{
+            this.analogOff = false;
+        }
+
         let value = 0;
         for (let i = 7; i >= 0; i--) {
             if (this.pins[i].connectedTo != null) {
@@ -119,7 +156,16 @@ class DAC extends Periphery {
         if (isNaN(value)) {
             value = 0;
         }
-        this.analogValue = value;
+
+        if (this.handChangeValue !== null) {
+            value = this.handChangeValue;
+        }
+
+        if(value !== this.analogSetValue) {
+            this.step = 0;
+            this.stepSize = (value - this.analogValue) / 10;
+            this.analogSetValue = value;
+        }
     }
 
     getSVG(width) {
@@ -146,6 +192,23 @@ class DAC extends Periphery {
             this.mainDot.classList.add("mainDot");
             this.drawArea.appendChild(this.mainDot);
 
+            // generate pin description for VCC and GND
+            let pinDescription1 = document.createElement("div");
+            pinDescription1.classList.add("dac-pin-description");
+            pinDescription1.style.left = "3%";
+            pinDescription1.style.top = "0%";
+            pinDescription1.innerHTML = "VCC";
+            this.analogDisplay.appendChild(pinDescription1);
+
+            let pinDescription2 = document.createElement("div");
+            pinDescription2.classList.add("dac-pin-description");
+            pinDescription2.style.right = "3%";
+            pinDescription2.style.top = "0%";
+            pinDescription2.innerHTML = "GND";
+            this.analogDisplay.appendChild(pinDescription2);
+
+
+
             // interval to update the display
             this.interval = setInterval(() => {
                 this.update();
@@ -156,12 +219,27 @@ class DAC extends Periphery {
     }
 
     update() {
-        // calculate the new value
-        if (this.analogValue < this.analogSetValue) {
-            this.analogValue += 1;
+        this.execute();
+
+        if (this.analogOff) {
+            // remove all dots
+            for (let i = 0; i < this.dots.length; i++) {
+                this.drawArea.removeChild(this.dots[i]);
+            }
+            this.dots = [];
+            this.dotValues = [];
+            // opacity of the main dot
+            this.mainDot.style.opacity = 0;
+            return;
+        } else {
+            // opacity of the main dot
+            this.mainDot.style.opacity = 1;
         }
-        else if (this.analogValue > this.analogSetValue) {
-            this.analogValue -= 1;
+
+        // calculate the new value
+        if ((this.analogValue < this.analogSetValue || this.analogValue > this.analogSetValue) && this.step < 10) {
+            this.analogValue += this.stepSize;
+            this.step++;
         }
 
         // update main dot

@@ -77,14 +77,14 @@ class Grid {
         this.elements = [switchP];
         */
 
-        /*
+
         let dac = new DAC("p0");
         this.elements = [dac];
-        */
 
+/*
         let adc = new ADC("p0");
         this.elements = [adc];
-
+*/
         this.updateGrid();
     }
 
