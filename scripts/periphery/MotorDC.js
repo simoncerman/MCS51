@@ -29,6 +29,13 @@ class MotorDC extends Periphery{
             rotator : null,
             activeRotation : null
         }
+        this.margin = {
+            top: 0,
+            right: 2,
+            bottom: 5,
+            left: 2
+        }
+        this.properties = {}
     }
 
     execute() {

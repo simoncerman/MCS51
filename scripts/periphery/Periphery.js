@@ -16,6 +16,8 @@ class Periphery {
         ];
         this.properties = {}
         this.zoomable = false;
+        this.width = 100;
+        this.zoomWidth = 200;
         this.margin = {
             top: 0,
             right: 0,
@@ -92,7 +94,8 @@ class Periphery {
             root = oDOM.documentElement;
         }
 
-
+        // exceptions for full width mode
+        this.exceptions(getFull);
 
         // create outer object and append svg
         let peripheryObject = document.createElement("div");
@@ -164,8 +167,8 @@ class Periphery {
         }
     }
 
-    getPropertiesHTML() {
-        // return html of the properties
+    getPropertiesHTML(table) {
+        // return <>...properties</>
         let propertiesRows = [];
         for (let propertiesKey in this.properties) {
             let property = this.properties[propertiesKey];
@@ -194,18 +197,23 @@ class Periphery {
             tr.appendChild(td1);
             tr.appendChild(td2);
             propertiesRows.push(tr);
+
+            table.appendChild(tr);
         }
         if (propertiesRows.length === 0){
             let tr = document.createElement("tr");
-            tr.innerHTML = "This component has no properties! You can use the properties to add custom properties to the component.";
-            return [tr];
-        } else {
-            return propertiesRows;
+            tr.innerHTML = "No properties";
+            table.appendChild(tr);
         }
     }
 
     getExtraElements(){
         // return extra elements for the component
+        // need to be implemented in the child class
+    }
+
+    exceptions(){
+        // apply exceptions to anything
         // need to be implemented in the child class
     }
 }

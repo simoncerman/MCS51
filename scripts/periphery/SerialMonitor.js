@@ -15,7 +15,6 @@ class SerialMonitor extends Periphery{
             bottom: 0,
             left: 0
         }
-
     }
 
     prepare() {

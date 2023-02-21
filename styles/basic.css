@@ -286,9 +286,19 @@ p.pin-connection-text{
 .step-engine-rotator{
 	position: absolute;
 	height: 10px;
-	width: 100px;
+	width: 75px;
 	background-color: black;
-	top: 95px;
+	top: 69px;
+	left: 0;
+	transform-origin: right;
+}
+
+.step-engine-rotator-full{
+	position: absolute;
+	height: 20px;
+	width: 200px;
+	background-color: black;
+	top: 190px;
 	left: 0;
 	transform-origin: right;
 }
@@ -401,7 +411,8 @@ p.pin-connection-text{
 	width: 150px;
 	height: 150px;
 	display: flex;
-	background-color: #919191;
+	background-color: white;
+	border: 1px solid black;
 	flex-direction: column;
 	padding: 1rem;
 	align-items: center;
@@ -416,12 +427,12 @@ p.pin-connection-text{
 
 .adc-output-holder > *{
 	padding: .1rem;
-	background-color: white;
+	background-color: #bdbdbd;
 }
 
 .adc-voltage{
 	content: "0";
-	background-color: white;
+	background-color: #bdbdbd;
 	margin-bottom: .1rem;
 }
 .adc-pin-description{

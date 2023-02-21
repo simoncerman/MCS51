@@ -3,29 +3,30 @@ class StepEngine extends Periphery{
         super(peripheryId);
         this.name = "StepEngine";
         this.peripheryId = peripheryId;
-        this.zoomable = false;
+        this.zoomable = true;
         this.rotation = {
             rotation : 0,
             value : 0,
             step : 0,
             rotator : null
         }
+        this.width = 150;
+        this.zoomWidth = 400;
 
         this.margin = {
             top: 5,
-            right: 50,
+            right: 5,
             bottom: 5,
-            left: 50
+            left: 5
         }
-
         this.pins = [
             // 5V
             {
                 connectedTo : null,
                 pinValue : 0,
                 pinPosition : {
-                    x : -25,
-                    y : 66
+                    x : -10,
+                    y : 68
                 },
                 optionSelector : null,
                 textNode : null
@@ -35,7 +36,7 @@ class StepEngine extends Periphery{
                 connectedTo : null,
                 pinValue : 0,
                 pinPosition : {
-                    x : -5,
+                    x : 15,
                     y : 95
                 },
                 optionSelector : null,
@@ -46,7 +47,7 @@ class StepEngine extends Periphery{
                 connectedTo : null,
                 pinValue : 0,
                 pinPosition : {
-                    x : 22,
+                    x : 32,
                     y : 95
                 },
                 optionSelector : null,
@@ -57,7 +58,7 @@ class StepEngine extends Periphery{
                 connectedTo : null,
                 pinValue : 0,
                 pinPosition : {
-                    x : 49,
+                    x : 53,
                     y : 95
                 },
                 optionSelector : null,
@@ -68,13 +69,14 @@ class StepEngine extends Periphery{
                 connectedTo : null,
                 pinValue : 0,
                 pinPosition : {
-                    x : 75,
+                    x : 70,
                     y : 95
                 },
                 optionSelector : null,
                 textNode : null
             },
         ]
+        this.properties = {}
     }
 
     execute() {
@@ -136,9 +138,9 @@ class StepEngine extends Periphery{
         }
     }
 
-    getSVG() {
+    getSVG(width) {
         return`
-        <svg id="Vrstva_2" style="width: 200px" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 328.27 437.63">
+        <svg id="Vrstva_2" style="width: ${width}px" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 328.27 437.63">
             <defs>
                 <style>
                     .cls-16 {fill: #fff;stroke-width: 11px;}
@@ -165,10 +167,26 @@ class StepEngine extends Periphery{
         </svg>`
     }
 
+    exceptions(getFull) {
+        if(this.rotation.rotator === null){
+            return;
+        }
+        // if full -> change to be bigger
+        if(getFull){
+            this.rotation.rotator.classList.remove("step-engine-rotator");
+            this.rotation.rotator.classList.add("step-engine-rotator-full");
+        } else{
+            this.rotation.rotator.classList.remove("step-engine-rotator-full");
+            this.rotation.rotator.classList.add("step-engine-rotator");
+        }
+    }
+
     getExtraElements() {
         if(this.rotation.rotator === null){
             this.rotation.rotator = document.createElement("div");
             this.rotation.rotator.classList.add("step-engine-rotator");
+            this.rotation.rotator.style.transform = `rotate(0deg)`;
+            return this.rotation.rotator;
         } else {
             this.rotation.rotator.style.transform = `rotate(${this.rotation.value}deg)`;
             return this.rotation.rotator;

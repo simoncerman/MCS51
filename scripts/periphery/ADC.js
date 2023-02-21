@@ -111,14 +111,14 @@ class ADC extends Periphery{
         let pinDescription1 = document.createElement("div");
         pinDescription1.classList.add("adc-pin-description");
         pinDescription1.innerHTML = "V+";
-        pinDescription1.style.left = "0%";
+        pinDescription1.style.left = "2%";
         pinDescription1.style.bottom = "0%";
         holder.appendChild(pinDescription1);
 
         let pinDescription2 = document.createElement("div");
         pinDescription2.classList.add("adc-pin-description");
         pinDescription2.innerHTML = "GND";
-        pinDescription2.style.right = "0%";
+        pinDescription2.style.right = "2%";
         pinDescription2.style.bottom = "0%";
         holder.appendChild(pinDescription2);
 

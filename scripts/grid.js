@@ -77,7 +77,7 @@ class Grid {
         this.elements = [switchP];
         */
 
-
+        /*
         let dac = new DAC("p0");
         dac.pins[0].connectedTo = "P0.7";
         dac.pins[1].connectedTo = "P0.6";
@@ -90,11 +90,14 @@ class Grid {
         dac.pins[8].connectedTo = "V+";
         dac.pins[9].connectedTo = "GND";
         this.elements = [dac];
+        */
+        /*
+                let adc = new ADC("p0");
+                this.elements = [adc];
+        */
 
-/*
-        let adc = new ADC("p0");
-        this.elements = [adc];
-*/
+        let step = new StepEngine("p0");
+        this.elements = [step];
         this.updateGrid();
     }
 
@@ -198,18 +201,28 @@ class Grid {
 
     showPeripheryProperties(){
         let peripheryName = document.getElementById("addPeripheryValue").value;
+
+        // table
         let peripheryProperties = document.getElementById("peripheryProperties");
         peripheryProperties.innerHTML = "";
-        if(peripheryName === "LED"){
-            peripheryProperties.appendChild(...new LED().getPropertiesHTML());
-        } else if(peripheryName === "sevenSegment"){
-            peripheryProperties.appendChild(...new SevenSegmentDisplay().getPropertiesHTML());
-        } else  if(peripheryName === "motorDC"){
-            peripheryProperties.appendChild(...new MotorDC().getPropertiesHTML());
-        } else if (peripheryName === "ledMatrix") {
-            new LEDMatrix().getPropertiesHTML().map((element) => {
-                peripheryProperties.appendChild(element);
-            });
+
+        let peripheryPropertyTable = {
+            "LED": LED,
+            "sevenSegment": SevenSegmentDisplay,
+            "motorDC": MotorDC,
+            "ledMatrix": LEDMatrix,
+            "stepEngine": StepEngine,
+            "LCD16x2Display": LCD16x2Display,
+            "button": Button,
+            "switch": Switch,
+            "serialMonitor": SerialMonitor,
+            "DAC": DAC,
+            "ADC": ADC
+        }
+
+        if(peripheryPropertyTable[peripheryName]){
+            let peripheryObject = new peripheryPropertyTable[peripheryName]()
+            peripheryObject.getPropertiesHTML(peripheryProperties);
         }
     }
 }
