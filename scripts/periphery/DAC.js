@@ -147,16 +147,27 @@ class DAC extends Periphery {
             this.analogOff = false;
         }
 
-        let value = 0;
-        for (let i = 7; i >= 0; i--) {
+        let value;
+        let binary = "";
+        for (let i = 0; i < 8; i++) {
             if (this.pins[i].connectedTo != null) {
-                value += this.pins[i].pinValue * Math.pow(2, 7-i);
+                if(this.pins[i].pinValue === "GND") {
+                    binary += "0";
+                } else {
+                    binary += "1";
+                }
+            } else {
+                binary += "0";
             }
         }
+
+        value = parseInt(binary, 2);
+
         if (isNaN(value)) {
             value = 0;
         }
 
+        // for debug
         if (this.handChangeValue !== null) {
             value = this.handChangeValue;
         }

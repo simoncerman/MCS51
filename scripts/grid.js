@@ -79,6 +79,16 @@ class Grid {
 
 
         let dac = new DAC("p0");
+        dac.pins[0].connectedTo = "P0.7";
+        dac.pins[1].connectedTo = "P0.6";
+        dac.pins[2].connectedTo = "P0.5";
+        dac.pins[3].connectedTo = "P0.4";
+        dac.pins[4].connectedTo = "P0.3";
+        dac.pins[5].connectedTo = "P0.2";
+        dac.pins[6].connectedTo = "P0.1";
+        dac.pins[7].connectedTo = "P0.0";
+        dac.pins[8].connectedTo = "V+";
+        dac.pins[9].connectedTo = "GND";
         this.elements = [dac];
 
 /*
