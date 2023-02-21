@@ -1,7 +1,6 @@
+// TODO: add a descriptions for the pins
+// TODO: add 0V to 5V scale to the display next to the main dot
 class DAC extends Periphery {
-    // TODO: real reading from the pins
-    // TODO: add ground and vcc pins to the DAC and check if they are connected
-    // if no, then the DAC is not working
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "DAC";
@@ -254,7 +253,7 @@ class DAC extends Periphery {
         }
 
         // update main dot
-        this.mainDot.style.bottom = this.analogValue / 255 * 100 + "%";
+        this.mainDot.style.bottom = this.analogValue / 255 * 90 + "%";
 
         let removeIndexes = [];
         // update previous dots
@@ -272,7 +271,7 @@ class DAC extends Periphery {
         let newDot = document.createElement("div");
         newDot.classList.add("dot");
         newDot.style.left = "75%";
-        newDot.style.bottom = this.analogValue / 255 * 100 + "%";
+        newDot.style.bottom = this.analogValue / 255 * 90 + "%";
         this.drawArea.appendChild(newDot);
 
         this.dotValues.push(75);
