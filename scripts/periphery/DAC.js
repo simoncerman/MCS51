@@ -1,5 +1,6 @@
 // TODO: add a descriptions for the pins
 // TODO: add 0V to 5V scale to the display next to the main dot
+// TODO: generate dots based on movement from left and not time based
 class DAC extends Periphery {
     constructor(peripheryId) {
         super(peripheryId);
@@ -10,7 +11,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 0,
+                    x: 2,
                     y: 100
                 },
                 optionSelector: null,
@@ -20,7 +21,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 12,
+                    x: 14,
                     y: 100
                 },
                 optionSelector: null,
@@ -30,7 +31,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 24,
+                    x: 26,
                     y: 100
                 },
                 optionSelector: null,
@@ -40,7 +41,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 36,
+                    x: 38,
                     y: 100
                 },
                 optionSelector: null,
@@ -50,7 +51,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 48,
+                    x: 50,
                     y: 100
                 },
                 optionSelector: null,
@@ -60,7 +61,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 60,
+                    x: 62,
                     y: 100
                 },
                 optionSelector: null,
@@ -70,7 +71,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 72,
+                    x: 74,
                     y: 100
                 },
                 optionSelector: null,
@@ -80,7 +81,7 @@ class DAC extends Periphery {
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 84,
+                    x: 86,
                     y: 100
                 },
                 optionSelector: null,
@@ -217,7 +218,19 @@ class DAC extends Periphery {
             pinDescription2.innerHTML = "GND";
             this.analogDisplay.appendChild(pinDescription2);
 
+            // create 8 pins description
+            let infoBox2 = document.createElement("div");
+            infoBox2.classList.add("dac-pin-description-box");
+            infoBox2.style.width = "100%";
+            this.analogDisplay.appendChild(infoBox2);
 
+            // generate pin description for the 8 pins
+            for (let i = 0; i < 8; i++) {
+                let pd = document.createElement("div");
+                pd.classList.add("dac-pin-p-description");
+                pd.innerHTML = "D" + (7 - i);
+                infoBox2.appendChild(pd);
+            }
 
             // interval to update the display
             this.interval = setInterval(() => {

@@ -36,12 +36,21 @@ class Grid {
             "P3.6": null,
             "P3.7": null
         }
+        this.actualId = 0;
     }
 
     setListeners(){
         document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()});
         document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
         document.getElementById('addDefaultPeripheries').addEventListener('click', () => {this.defaultPeripheries()});
+
+        // for saving and loading peripheries
+        document.getElementById('savePeripheryFile').addEventListener('click', () => {this.savePeripheryFile()});
+        document.getElementById('savePeripheryFileAs').addEventListener('click', () => {this.savePeripheryFileAs()});
+
+        // loading peripheries
+        document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
+        document.getElementById('openPeripheryReplace').addEventListener('click', () => {this.openPeripheryReplace()});
     }
 
     defaultPeripheries(){
@@ -77,7 +86,6 @@ class Grid {
         this.elements = [switchP];
         */
 
-        /*
         let dac = new DAC("p0");
         dac.pins[0].connectedTo = "P0.7";
         dac.pins[1].connectedTo = "P0.6";
@@ -90,50 +98,55 @@ class Grid {
         dac.pins[8].connectedTo = "V+";
         dac.pins[9].connectedTo = "GND";
         this.elements = [dac];
-        */
         /*
                 let adc = new ADC("p0");
                 this.elements = [adc];
         */
 
+        /*
         let step = new StepEngine("p0");
         this.elements = [step];
+        */
+
         this.updateGrid();
     }
 
     addPeriphery(){
         let newPeripheryName = document.getElementById("addPeripheryValue").value;
         let newPeriphery = null;
+        this.actualId++;
 
         if (newPeripheryName === ""){
             alert("Periphery name cannot be empty");
         } else if(newPeripheryName === "LED"){
             let ledColor = document.getElementById("ledColor").value;
-            newPeriphery = new LED("p"+ this.elements.length, ledColor);
+            newPeriphery = new LED("p"+ this.actualId, ledColor);
         } else if(newPeripheryName === "sevenSegment"){
-            newPeriphery = new SevenSegmentDisplay("p"+ this.elements.length)
+            newPeriphery = new SevenSegmentDisplay("p"+ this.actualId)
         } else if(newPeripheryName === "motorDC"){
-            newPeriphery = new MotorDC("p"+ this.elements.length)
+            newPeriphery = new MotorDC("p"+ this.actualId)
         } else if(newPeripheryName === "ledMatrix"){
             let ledMatrixWidth = document.getElementById("matrixWidth").value;
             let ledMatrixHeight = document.getElementById("matrixHeight").value;
             let ledMatrixType = document.getElementById("matrixType").value;
-            newPeriphery = new LEDMatrix("p"+ this.elements.length, ledMatrixWidth, ledMatrixHeight, ledMatrixType);
+            newPeriphery = new LEDMatrix("p"+ this.actualId, ledMatrixWidth, ledMatrixHeight, ledMatrixType);
         } else if(newPeripheryName === "stepEngine"){
-            newPeriphery = new StepEngine("p"+ this.elements.length);
+            newPeriphery = new StepEngine("p"+ this.actualId);
         } else if(newPeripheryName === "LCD16x2Display"){
-            newPeriphery = new LCD16x2Display("p"+ this.elements.length);
+            newPeriphery = new LCD16x2Display("p"+ this.actualId);
         } else if(newPeripheryName === "button"){
-            newPeriphery = new Button("p"+ this.elements.length);
+            newPeriphery = new Button("p"+ this.actualId);
         } else if(newPeripheryName === "switch"){
-            newPeriphery = new Switch("p"+ this.elements.length);
+            newPeriphery = new Switch("p"+ this.actualId);
         } else if(newPeripheryName === "serialMonitor"){
-            newPeriphery = new SerialMonitor("p"+ this.elements.length);
+            newPeriphery = new SerialMonitor("p"+ this.actualId);
         } else if (newPeripheryName === "DAC"){
-            newPeriphery = new DAC("p"+ this.elements.length);
+            newPeriphery = new DAC("p"+ this.actualId);
         } else if (newPeripheryName === "ADC"){
-            newPeriphery = new ADC("p"+ this.elements.length);
+            newPeriphery = new ADC("p"+ this.actualId);
         }
+
+
 
         if(newPeriphery){
             this.elements.push(newPeriphery);
@@ -224,6 +237,127 @@ class Grid {
             let peripheryObject = new peripheryPropertyTable[peripheryName]()
             peripheryObject.getPropertiesHTML(peripheryProperties);
         }
+    }
+
+    savePeripheryFile() {
+        if (this.elements.length === 0) {
+            console.log("No peripheries to save")
+            return;
+        }
+        let peripheryFile = {
+            "elements": []
+        }
+        this.elements.forEach((element) => {
+            peripheryFile.elements.push(element);
+        });
+        let jsonFile = JSON.stringify(peripheryFile);
+        this.saveFile(jsonFile);
+    }
+
+    savePeripheryFileAs() {
+       // TODO start here
+    }
+
+    saveFile(jsonFIle) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonFIle));
+        element.setAttribute('download', "peripheryFile.json");
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    openPeripheryAdd() {
+        // file input has id openPeripheryFile
+        let fileInput = document.getElementById("openPeripheryFile").files[0];
+        let reader = new FileReader();
+        reader.readAsText(fileInput);
+        reader.onload = () => {
+            // stringify the JSON object
+            let result = reader.result.toString();
+            let peripheryFile = JSON.parse(result);
+            peripheryFile.elements.forEach((element) => {
+                let object = this.objectDeserialization(element);
+                grid.elements.push(object);
+
+                //this.elements.push(element);
+            });
+            this.updateGrid();
+        }
+    }
+
+    openPeripheryReplace() {
+        // file input has id openPeripheryFile
+        let fileInput = document.getElementById("openPeripheryFile").files[0];
+        let reader = new FileReader();
+        reader.readAsText(fileInput);
+        reader.onload = () => {
+            // stringify the JSON object
+            let result = reader.result.toString();
+            let peripheryFile = JSON.parse(result);
+            grid.elements = [];
+            peripheryFile.elements.forEach((element) => {
+                let object = this.objectDeserialization(element);
+                grid.elements.push(object);
+            });
+            this.updateGrid();
+        }
+    }
+
+    objectDeserialization(element){
+        let object = null;
+        this.actualId++;
+
+        if(element.name === "LED"){
+            object = new LED("p"+ this.actualId, element.ledColor);
+            object.pins = element.pins;
+        }
+        else if(element.name === "SevenSegmentDisplay"){
+            object = new SevenSegmentDisplay("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "MotorDC"){
+            object = new MotorDC("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "LEDMatrix"){
+            let matrixWidth = element.matrixWidth;
+            let matrixHeight = element.matrixHeight;
+            let matrixType = element.type;
+            object = new LEDMatrix("p"+ this.actualId, matrixWidth, matrixHeight, matrixType);
+            object.pins = element.pins;
+        }
+        else if(element.name === "StepEngine"){
+            object = new StepEngine("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "LCD16x2Display"){
+            object = new LCD16x2Display("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "Button"){
+            object = new Button("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "Switch"){
+            object = new Switch("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "SerialMonitor"){
+            object = new SerialMonitor("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "DAC"){
+            object = new DAC("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "ADC"){
+            object = new ADC("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+
+        return object;
     }
 }
 

@@ -188,7 +188,6 @@ class Periphery {
                 insertion = input;
             }
 
-
             let td1 = document.createElement("td");
             td1.innerHTML = property.name;
             let td2 = document.createElement("td");
