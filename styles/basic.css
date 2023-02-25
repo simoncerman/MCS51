@@ -183,6 +183,7 @@ input {
 }
 
 .control-box{
+	margin: 5px;
 	background-color: #d0d0d0;
 	border: 1px solid black;
 	border-radius: .25rem;

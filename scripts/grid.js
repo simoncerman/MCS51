@@ -327,6 +327,8 @@ class Grid {
             let matrixType = element.type;
             object = new LEDMatrix("p"+ this.actualId, matrixWidth, matrixHeight, matrixType);
             object.pins = element.pins;
+            // for correct relations
+            object.generateLeftTopPins();
         }
         else if(element.name === "StepEngine"){
             object = new StepEngine("p"+ this.actualId);

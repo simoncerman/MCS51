@@ -52,6 +52,10 @@ class LEDMatrix extends Periphery{
                 propertyKey: "matrixType"
             }
         }
+
+        this.prepare();
+        this.execute();
+        this.generateMatrix(this.matrixWidth, this.matrixHeight);
     }
 
     execute() {
@@ -130,6 +134,7 @@ class LEDMatrix extends Periphery{
                 let x = partW * (j + 1);
                 let y = partH * (i + 1);
 
+                console.log("kunda");
                 // Generate pins
                 if(this.pins.length !== this.matrixWidth + this.matrixHeight) {
                     if (j === 0) this.createPin(0, y);
@@ -244,4 +249,19 @@ class LEDMatrix extends Periphery{
         this.pins.push(pin)
     }
 
+    generateLeftTopPins() {
+        this.pinsLeft = [];
+        this.pinsTop = [];
+        // working with this.pins
+        // fist is left
+        this.pinsLeft.push(this.pins[0]);
+        // row of top
+        for (let i = 0; i < this.matrixWidth; i++) {
+            this.pinsTop.push(this.pins[i+1]);
+        }
+        // rest is left
+        for (let y = 1; y < this.matrixHeight; y++) {
+            this.pinsLeft.push(this.pins[y + this.matrixHeight])
+        }
+    }
 }
