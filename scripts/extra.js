@@ -73,6 +73,7 @@ loadScript("scripts/modal.js");
 
 // Load all periphery scripts
 loadScript("scripts/periphery/Periphery.js");
+loadScript("scripts/periphery/InputPeriphery.js")
 loadScript("scripts/periphery/LED.js");
 loadScript("scripts/periphery/SevenSegmentDisplay.js");
 loadScript("scripts/periphery/MotorDC.js");

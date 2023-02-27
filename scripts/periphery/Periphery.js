@@ -53,18 +53,31 @@ class Periphery {
                         break;
 
                     default:
-                        if(grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] !== null){
-                            this.pins[pin].pinValue = grid.leadingEdgeValuesArray[this.pins[pin].connectedTo];
-                            break;
-                        }
-
+                        // bit data = real value of the bit
+                        // leadingEdgeValueArray = array of leading edge values
                         let bitData = retrieveSpecialBit(this.pins[pin].connectedTo);
+                        let leadingEdgeValue = grid.leadingEdgeValuesArray[this.pins[pin].connectedTo];
+
+                        // if bit data = 0 -> GND always
                         if(bitData.value === 0){
                             this.pins[pin].pinValue = "GND";
-                        } else{
-                            this.pins[pin].pinValue = bitData.value;
                         }
-                        break;
+
+                        // if bit data = 1 -> check if there is a leading edge
+                        if(bitData.value === 1) {
+                            if (leadingEdgeValue === null) {
+                                this.pins[pin].pinValue = 1;
+                                break;
+                            } else {
+                                if (leadingEdgeValue === 1) {
+                                    this.pins[pin].pinValue = 1;
+                                    break;
+                                } else {
+                                    this.pins[pin].pinValue = "GND";
+                                    break;
+                                }
+                            }
+                        }
                 }
             }
         }

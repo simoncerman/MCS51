@@ -312,7 +312,6 @@ class Grid {
             object = new SevenSegmentDisplay("p"+ this.actualId);
             object.pins = element.pins;
         }
-        // TODO: To be tested
         else if(element.name === "MotorDC"){
             object = new MotorDC("p"+ this.actualId);
             object.pins = element.pins;
@@ -326,10 +325,10 @@ class Grid {
             // for correct relations
             object.generateLeftTopPins();
         }
-        // TODO: To be tested
         else if(element.name === "StepEngine"){
             object = new StepEngine("p"+ this.actualId);
             object.pins = element.pins;
+            object.rotation.value = element.rotation.value;
         }
         // TODO: To be tested
         else if(element.name === "LCD16x2Display"){
@@ -339,11 +338,12 @@ class Grid {
         else if(element.name === "Button"){
             object = new Button("p"+ this.actualId);
             object.pins = element.pins;
+            object.clicked = element.clicked;
         }
-        // TODO: To be tested
         else if(element.name === "Switch"){
             object = new Switch("p"+ this.actualId);
             object.pins = element.pins;
+            object.switchOn = element.switchOn;
         }
         // TODO: To be tested
         else if(element.name === "SerialMonitor"){

@@ -1,4 +1,4 @@
-class Button extends Periphery{
+class Button extends InputPeriphery{
     constructor(peripheryId){
         super(peripheryId);
         this.name = "Button";
@@ -57,58 +57,22 @@ class Button extends Periphery{
         this.clicked = false;
     }
 
-    prepare(){
-        // get values from pins and pass them to pinValues
-        for (let pin = 0; pin < this.pins.length; pin++) {
-            if(this.pins[pin].connectedTo != null){
-                switch (this.pins[pin].connectedTo) {
-                    case "GND":
-                        this.pins[pin].pinValue = "GND";
-                        break;
-
-                    case "V+": // 5V
-                        this.pins[pin].pinValue = 1;
-                        break;
-
-                    case null:
-                        this.pins[pin].pinValue = null;
-                        break;
-
-                    case undefined:
-                        this.pins[pin].pinValue = null;
-                        break;
-
-                    case " ":
-                        this.pins[pin].pinValue = null;
-                        break;
-
-                    default:
-                        let bitData = retrieveSpecialBit(this.pins[pin].connectedTo);
-                        if(bitData.value === 0){
-                            this.pins[pin].pinValue = null;
-                        } else{
-                            this.pins[pin].pinValue = bitData.value;
-                        }
-                }
-            }
-        }
-    }
-
     execute() {
         if(!this.clicked) {
             // GND to P pins leading edge handling
             if (this.pins[0].pinValue === "GND" && this.isPPin(this.pins[2].connectedTo)) {
-                grid.leadingEdgeValuesArray[this.pins[2].connectedTo] = "GND";
+                grid.leadingEdgeValuesArray[this.pins[2].connectedTo] = 0;
             }
             if (this.pins[2].pinValue === "GND" && this.isPPin(this.pins[0].connectedTo)) {
-                grid.leadingEdgeValuesArray[this.pins[0].connectedTo] = "GND";
+                grid.leadingEdgeValuesArray[this.pins[0].connectedTo] = 0;
             }
             if (this.pins[1].pinValue === "GND" && this.isPPin(this.pins[3].connectedTo)) {
-                grid.leadingEdgeValuesArray[this.pins[3].connectedTo] = "GND";
+                grid.leadingEdgeValuesArray[this.pins[3].connectedTo] = 0;
             }
             if (this.pins[3].pinValue === "GND" && this.isPPin(this.pins[1].connectedTo)) {
-                grid.leadingEdgeValuesArray[this.pins[1].connectedTo] = "GND";
+                grid.leadingEdgeValuesArray[this.pins[1].connectedTo] = 0;
             }
+
             // VCC to P pins leading edge handling
             if (this.pins[0].pinValue === 1 && this.isPPin(this.pins[2].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[2].connectedTo] = 1;
@@ -129,28 +93,28 @@ class Button extends Periphery{
             if (this.pins[0].pinValue === "GND") {
                 [1, 2, 3].forEach((pin) => {
                     if (this.isPPin(this.pins[pin].connectedTo)) {
-                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = "GND";
+                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[1].pinValue === "GND") {
                 [0, 2, 3].forEach((pin) => {
                     if (this.isPPin(this.pins[pin].connectedTo)) {
-                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = "GND";
+                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[2].pinValue === "GND") {
                 [0, 1, 3].forEach((pin) => {
                     if (this.isPPin(this.pins[pin].connectedTo)) {
-                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = "GND";
+                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[3].pinValue === "GND") {
                 [0, 1, 2].forEach((pin) => {
                     if (this.isPPin(this.pins[pin].connectedTo)) {
-                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = "GND";
+                        grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
