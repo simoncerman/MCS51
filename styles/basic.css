@@ -459,6 +459,41 @@ p.pin-connection-text{
 .dac-pin-description{
 	position: absolute;
 }
+.periphery-gui{
+	position: relative;
+}
+.periphery-gui:hover{
+	padding: 1rem;
+	border: 1px solid #3B514D;
+}
+.periphery-gui:hover > .periphery-buttons{
+	visibility: visible;
+}
+.periphery-buttons{
+	position: absolute;
+	width: 20px;
+	display: flex;
+	visibility: hidden;
+	/*center buttons*/
+	top: 0%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.periphery-buttons>*{
+	width: 20px;
+	height: 20px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	border: none;
+}
+.remove-button{
+	background-color: red;
+}
+.save-button{
+	background-color: blue;
+}
+
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

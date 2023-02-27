@@ -358,8 +358,23 @@ class Grid {
             object = new ADC("p"+ this.actualId);
             object.pins = element.pins;
         }
-
         return object;
+    }
+    removePeriphery(peripheryId){
+        let index = this.elements.findIndex((element) => element.peripheryId === peripheryId);
+        this.elements.splice(index, 1);
+        this.updateGrid();
+    }
+
+    savePeriphery(peripheryId) {
+        let index = this.elements.findIndex((element) => element.peripheryId === peripheryId);
+        let element = this.elements[index];
+        let peripheryFile = {
+            "elements": []
+        }
+        peripheryFile.elements.push(element);
+        let jsonFile = JSON.stringify(peripheryFile);
+        this.saveFile(jsonFile);
     }
 }
 

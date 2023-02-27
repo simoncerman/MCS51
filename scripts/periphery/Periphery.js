@@ -153,7 +153,46 @@ class Periphery {
         peripheryObject.style.marginLeft = this.margin.left + "px";
 
         root = this.applySpecials(root);
+
+        if(!this.zoomable || !getFull){
+            let peripheryGUI = this.createPeripheryGUIOverlay();
+            peripheryGUI.appendChild(peripheryObject);
+            return peripheryGUI;
+        }
+
         return peripheryObject;
+    }
+
+    createPeripheryGUIOverlay(){
+        // TODO: Rework to right click on mouse and show menu with options
+        // gui stuff for the object (removing/saving etc.)
+        let gui = document.createElement("div");
+        gui.classList.add("periphery-gui");
+
+        let peripheryButtons = document.createElement("div");
+        peripheryButtons.classList.add("periphery-buttons");
+
+        let removeButton = document.createElement("button");
+        removeButton.classList.add("remove-button");
+        removeButton.innerHTML = "X";
+        removeButton.addEventListener("click", (e) => {
+            // remove periphery from grid.elements by id
+            grid.removePeriphery(this.peripheryId);
+        });
+
+        let saveButton = document.createElement("button");
+        saveButton.classList.add("save-button");
+        saveButton.innerHTML = "+";
+        saveButton.addEventListener("click", (e) => {
+            grid.savePeriphery(this.peripheryId);
+        });
+
+        peripheryButtons.appendChild(removeButton);
+        peripheryButtons.appendChild(saveButton);
+
+        gui.appendChild(peripheryButtons);
+
+        return gui;
     }
 
     getSVG() {
