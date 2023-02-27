@@ -46,7 +46,6 @@ class Grid {
 
         // for saving and loading peripheries
         document.getElementById('savePeripheryFile').addEventListener('click', () => {this.savePeripheryFile()});
-        document.getElementById('savePeripheryFileAs').addEventListener('click', () => {this.savePeripheryFileAs()});
 
         // loading peripheries
         document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
@@ -254,10 +253,6 @@ class Grid {
         this.saveFile(jsonFile);
     }
 
-    savePeripheryFileAs() {
-       // TODO start here
-    }
-
     saveFile(jsonFIle) {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonFIle));
@@ -317,6 +312,7 @@ class Grid {
             object = new SevenSegmentDisplay("p"+ this.actualId);
             object.pins = element.pins;
         }
+        // TODO: To be tested
         else if(element.name === "MotorDC"){
             object = new MotorDC("p"+ this.actualId);
             object.pins = element.pins;
@@ -330,10 +326,12 @@ class Grid {
             // for correct relations
             object.generateLeftTopPins();
         }
+        // TODO: To be tested
         else if(element.name === "StepEngine"){
             object = new StepEngine("p"+ this.actualId);
             object.pins = element.pins;
         }
+        // TODO: To be tested
         else if(element.name === "LCD16x2Display"){
             object = new LCD16x2Display("p"+ this.actualId);
             object.pins = element.pins;
@@ -342,18 +340,22 @@ class Grid {
             object = new Button("p"+ this.actualId);
             object.pins = element.pins;
         }
+        // TODO: To be tested
         else if(element.name === "Switch"){
             object = new Switch("p"+ this.actualId);
             object.pins = element.pins;
         }
+        // TODO: To be tested
         else if(element.name === "SerialMonitor"){
             object = new SerialMonitor("p"+ this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "DAC"){
-            object = new DAC("p"+ this.actualId);
+        // TODO: To be tested
+        else if(element.name === "DAC") {
+            object = new DAC("p" + this.actualId);
             object.pins = element.pins;
         }
+        // TODO: To be tested
         else if(element.name === "ADC"){
             object = new ADC("p"+ this.actualId);
             object.pins = element.pins;

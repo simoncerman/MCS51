@@ -178,8 +178,6 @@ class SevenSegmentDisplay extends Periphery{
     }
 
     getSVG(width = 70) {
-        console.log("getSVG");
-        console.log(width);
         return`
             <svg style="width: ${width}px;" id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730.1 974.7">
               <defs>
