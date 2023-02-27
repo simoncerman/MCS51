@@ -2,7 +2,7 @@ class ADC extends Periphery{
     constructor(peripheryId) {
         super(peripheryId);
         this.peripheryId = peripheryId;
-        this.peripheryName = "ADC";
+        this.name = "ADC";
         this.pins = [
             {
                 connectedTo: null,

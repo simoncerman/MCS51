@@ -330,7 +330,6 @@ class Grid {
             object.pins = element.pins;
             object.rotation.value = element.rotation.value;
         }
-        // TODO: To be tested
         else if(element.name === "LCD16x2Display"){
             object = new LCD16x2Display("p"+ this.actualId);
             object.pins = element.pins;
@@ -345,7 +344,7 @@ class Grid {
             object.pins = element.pins;
             object.switchOn = element.switchOn;
         }
-        // TODO: To be tested
+        // TODO: To be created
         else if(element.name === "SerialMonitor"){
             object = new SerialMonitor("p"+ this.actualId);
             object.pins = element.pins;
@@ -355,7 +354,6 @@ class Grid {
             object = new DAC("p" + this.actualId);
             object.pins = element.pins;
         }
-        // TODO: To be tested
         else if(element.name === "ADC"){
             object = new ADC("p"+ this.actualId);
             object.pins = element.pins;

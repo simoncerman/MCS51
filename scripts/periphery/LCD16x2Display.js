@@ -1,6 +1,4 @@
 class LCD16x2Display extends Periphery{
-    // FIXME: Modal opening will close the LCD16x2Display and show description
-    // change to modal will contain periphery but grid too
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "LCD16x2Display";

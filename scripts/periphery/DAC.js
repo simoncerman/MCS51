@@ -1,6 +1,4 @@
-// TODO: add a descriptions for the pins
-// TODO: add 0V to 5V scale to the display next to the main dot
-// TODO: generate dots based on movement from left and not time based
+// TODO: Completly rework
 class DAC extends Periphery {
     constructor(peripheryId) {
         super(peripheryId);
