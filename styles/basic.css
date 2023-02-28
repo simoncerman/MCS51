@@ -493,6 +493,29 @@ p.pin-connection-text{
 .save-button{
 	background-color: blue;
 }
+.context-menu{
+	position: absolute;
+	background-color: gray;
+	border-radius: .25rem;
+	padding: .25rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	z-index: 100;
+}
+.context-menu-option{
+	width: 100%;
+	height: 2rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	color: white;
+}
+.context-menu-option:hover{
+	background-color: #3B514D;
+}
+
 
 @keyframes spin-right {
 	0% {

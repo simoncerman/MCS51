@@ -155,44 +155,54 @@ class Periphery {
         root = this.applySpecials(root);
 
         if(!this.zoomable || !getFull){
-            let peripheryGUI = this.createPeripheryGUIOverlay();
-            peripheryGUI.appendChild(peripheryObject);
-            return peripheryGUI;
+            peripheryObject.addEventListener('contextmenu', (e) => {
+                grid.rightClickedPeriphery = this;
+                this.openContextMenu(e);
+                e.preventDefault();
+            });
         }
 
         return peripheryObject;
     }
 
-    createPeripheryGUIOverlay(){
-        // TODO: Rework to right click on mouse and show menu with options
-        // gui stuff for the object (removing/saving etc.)
-        let gui = document.createElement("div");
-        gui.classList.add("periphery-gui");
+    openContextMenu(e){
+        this.closeContextMenu();
+        let contextMenu = this.createContextMenu();
+        contextMenu.style.top = e.pageY + "px";
+        contextMenu.style.left = e.pageX + "px";
+        document.body.appendChild(contextMenu);
+    }
 
-        let peripheryButtons = document.createElement("div");
-        peripheryButtons.classList.add("periphery-buttons");
+    closeContextMenu(){
+        if (document.getElementsByClassName("context-menu").length > 0){
+            document.getElementsByClassName("context-menu")[0].remove();
+        }
+    }
 
-        let removeButton = document.createElement("button");
-        removeButton.classList.add("remove-button");
-        removeButton.innerHTML = "X";
-        removeButton.addEventListener("click", (e) => {
-            // remove periphery from grid.elements by id
+    createContextMenu(){
+        let contextMenu = document.createElement("div");
+        contextMenu.classList.add("context-menu");
+
+        let deleteOption = document.createElement("div");
+        deleteOption.classList.add("context-menu-option");
+        deleteOption.innerHTML = "Delete";
+        deleteOption.addEventListener("click", (e) => {
             grid.removePeriphery(this.peripheryId);
+            this.closeContextMenu();
         });
 
-        let saveButton = document.createElement("button");
-        saveButton.classList.add("save-button");
-        saveButton.innerHTML = "+";
-        saveButton.addEventListener("click", (e) => {
+        let saveOption = document.createElement("div");
+        saveOption.classList.add("context-menu-option");
+        saveOption.innerHTML = "Save";
+        saveOption.addEventListener("click", (e) => {
             grid.savePeriphery(this.peripheryId);
+            this.closeContextMenu();
         });
 
-        peripheryButtons.appendChild(removeButton);
-        peripheryButtons.appendChild(saveButton);
+        contextMenu.appendChild(deleteOption);
+        contextMenu.appendChild(saveOption);
 
-        gui.appendChild(peripheryButtons);
-
-        return gui;
+        return contextMenu;
     }
 
     getSVG() {

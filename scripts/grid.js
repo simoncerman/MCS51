@@ -50,6 +50,15 @@ class Grid {
         // loading peripheries
         document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
         document.getElementById('openPeripheryReplace').addEventListener('click', () => {this.openPeripheryReplace()});
+        document.onmousedown = (e) => {
+            if(e.button === 0 || e.button === 2){
+                if(!e.target.classList.contains('context-menu-option')){
+                    let periphery = new Periphery();
+                    periphery.closeContextMenu();
+                }
+            }
+        }
+
     }
 
     defaultPeripheries(){
@@ -275,8 +284,6 @@ class Grid {
             peripheryFile.elements.forEach((element) => {
                 let object = this.objectDeserialization(element);
                 grid.elements.push(object);
-
-                //this.elements.push(element);
             });
             this.updateGrid();
         }
