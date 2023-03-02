@@ -70,6 +70,7 @@ function generateSelector(options){
 
 // load modal script
 loadScript("scripts/modal.js");
+loadScript("scripts/contextMenu.js")
 
 // Load all periphery scripts
 loadScript("scripts/periphery/Periphery.js");

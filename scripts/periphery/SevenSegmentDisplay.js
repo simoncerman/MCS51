@@ -1,5 +1,5 @@
 class SevenSegmentDisplay extends Periphery{
-    constructor(peripheryId) {
+    constructor(peripheryId, type) {
         super(peripheryId);
         this.name = "SevenSegmentDisplay";
         this.pins = [
@@ -148,22 +148,55 @@ class SevenSegmentDisplay extends Periphery{
                 litArea: "areaDP"
             }
         }
+
+        let sevenSegmentType = this.type;
+
+        this.properties = {
+            sevenSegmentType: {
+                name: "sevenSegmentType",
+                type: "select",
+                options: ["commonAnode", "commonCathode"],
+                value: sevenSegmentType,
+                propertyKey: "sevenSegmentType"
+            },
+        }
         this.zoomable = true;
         this.width = 150;
         this.zoomWidth = 500;
+        // type can be "commonAnode" or "commonCathode"
+        if (type !== "commonAnode" && type !== "commonCathode") {
+            this.type = "commonAnode";
+        }
+        else {
+            this.type = type;
+        }
     }
 
     execute() {
-        if(this.pins[8].pinValue === "GND" || this.pins[9].pinValue === "GND") {
-            for (let i = 0; i < 8; i++) {
-                this.litAreas[i].lit = this.pins[i].pinValue === 1;
+        if (this.type === "commonCathode") {
+            if(this.pins[8].pinValue === "GND" || this.pins[9].pinValue === "GND") {
+                for (let i = 0; i < 8; i++) {
+                    this.litAreas[i].lit = this.pins[i].pinValue === 1;
+                }
+            } else {
+                for (let litAreaKey in this.litAreas) {
+                    this.litAreas[litAreaKey].lit = false;
+                }
             }
-        } else {
-            for (let litAreaKey in this.litAreas) {
-                this.litAreas[litAreaKey].lit = false;
+        }
+        if (this.type === "commonAnode") {
+            if(this.pins[8].pinValue === 1 || this.pins[9].pinValue === 1) {
+                for (let i = 0; i < 8; i++) {
+                    this.litAreas[i].lit = this.pins[i].pinValue === "GND";
+                }
+            } else {
+                for (let litAreaKey in this.litAreas) {
+                    this.litAreas[litAreaKey].lit = false;
+                }
             }
         }
     }
+
 
     applySpecials(root) {
         for (const litAreasKey in this.litAreas) {
@@ -175,6 +208,19 @@ class SevenSegmentDisplay extends Periphery{
             }
         }
         return root;
+    }
+
+    getExtraElements() {
+        let segmentTypeDescription = this.type === "commonAnode" ? "Common Anode" : "Common Cathode";
+        let segmentTypeDescriptionElement = document.createElement("div");
+        segmentTypeDescriptionElement.innerHTML = segmentTypeDescription;
+        segmentTypeDescriptionElement.style.position = "absolute";
+        segmentTypeDescriptionElement.style.top = "8%";
+        segmentTypeDescriptionElement.style.left = "0";
+        segmentTypeDescriptionElement.style.width = "100%";
+        segmentTypeDescriptionElement.style.textAlign = "center";
+        segmentTypeDescriptionElement.style.fontSize = "12px";
+        return segmentTypeDescriptionElement;
     }
 
     getSVG(width = 70) {

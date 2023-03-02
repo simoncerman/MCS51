@@ -157,52 +157,13 @@ class Periphery {
         if(!this.zoomable || !getFull){
             peripheryObject.addEventListener('contextmenu', (e) => {
                 grid.rightClickedPeriphery = this;
-                this.openContextMenu(e);
+                contextMenu.openContextMenu(e);
                 e.preventDefault();
             });
         }
 
+        peripheryObject.id = this.peripheryId;
         return peripheryObject;
-    }
-
-    openContextMenu(e){
-        this.closeContextMenu();
-        let contextMenu = this.createContextMenu();
-        contextMenu.style.top = e.pageY + "px";
-        contextMenu.style.left = e.pageX + "px";
-        document.body.appendChild(contextMenu);
-    }
-
-    closeContextMenu(){
-        if (document.getElementsByClassName("context-menu").length > 0){
-            document.getElementsByClassName("context-menu")[0].remove();
-        }
-    }
-
-    createContextMenu(){
-        let contextMenu = document.createElement("div");
-        contextMenu.classList.add("context-menu");
-
-        let deleteOption = document.createElement("div");
-        deleteOption.classList.add("context-menu-option");
-        deleteOption.innerHTML = "Delete";
-        deleteOption.addEventListener("click", (e) => {
-            grid.removePeriphery(this.peripheryId);
-            this.closeContextMenu();
-        });
-
-        let saveOption = document.createElement("div");
-        saveOption.classList.add("context-menu-option");
-        saveOption.innerHTML = "Save";
-        saveOption.addEventListener("click", (e) => {
-            grid.savePeriphery(this.peripheryId);
-            this.closeContextMenu();
-        });
-
-        contextMenu.appendChild(deleteOption);
-        contextMenu.appendChild(saveOption);
-
-        return contextMenu;
     }
 
     getSVG() {

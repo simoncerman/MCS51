@@ -34,6 +34,7 @@
                 <!--<option>10000</option>
                 <option>50000</option>-->
             </select>
+            <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
             <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
         </header>
         <div class="input">
@@ -85,7 +86,7 @@
                     </div>
                 </div>
                 <div class="peripheries">
-                    <div class="controls">
+                    <div class="controls" id="controls" style="display: none">
                         <div class="control-box">
                             <div class="basic">
                                 <p>Add:</p>
@@ -131,13 +132,8 @@
                             </div>
                             <button id="addDefaultPeripheries">Default periphery</button>
                         </div>
-                        <div class="control-box">
-                            <p>Save periphery file</p>
-                            <button id="savePeripheryFile">Save it as peripheryFile.json</button>
-                        </div>
                     </div>
                     <div id="peripheriesGrid">
-
                     </div>
                 </div>
             </div>

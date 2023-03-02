@@ -44,21 +44,16 @@ class Grid {
         document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
         document.getElementById('addDefaultPeripheries').addEventListener('click', () => {this.defaultPeripheries()});
 
-        // for saving and loading peripheries
-        document.getElementById('savePeripheryFile').addEventListener('click', () => {this.savePeripheryFile()});
-
         // loading peripheries
         document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
         document.getElementById('openPeripheryReplace').addEventListener('click', () => {this.openPeripheryReplace()});
         document.onmousedown = (e) => {
             if(e.button === 0 || e.button === 2){
                 if(!e.target.classList.contains('context-menu-option')){
-                    let periphery = new Periphery();
-                    periphery.closeContextMenu();
+                    contextMenu.closeContextMenu();
                 }
             }
         }
-
     }
 
     defaultPeripheries(){
@@ -130,7 +125,8 @@ class Grid {
             let ledColor = document.getElementById("ledColor").value;
             newPeriphery = new LED("p"+ this.actualId, ledColor);
         } else if(newPeripheryName === "sevenSegment"){
-            newPeriphery = new SevenSegmentDisplay("p"+ this.actualId)
+            let sevenSegmentType = document.getElementById("sevenSegmentType").value;
+            newPeriphery = new SevenSegmentDisplay("p"+ this.actualId, sevenSegmentType);
         } else if(newPeripheryName === "motorDC"){
             newPeriphery = new MotorDC("p"+ this.actualId)
         } else if(newPeripheryName === "ledMatrix"){
@@ -318,6 +314,7 @@ class Grid {
         else if(element.name === "SevenSegmentDisplay"){
             object = new SevenSegmentDisplay("p"+ this.actualId);
             object.pins = element.pins;
+            object.type = element.type;
         }
         else if(element.name === "MotorDC"){
             object = new MotorDC("p"+ this.actualId);
@@ -370,6 +367,11 @@ class Grid {
     removePeriphery(peripheryId){
         let index = this.elements.findIndex((element) => element.peripheryId === peripheryId);
         this.elements.splice(index, 1);
+        this.updateGrid();
+    }
+
+    removeAllPeripheries(){
+        this.elements = [];
         this.updateGrid();
     }
 

@@ -21,6 +21,13 @@ class Modal{
         this.modalContent.appendChild(content);
         this.modal.style.display = "block";
     }
+    openSettings(){
+        let content = document.getElementById("controls")
+        content.style.display = "block";
+        this.modal.style.display = "block";
+        this.modalContent.innerHTML = "";
+        this.modalContent.appendChild(content);
+    }
     close(){
         this.actualObject = null;
         this.modal.style.display = "none";
