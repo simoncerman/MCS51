@@ -136,7 +136,7 @@ class Periphery {
         // if object is zoomable -> on click on periphery object -> zoom in and move it to modal with all setup
         if(this.zoomable && getFull === false){
             peripheryObject.addEventListener("click", (e) => {
-                modal.open(this);
+                modal.openElement(this);
             }, false);
         }
 
@@ -236,6 +236,11 @@ class Periphery {
 
     exceptions(){
         // apply exceptions to anything
+        // need to be implemented in the child class
+    }
+
+    getAdditionalContextMenuOptions(){
+        // return additional context menu options
         // need to be implemented in the child class
     }
 }

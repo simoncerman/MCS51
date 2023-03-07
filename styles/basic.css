@@ -515,6 +515,9 @@ p.pin-connection-text{
 .context-menu-option:hover{
 	background-color: #3B514D;
 }
+.keyboard-button-first{
+	width: 4rem;
+}
 
 
 @keyframes spin-right {

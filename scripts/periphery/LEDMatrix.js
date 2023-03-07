@@ -88,7 +88,6 @@ class LEDMatrix extends Periphery{
                 }
             }
         }
-        console.log(this.LEDs);
     }
 
     applySpecials(root) {
@@ -134,7 +133,6 @@ class LEDMatrix extends Periphery{
                 let x = partW * (j + 1);
                 let y = partH * (i + 1);
 
-                console.log("kunda");
                 // Generate pins
                 if(this.pins.length !== this.matrixWidth + this.matrixHeight) {
                     if (j === 0) this.createPin(0, y);

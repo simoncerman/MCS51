@@ -54,20 +54,21 @@ class Grid {
                 }
             }
         }
+        // after 10 ms call this.defaultPeripheries()
+        setTimeout(() => {this.defaultPeripheries()}, 500);
     }
 
     defaultPeripheries(){
         /*
-        TESTING ONLY
         let display = new LCD16x2Display("p0");
         this.elements = [display
         ];
         display.pins[0].connectedTo = "GND";
         display.pins[1].connectedTo = "V+";
         display.pins[2].connectedTo = "V+";
-        display.pins[3].connectedTo = "P1.1";
-        display.pins[4].connectedTo = "P1.0";
-        display.pins[5].connectedTo = "V+";
+        display.pins[3].connectedTo = "P1.2";
+        display.pins[4].connectedTo = "P1.1";
+        display.pins[5].connectedTo = "P1.0";
 
         display.pins[6].connectedTo = "P0.0";
         display.pins[7].connectedTo = "P0.1";
@@ -78,7 +79,6 @@ class Grid {
         display.pins[12].connectedTo = "P0.6";
         display.pins[13].connectedTo = "P0.7";
         */
-
         /*
         let button = new Button();
         this.elements = [button];
@@ -89,6 +89,7 @@ class Grid {
         this.elements = [switchP];
         */
 
+        /*
         let dac = new DAC("p0");
         dac.pins[0].connectedTo = "P0.7";
         dac.pins[1].connectedTo = "P0.6";
@@ -110,6 +111,9 @@ class Grid {
         let step = new StepEngine("p0");
         this.elements = [step];
         */
+
+        let keyboard = new Keyboard("p0");
+        this.elements = [keyboard];
 
         this.updateGrid();
     }
@@ -148,6 +152,8 @@ class Grid {
             newPeriphery = new DAC("p"+ this.actualId);
         } else if (newPeripheryName === "ADC"){
             newPeriphery = new ADC("p"+ this.actualId);
+        } else if (newPeripheryName === "Keyboard"){
+            newPeriphery = new Keyboard("p"+ this.actualId);
         }
 
 
@@ -166,10 +172,11 @@ class Grid {
 
     updateGrid(){
         this.clearLeadingEdgeValuesArray();
+        console.log(this.leadingEdgeValuesArray);
 
         // priority properties what are of class Button do first
         this.elements.forEach((element) => {
-            if(element instanceof Button || element instanceof Switch){
+            if (element instanceof Button || element instanceof Switch || element instanceof Keyboard) {
                 element.prepare();
                 element.execute();
             }
@@ -177,17 +184,19 @@ class Grid {
 
         // prepares data in every element by input values
         this.elements.forEach((element) => {
-            if (!(element instanceof Button && !(element instanceof Switch))){
+            if (!(element instanceof Button && !(element instanceof Switch) && !(element instanceof Keyboard))) {
                 element.prepare();
             }
         });
 
         // execute the data in every element
         this.elements.forEach((element) => {
-            if (!(element instanceof Button && !(element instanceof Switch))){
+            if (!(element instanceof Button && !(element instanceof Switch) && !(element instanceof Keyboard))) {
                 element.execute();
             }
         });
+
+        console.log(this.leadingEdgeValuesArray);
 
         // update the grid
         let grid = document.getElementById("peripheriesGrid");
@@ -196,7 +205,7 @@ class Grid {
             grid.appendChild(element.getHTML());
         });
 
-        modal.open(null);
+        modal.openElement(null);
     }
 
     updatePinConnections(peripheryId, pinNumber, connectedTo){
@@ -358,8 +367,13 @@ class Grid {
             object = new DAC("p" + this.actualId);
             object.pins = element.pins;
         }
+        // TODO: TO be tested
         else if(element.name === "ADC"){
             object = new ADC("p"+ this.actualId);
+            object.pins = element.pins;
+        }
+        else if(element.name === "Keyboard"){
+            object = new Keyboard("p"+ this.actualId);
             object.pins = element.pins;
         }
         return object;

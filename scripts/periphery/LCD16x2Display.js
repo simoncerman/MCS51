@@ -43,6 +43,8 @@ class LCD16x2Display extends Periphery{
             left: 0
         }
 
+        this.isFallingEdge = true;
+
         this.pins = [
             // VSS - GND
             {
@@ -320,23 +322,19 @@ class LCD16x2Display extends Periphery{
         if (allNull) {
             return;
         }
-
-        // command mode
-        if (RS === "GND") {
-            // check if the display is enabled
-            if (E === 1) {
-                // check if the display is in write mode
+        if (E === 1) this.isFallingEdge = true;
+        if (E === "GND" && this.isFallingEdge) {
+            console.log("falling edge")
+            this.isFallingEdge = false;
+            // command mode
+            if (RS === "GND") {
                 if (RW === "GND") {
-                    // write command
+                    console.log("write command")
                     this.writeCommand(DB);
                 }
-            }
-        } else {
-            // check if the display is enabled
-            if (E === 1) {
-                // check if the display is in write mode
+            } else {
                 if (RW === "GND") {
-                    // write data
+                    console.log("write data")
                     this.writeData(DB);
                 }
             }
@@ -346,7 +344,6 @@ class LCD16x2Display extends Periphery{
         for (let i = 0; i < this.pins.length; i++) {
             this.pins[i].pinValue = null;
         }
-
     }
 
     // write command
@@ -362,6 +359,8 @@ class LCD16x2Display extends Periphery{
         for (let i = 0; i < DB.length; i++) {
             command += DB[i] * Math.pow(2, i);
         }
+
+        console.log("command: " + command.toString(16).toUpperCase());
 
 
         // command switch

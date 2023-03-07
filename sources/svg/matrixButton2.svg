@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Vrstva_2" data-name="Vrstva 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 399.66 397.95">
+  <defs>
+    <style>
+      .cls-36 {
+        fill: none;
+      }
+
+      .cls-36, .cls-37, .cls-3 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: 5px;
+      }
+
+      .cls-37 {
+        fill: #ccc;
+      }
+
+      .cls-38 {
+        fill: #fff;
+      }
+
+      .cls-39 {
+        fill: red;
+      }
+    </style>
+  </defs>
+  <g id="Vrstva_1-2" data-name="Vrstva 1">
+    <rect class="cls-38" x="82.39" y="80.68" width="314.77" height="314.77" rx="26.7" ry="26.7"/>
+    <line class="cls-36" x1="240.14" y1="80.68" x2="240.14"/>
+    <line class="cls-36" y1="238.07" x2="81.53" y2="238.07"/>
+    <circle class="cls-39" cx="117.61" cy="366.26" r="11.65"/>
+    <rect class="cls-37" x="130.91" y="121.52" width="218.46" height="233.1" rx="25.88" ry="25.88"/>
+  </g>
+</svg>

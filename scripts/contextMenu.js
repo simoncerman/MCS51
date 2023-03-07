@@ -58,10 +58,20 @@ class ContextMenu{
             this.closeContextMenu();
         });
 
+        let separatingLine = document.createElement("div");
+        separatingLine.classList.add("context-menu-separator");
+        separatingLine.style.width = "100%";
+        separatingLine.style.height = "1px";
+        separatingLine.style.backgroundColor = "black";
+        separatingLine.style.margin = "5px 0px";
+
         contextMenu.appendChild(deleteOption);
         contextMenu.appendChild(deleteAllOption);
         contextMenu.appendChild(saveOption);
         contextMenu.appendChild(saveAllOption);
+        contextMenu.appendChild(separatingLine);
+
+        contextMenu = this.addAdditionalOptions(contextMenu);
 
         return contextMenu;
     }
@@ -73,5 +83,24 @@ class ContextMenu{
         }
     }
 
+    addAdditionalOptions(contextMenu) {
+        if(this.activeId === null) return contextMenu;
+        let index = grid.elements.findIndex((element) => element.peripheryId === this.activeId);
+        let periphery = grid.elements[index];
+        let additionalOptions = periphery.getAdditionalContextMenuOptions();
+        if(additionalOptions === null) return contextMenu;
+        additionalOptions.forEach((option) => {
+            let optionElement = document.createElement("div");
+            optionElement.classList.add("context-menu-option");
+            optionElement.innerHTML = option.name;
+            optionElement.addEventListener("click", (e) => {
+                option.action();
+                this.closeContextMenu();
+            });
+            contextMenu.appendChild(optionElement);
+        });
+
+        return contextMenu;
+    }
 }
 let contextMenu = new ContextMenu();

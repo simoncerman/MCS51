@@ -9,8 +9,9 @@ class Modal{
         //this.modalClose.addEventListener("click", this.close.bind(this));
         this.modalBackground.addEventListener("click", this.close.bind(this));
         this.actualObject = null;
+        this.closeAction = null;
     }
-    open(actualObject){
+    openElement(actualObject){
         if (this.actualObject === null && !actualObject) return;
         if (actualObject === null){
             actualObject = this.actualObject;
@@ -28,7 +29,18 @@ class Modal{
         this.modalContent.innerHTML = "";
         this.modalContent.appendChild(content);
     }
+    open(object, closeAction = null){
+        if (closeAction){
+            this.closeAction = closeAction;
+        }
+        this.modalContent.innerHTML = "";
+        this.modalContent.appendChild(object);
+        this.modal.style.display = "block";
+    }
     close(){
+        if (this.closeAction){
+            this.closeAction();
+        }
         this.actualObject = null;
         this.modal.style.display = "none";
         grid.updateGrid();

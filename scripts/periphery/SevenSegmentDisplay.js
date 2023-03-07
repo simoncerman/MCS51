@@ -148,9 +148,7 @@ class SevenSegmentDisplay extends Periphery{
                 litArea: "areaDP"
             }
         }
-
         let sevenSegmentType = this.type;
-
         this.properties = {
             sevenSegmentType: {
                 name: "sevenSegmentType",
