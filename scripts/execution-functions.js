@@ -364,3 +364,69 @@ function InstructionFromAddress(address) {
     }
     return 0;
 }
+
+function isPPort(port){
+    let pPort = ["80h", "90h", "A0h", "B0h"];
+    for (let i = 0; i < pPort.length; i++) {
+        if(port === pPort[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
+function getPPortEdgesData(port){
+    let edges = ""; // binary string of 8 bits of the port
+
+    if (port === "80h") {
+        ["P0.0", "P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7"].forEach(function (edge) {
+            let edgeValue = grid.leadingEdgeValuesArray[edge];
+            if  (edgeValue === undefined || edgeValue === 0 || edgeValue === "0" || edgeValue === null) {
+                edges +=  "0";
+            } else if(edgeValue === 1 || edgeValue === "1") {
+                edges +=  "1";
+            }
+        });
+    }
+    else if (port === "90h") {
+        ["P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7"].forEach(function (edge) {
+            let edgeValue = grid.leadingEdgeValuesArray[edge];
+            if  (edgeValue === undefined || edgeValue === 0 || edgeValue === "0" || edgeValue === null) {
+                edges +=  "0";
+            } else if(edgeValue === 1 || edgeValue === "1") {
+                edges +=  "1";
+            }
+        });
+    }
+    else if (port === "A0h") {
+        ["P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7"].forEach(function (edge) {
+            let edgeValue = grid.leadingEdgeValuesArray[edge];
+            if  (edgeValue === undefined || edgeValue === 0 || edgeValue === "0" || edgeValue === null) {
+                edges +=  "0";
+            } else if(edgeValue === 1 || edgeValue === "1") {
+                edges +=  "1";
+            }
+        });
+    }
+    else if (port === "B0h") {
+        ["P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7"].forEach(function (edge) {
+            let edgeValue = grid.leadingEdgeValuesArray[edge];
+            if  (edgeValue === undefined || edgeValue === 0 || edgeValue === "0" || edgeValue === null) {
+                edges +=  "0";
+            } else if(edgeValue === 1 || edgeValue === "1") {
+                edges +=  "1";
+            }
+        });
+    }
+
+    // reverse string
+    edges = edges.split("").reverse().join("");
+
+    // edges is binary array of 8 bits of the port - convert to hex
+    let hex = "";
+    for (let i = 0; i < edges.length; i+=4) {
+        let binary = edges[i] + edges[i+1] + edges[i+2] + edges[i+3];
+        hex += parseInt(binary, 2).toString(16).toUpperCase();
+    }
+    return hex;
+}

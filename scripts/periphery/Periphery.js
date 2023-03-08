@@ -240,6 +240,7 @@ class Periphery {
     }
 
     getAdditionalContextMenuOptions(){
+        return null;
         // return additional context menu options
         // need to be implemented in the child class
     }

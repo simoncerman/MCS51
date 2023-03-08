@@ -13,6 +13,11 @@ class LEDMatrix extends Periphery{
         // two-dimensional array of LEDs
         this.LEDs = []
 
+        // set default type if type is not defined
+        if(matrixType === undefined) {
+            matrixType = "Row Cathode";
+        }
+
         // parse width and height to int
         matrixWidth = parseInt(matrixWidth);
         matrixHeight = parseInt(matrixHeight);

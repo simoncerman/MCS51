@@ -756,9 +756,13 @@ function doInstructionAction(instruction) {
             setDataValueTo(addr, num1);
             return 1;
         case 62:
+            // maybe problem here
             incrementPCby(2);
-            addr = retrieveAdRi(first).address;
             num1 = retrieveDirect(second).value;
+            if(isPPort(second)){
+                num1 = getPPortEdgesData(second);
+            }
+            addr = retrieveAdRi(first).address;
             setDataValueTo(addr, num1);
             return 2;
         case 63:
@@ -782,6 +786,9 @@ function doInstructionAction(instruction) {
         case 65:
             incrementPCby(2);
             num1 = retrieveDirect(second).value;
+            if (isPPort(second)){
+                num1 = getPPortEdgesData(second);
+            }
             setDataValueTo(ACC, num1);
             if(getDataValueFrom(ACC) % 2 != 0)      //P
                 setBitInAddr(PSW, P, 1);
@@ -811,8 +818,11 @@ function doInstructionAction(instruction) {
             return 1;
         case 69:
             incrementPCby(3);
-            addr = retrieveDirect(first).address;
             num1 = retrieveDirect(second).value;
+            if (isPPort(second)){
+                num1 = getPPortEdgesData(second);
+            }
+            addr = retrieveDirect(first).address;
             setDataValueTo(addr, num1);
             return 2;
         case 70:
@@ -858,8 +868,11 @@ function doInstructionAction(instruction) {
             return 1;
         case 77:
             incrementPCby(2);
-            addr = retrieveRn(first).address;
             num1 = retrieveDirect(second).value;
+            if (isPPort(second)){
+                num1 = getPPortEdgesData(second);
+            }
+            addr = retrieveRn(first).address;
             setDataValueTo(addr, num1);
             return 2;
         case 78:
