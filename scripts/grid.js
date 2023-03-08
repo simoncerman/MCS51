@@ -112,9 +112,19 @@ class Grid {
         this.elements = [step];
         */
 
+        /*
         let keyboard = new Keyboard("p0");
         this.elements = [keyboard];
+        */
 
+
+        let serialMonitor = new SerialMonitor("p0");
+        this.elements = [serialMonitor];
+
+        /*
+        let fourteenSegment = new FourteenSegmentDisplay("p0");
+        this.elements = [fourteenSegment];
+        */
         this.updateGrid();
     }
 
@@ -154,6 +164,9 @@ class Grid {
             newPeriphery = new ADC("p"+ this.actualId);
         } else if (newPeripheryName === "Keyboard"){
             newPeriphery = new Keyboard("p"+ this.actualId);
+        } else if (newPeripheryName === "FourteenSegmentDisplay"){
+            let fourteenSegmentDisplayType = document.getElementById("fourteenSegmentType").value;
+            newPeriphery = new FourteenSegmentDisplay("p" + this.actualId, fourteenSegmentDisplayType);
         }
 
 
@@ -235,6 +248,7 @@ class Grid {
         let peripheryPropertyTable = {
             "LED": LED,
             "sevenSegment": SevenSegmentDisplay,
+            "FourteenSegmentDisplay": FourteenSegmentDisplay,
             "motorDC": MotorDC,
             "ledMatrix": LEDMatrix,
             "stepEngine": StepEngine,
@@ -243,7 +257,8 @@ class Grid {
             "switch": Switch,
             "serialMonitor": SerialMonitor,
             "DAC": DAC,
-            "ADC": ADC
+            "ADC": ADC,
+            "Keyboard": Keyboard,
         }
 
         if(peripheryPropertyTable[peripheryName]){
@@ -375,6 +390,11 @@ class Grid {
         else if(element.name === "Keyboard"){
             object = new Keyboard("p"+ this.actualId);
             object.pins = element.pins;
+        }
+        else if(element.name === "FourteenSegmentDisplay"){
+            object = new FourteenSegmentDisplay("p"+ this.actualId);
+            object.pins = element.pins;
+            object.type = element.type;
         }
         return object;
     }

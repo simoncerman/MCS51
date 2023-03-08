@@ -47,7 +47,7 @@ let isPaused = false;
 
 function setDataValueTo(address, value){
     data[address] = value;
-    //console.log("Address: " + address + " changed to: " + value);
+    console.log("Address: " + address + " changed to: " + value);
     updateTableData();
     fillUpSpecials();
 }

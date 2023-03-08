@@ -87,3 +87,4 @@ loadScript("scripts/periphery/SerialMonitor.js");
 loadScript("scripts/periphery/DAC.js");
 loadScript("scripts/periphery/ADC.js");
 loadScript("scripts/periphery/Keyboard.js");
+loadScript("scripts/periphery/FourteenSegmentDisplay.js");

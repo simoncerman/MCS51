@@ -519,6 +519,29 @@ p.pin-connection-text{
 	width: 4rem;
 }
 
+.serialMonitor{
+	background-color: white;
+	border: 1px solid black;
+	display: flex;
+	flex-direction: column;
+}
+.topDetails{
+	display: flex;
+	width: 100%;
+	font-size: 1rem;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.sendingArea{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+}
+.sendTextArea{
+	width: 100%;
+}
+
 
 @keyframes spin-right {
 	0% {
