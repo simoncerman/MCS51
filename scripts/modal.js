@@ -10,6 +10,7 @@ class Modal{
         this.modalBackground.addEventListener("click", this.close.bind(this));
         this.actualObject = null;
         this.closeAction = null;
+        this.settings = null;
     }
     openElement(actualObject){
         if (this.actualObject === null && !actualObject) return;
@@ -23,11 +24,13 @@ class Modal{
         this.modal.style.display = "block";
     }
     openSettings(){
-        let content = document.getElementById("controls")
-        content.style.display = "block";
+        if (this.settings === null){
+            this.settings = document.getElementById("controls");
+        }
+        this.settings.style.display = "block";
         this.modal.style.display = "block";
         this.modalContent.innerHTML = "";
-        this.modalContent.appendChild(content);
+        this.modalContent.appendChild(this.settings);
     }
     open(object, closeAction = null){
         if (closeAction){
