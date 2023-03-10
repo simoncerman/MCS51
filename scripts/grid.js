@@ -185,7 +185,6 @@ class Grid {
 
     updateGrid(){
         this.clearLeadingEdgeValuesArray();
-        console.log(this.leadingEdgeValuesArray);
 
         // priority properties what are of class Button do first
         this.elements.forEach((element) => {
@@ -209,7 +208,6 @@ class Grid {
             }
         });
 
-        console.log(this.leadingEdgeValuesArray);
 
         // update the grid
         let grid = document.getElementById("peripheriesGrid");

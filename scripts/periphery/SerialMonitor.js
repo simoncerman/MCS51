@@ -5,7 +5,6 @@ class SerialMonitor extends Periphery{
         this.name = "Serial Monitor";
         this.peripheryId = peripheryId;
         this.pins = [];
-        this.properties = {"baudRate": "9600", "dataBits": "8", "stopBits": "1", "parity": "None", "flowControl": "None"}
         this.zoomable = false;
         this.width = 400;
         this.zoomWidth = 400;
@@ -20,6 +19,7 @@ class SerialMonitor extends Periphery{
         this.sendTextArea = null;
         this.dataSender = null;
         this.sendQueue = [];
+        this.recieveQueue = [];
     }
 
     prepare() {
@@ -89,30 +89,60 @@ class SerialMonitor extends Periphery{
         let data = this.sendTextArea.value;
         this.sendTextArea.value = "";
         data = data.split("");
-        let dataToSend = [];
         for (let i = 0; i < data.length; i++) {
             let hex = data[i].charCodeAt(0).toString(16);
-            dataToSend.push(hex);
-            this.sendQueue.push(hex);
+            // hex to binary conversion
+            let binary = parseInt(hex, 16).toString(2);
+            // binary to 8 bit binary conversion
+            while (binary.length < 8) {
+                binary = "0" + binary;
+            }
+            // reverse binary
+            binary = binary.split("").reverse().join("");
+            binary = binary.split("");
+            let parityBit = this.generateParityBit(binary);
+            binary.unshift(parityBit);
+            for (let j = 0; j < binary.length; j++) {
+                this.sendQueue.push(binary[j]);
+            }
         }
         if (this.dataSender == null){
-            this.sendData(dataToSend);
+            this.sendData();
         }
-
     }
-    sendData(data) {
-        if (data.length === 0) {
+    sendData() {
+        if (this.sendQueue.length === 0) {
             this.dataSender = null;
             return;
         }
-        this.dataSender = setTimeout(() => {
-            let dataToSend = this.sendQueue.shift();
-            setDataValueTo(0x98, dataToSend)
-            if (this.sendQueue.length !== 0) {
-                this.sendData(dataToSend);
-            } else {
-                this.dataSender = null;
-            }
-        }, 1000);
+        let bit = this.sendQueue.shift();
+        serialHandler.receiveData(bit)
+        if (this.sendQueue.length !== 0) {
+            this.dataSender = setTimeout(() => {
+                this.sendData();
+            }, getClockInterval()*5);
+        } else {
+            this.dataSender = null;
+        }
+
+    }
+    generateParityBit(bitArray) {
+        let parityBit = 0;
+        for (let i = 0; i < bitArray.length; i++) {
+            parityBit += parseInt(bitArray[i]);
+        }
+        return parityBit % 2;
+    }
+
+    recieveData(bit) {
+        this.recieveQueue.push(bit);
+        if (this.recieveQueue.length === 9) {
+            let parityBit = this.recieveQueue.pop();
+            // TODO: show parity bit
+            let hexValue = parseInt(this.recieveQueue.join(""), 2).toString(16);
+            let char = String.fromCharCode(parseInt(hexValue, 16));
+            this.recieveTextArea.value += char;
+            this.recieveQueue = [];
+        }
     }
 }
