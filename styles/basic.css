@@ -541,7 +541,16 @@ p.pin-connection-text{
 .sendTextArea{
 	width: 100%;
 }
-
+.receiveArea{
+	display: flex;
+	justify-content: space-between;
+}
+.receiveTextArea{
+	width: 100%;
+}
+.parityBit{
+	width: 30%;
+}
 
 @keyframes spin-right {
 	0% {

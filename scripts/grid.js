@@ -118,6 +118,7 @@ class Grid {
         */
 
 
+        /*
         let serialMonitor = new SerialMonitor("p0");
         this.elements = [serialMonitor];
 
@@ -163,7 +164,7 @@ class Grid {
 
 
 
-
+        */
         /*
         let fourteenSegment = new FourteenSegmentDisplay("p0");
         this.elements = [fourteenSegment];

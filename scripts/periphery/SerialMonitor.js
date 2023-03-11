@@ -2,7 +2,7 @@
 class SerialMonitor extends Periphery{
     constructor(peripheryId) {
         super(peripheryId);
-        this.name = "Serial Monitor";
+        this.name = "SerialMonitor";
         this.peripheryId = peripheryId;
         this.pins = [];
         this.zoomable = false;
@@ -19,7 +19,7 @@ class SerialMonitor extends Periphery{
         this.sendTextArea = null;
         this.dataSender = null;
         this.sendQueue = [];
-        this.recieveQueue = [];
+        this.receiveQueue = [];
     }
 
     prepare() {
@@ -54,11 +54,20 @@ class SerialMonitor extends Periphery{
         topDetails.appendChild(name);
         topDetails.appendChild(baudRate);
 
+        let receiveArea = document.createElement("div");
+        receiveArea.classList.add("receiveArea");
+
         this.recieveTextArea = document.createElement("input");
-        this.recieveTextArea.classList.add("recieveTextArea");
+        this.recieveTextArea.classList.add("receiveTextArea");
         this.recieveTextArea.type = "text";
         this.recieveTextArea.placeholder = "Prijata data";
 
+        this.parityBit = document.createElement("div");
+        this.parityBit.classList.add("parityBit");
+        this.parityBit.innerHTML = "Parita: 0";
+
+        receiveArea.appendChild(this.recieveTextArea);
+        receiveArea.appendChild(this.parityBit);
 
         let sendingArea = document.createElement("div");
         sendingArea.classList.add("sendingArea");
@@ -79,7 +88,7 @@ class SerialMonitor extends Periphery{
         sendingArea.appendChild(sendButton);
 
         serialMonitor.appendChild(topDetails);
-        serialMonitor.appendChild(this.recieveTextArea);
+        serialMonitor.appendChild(receiveArea);
         serialMonitor.appendChild(sendingArea);
 
         this.serialMonitor = serialMonitor;
@@ -100,7 +109,7 @@ class SerialMonitor extends Periphery{
             // reverse binary
             binary = binary.split("").reverse().join("");
             binary = binary.split("");
-            let parityBit = this.generateParityBit(binary);
+            let parityBit = serialHandler.generateParityBit(binary);
             binary.unshift(parityBit);
             for (let j = 0; j < binary.length; j++) {
                 this.sendQueue.push(binary[j]);
@@ -126,23 +135,19 @@ class SerialMonitor extends Periphery{
         }
 
     }
-    generateParityBit(bitArray) {
-        let parityBit = 0;
-        for (let i = 0; i < bitArray.length; i++) {
-            parityBit += parseInt(bitArray[i]);
-        }
-        return parityBit % 2;
-    }
 
-    recieveData(bit) {
-        this.recieveQueue.push(bit);
-        if (this.recieveQueue.length === 9) {
-            let parityBit = this.recieveQueue.pop();
+    receiveBit(bit) {
+        console.log(bit);
+        this.receiveQueue.push(bit);
+        if (this.receiveQueue.length === 9) {
+            let parityBit = this.receiveQueue.pop();
             // TODO: show parity bit
-            let hexValue = parseInt(this.recieveQueue.join(""), 2).toString(16);
+            this.receiveQueue = this.receiveQueue.reverse();
+            let hexValue = parseInt(this.receiveQueue.join(""), 2).toString(16);
             let char = String.fromCharCode(parseInt(hexValue, 16));
+            console.log(char);
             this.recieveTextArea.value += char;
-            this.recieveQueue = [];
+            this.receiveQueue = [];
         }
     }
 }
