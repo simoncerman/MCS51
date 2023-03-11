@@ -168,6 +168,8 @@ class SevenSegmentDisplay extends Periphery{
         else {
             this.type = type;
         }
+        this.title = this.type;
+
     }
 
     execute() {

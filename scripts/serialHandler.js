@@ -27,6 +27,7 @@ class SerialHandler{
             let value = parseInt(hexValue, 16).toString(10);
 
             this.setRB8(parityBit);
+            this.setRI(1);
             this.moveToReceiveBuffer(value);
 
             this.receiveBitBuffer = [];
@@ -44,6 +45,12 @@ class SerialHandler{
     }
     setRB8(bit) {
         this.setSCONBit(5, bit);
+    }
+    setTI(bit) {
+        this.setSCONBit(6, bit);
+    }
+    setRI(bit) {
+        this.setSCONBit(7, bit);
     }
     setSCONBit(position, bit) {
         let SCONValue = getDataValueFrom(SCON);
@@ -64,6 +71,7 @@ class SerialHandler{
     }
 
     sendDataPrepare(value) {
+        this.sendQueue = [];
         let hex = parseInt(value, 10).toString(16);
         let binary = parseInt(hex, 16).toString(2);
         while (binary.length < 8) {
@@ -71,7 +79,6 @@ class SerialHandler{
         }
         binary = binary.split("");
         let parityBit = this.generateParityBit(binary);
-        this.setTB8(parityBit);
         binary.unshift(parityBit);
         for (let j = 0; j < binary.length; j++) {
             this.sendQueue.push(binary[j]);
@@ -98,6 +105,7 @@ class SerialHandler{
         if (this.sendQueue.length !== 0) {
             this.dataSender = setTimeout(() => {
                 this.sendData();
+                this.setTI(1);
             }, getClockInterval()*5);
         } else {
             this.dataSender = null;

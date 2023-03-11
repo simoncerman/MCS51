@@ -264,6 +264,7 @@ class FourteenSegmentDisplay extends Periphery{
         else {
             this.type = type;
         }
+        this.title = this.type;
     }
 
     execute() {
@@ -373,12 +374,12 @@ class FourteenSegmentDisplay extends Periphery{
                     <line class="cls-40" x1="486.16" y1="81.1" x2="486.16"/>
                     <line class="cls-40" x1="599.55" y1="81.1" x2="599.55"/>
                     <line class="cls-40" x1="712.93" y1="81.1" x2="712.93"/>
-                    <text class="cls-4" transform="translate(138.86 114.96)"><tspan x="0" y="0">A</tspan></text>
-                    <text class="cls-4" transform="translate(251.91 114.96)"><tspan x="0" y="0">B</tspan></text>
-                    <text class="cls-4" transform="translate(365.53 114.96)"><tspan x="0" y="0">C</tspan></text>
-                    <text class="cls-4" transform="translate(478.11 114.96)"><tspan x="0" y="0">D</tspan></text>
-                    <text class="cls-4" transform="translate(592.05 114.96)"><tspan x="0" y="0">E</tspan></text>
-                    <text class="cls-4" transform="translate(705.39 115.14)"><tspan x="0" y="0">F</tspan></text>
+                    <text class="cls-43" transform="translate(138.86 114.96)"><tspan x="0" y="0">A</tspan></text>
+                    <text class="cls-43" transform="translate(251.91 114.96)"><tspan x="0" y="0">B</tspan></text>
+                    <text class="cls-43" transform="translate(365.53 114.96)"><tspan x="0" y="0">C</tspan></text>
+                    <text class="cls-43" transform="translate(478.11 114.96)"><tspan x="0" y="0">D</tspan></text>
+                    <text class="cls-43" transform="translate(592.05 114.96)"><tspan x="0" y="0">E</tspan></text>
+                    <text class="cls-43" transform="translate(705.39 115.14)"><tspan x="0" y="0">F</tspan></text>
                     <line class="cls-40" x1="809.96" y1="257.66" x2="895" y2="257.66"/>
                     <line class="cls-40" x1="809.96" y1="339.94" x2="895" y2="339.94"/>
                     <line class="cls-40" x1="809.96" y1="427.74" x2="895" y2="427.74"/>

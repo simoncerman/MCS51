@@ -24,6 +24,7 @@ class Periphery {
             bottom: 0,
             left: 0
         }
+        this.title = null;
 
     }
 
@@ -163,6 +164,9 @@ class Periphery {
         }
 
         peripheryObject.id = this.peripheryId;
+        if (this.title !== null){
+            peripheryObject.title = this.title;
+        }
         return peripheryObject;
     }
 
