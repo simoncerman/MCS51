@@ -121,6 +121,49 @@ class Grid {
         let serialMonitor = new SerialMonitor("p0");
         this.elements = [serialMonitor];
 
+        let sw1 = new Switch("p1");
+        sw1.pins[0].connectedTo = "P0.0";
+        sw1.pins[1].connectedTo = "V+";
+        this.elements.push(sw1);
+
+        let sw2 = new Switch("p2");
+        sw2.pins[0].connectedTo = "P0.1";
+        sw2.pins[1].connectedTo = "V+";
+        this.elements.push(sw2);
+
+        let sw3 = new Switch("p3");
+        sw3.pins[0].connectedTo = "P0.2";
+        sw3.pins[1].connectedTo = "V+";
+        this.elements.push(sw3);
+
+        let sw4 = new Switch("p4");
+        sw4.pins[0].connectedTo = "P0.3";
+        sw4.pins[1].connectedTo = "V+";
+        this.elements.push(sw4);
+
+        let sw5 = new Switch("p5");
+        sw5.pins[0].connectedTo = "P0.4";
+        sw5.pins[1].connectedTo = "V+";
+        this.elements.push(sw5);
+
+        let sw6 = new Switch("p6");
+        sw6.pins[0].connectedTo = "P0.5";
+        sw6.pins[1].connectedTo = "V+";
+        this.elements.push(sw6);
+
+        let sw7 = new Switch("p7");
+        sw7.pins[0].connectedTo = "P0.6";
+        sw7.pins[1].connectedTo = "V+";
+        this.elements.push(sw7);
+
+        let sw8 = new Switch("p8");
+        sw8.pins[0].connectedTo = "P0.7";
+        sw8.pins[1].connectedTo = "V+";
+        this.elements.push(sw8);
+
+
+
+
         /*
         let fourteenSegment = new FourteenSegmentDisplay("p0");
         this.elements = [fourteenSegment];

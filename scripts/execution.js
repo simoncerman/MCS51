@@ -756,12 +756,13 @@ function doInstructionAction(instruction) {
             setDataValueTo(addr, num1);
             return 1;
         case 62:
-            // maybe problem here
             incrementPCby(2);
-            num1 = retrieveDirect(second).value;
-            if(isPPort(second)){
-                num1 = getPPortEdgesData(second);
+            portData = retrieveDirect(second).value;
+            edgesData = null;
+            if (isPPort(second)){
+                edgesData = getPPortEdgesData(second);
             }
+            num1 = recalculateDataValue(portData, edgesData);
             addr = retrieveAdRi(first).address;
             setDataValueTo(addr, num1);
             return 2;
@@ -785,10 +786,13 @@ function doInstructionAction(instruction) {
             return 1;
         case 65:
             incrementPCby(2);
-            num1 = retrieveDirect(second).value;
+            edgesData = null;
+            portData = retrieveDirect(second).value;
             if (isPPort(second)){
-                num1 = getPPortEdgesData(second);
+                edgesData = getPPortEdgesData(second);
             }
+            num1 = recalculateDataValue(portData, edgesData);
+
             setDataValueTo(ACC, num1);
             if(getDataValueFrom(ACC) % 2 != 0)      //P
                 setBitInAddr(PSW, P, 1);
@@ -818,18 +822,22 @@ function doInstructionAction(instruction) {
             return 1;
         case 69:
             incrementPCby(3);
-            num1 = retrieveDirect(second).value;
+            portData = retrieveDirect(second).value;
+            edgesData = null;
             if (isPPort(second)){
-                num1 = getPPortEdgesData(second);
+                edgesData = getPPortEdgesData(second);
             }
+            num1 = recalculateDataValue(portData, edgesData);
             addr = retrieveDirect(first).address;
             setDataValueTo(addr, num1);
+            if (addr === 153) serialHandler.sendDataPrepare(num1);
             return 2;
         case 70:
             incrementPCby(3);
             addr = retrieveDirect(first).address;
             num1 = retrieveImmediate(second);
             setDataValueTo(addr, num1);
+            if (addr === 153) serialHandler.sendDataPrepare(num1);
             return 2;
         case 71:
             incrementPCby(2);
@@ -842,12 +850,14 @@ function doInstructionAction(instruction) {
             addr = retrieveDirect(first).address;
             num1 = getDataValueFrom(ACC);
             setDataValueTo(addr, num1);
+            if (addr === 153) serialHandler.sendDataPrepare(num1);
             return 1;
         case 73:
             incrementPCby(2);
             addr = retrieveDirect(first).address;
             num1 = retrieveRn(second).value;
             setDataValueTo(addr, num1);
+            if (addr === 153) serialHandler.sendDataPrepare(num1);
             return 2;
         case 74:
             incrementPCby(3);
@@ -868,10 +878,12 @@ function doInstructionAction(instruction) {
             return 1;
         case 77:
             incrementPCby(2);
-            num1 = retrieveDirect(second).value;
+            portData = retrieveDirect(second).value;
+            edgesData = null;
             if (isPPort(second)){
-                num1 = getPPortEdgesData(second);
+                edgesData = getPPortEdgesData(second);
             }
+            num1 = recalculateDataValue(portData, edgesData);
             addr = retrieveRn(first).address;
             setDataValueTo(addr, num1);
             return 2;

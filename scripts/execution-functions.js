@@ -428,5 +428,33 @@ function getPPortEdgesData(port){
         let binary = edges[i] + edges[i+1] + edges[i+2] + edges[i+3];
         hex += parseInt(binary, 2).toString(16).toUpperCase();
     }
-    return hex;
+    // hex to decimal
+    let decimal = parseInt(hex, 16);
+    return decimal;
+}
+function recalculateDataValue(portData, edgesData){
+    if (edgesData === null){
+        return portData;
+    }
+
+    portData = parseInt(portData);
+    edgesData = parseInt(edgesData);
+
+    // portData and edgesData are decimal values - convert to binary array of 8 bits
+    let port = portData.toString(2).padStart(8, '0');
+    let edges = edgesData.toString(2).padStart(8, '0');
+
+    // if port bit is 1 then keep edge bit value on same index  else keep 1
+    let newData = "";
+    for (let i = 0; i < port.length; i++) {
+        if(port[i] === "1"){
+            newData += edges[i];
+        }
+        else {
+            newData += "1";
+        }
+    }
+
+    // convert binary string to decimal
+    return parseInt(newData, 2);
 }
