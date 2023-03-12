@@ -40,9 +40,6 @@ class SerialHandler{
         setDataValueTo(0x99, intValue);
     }
 
-    setTB8(bit) {
-        this.setSCONBit(4, bit);
-    }
     setRB8(bit) {
         this.setSCONBit(5, bit);
     }

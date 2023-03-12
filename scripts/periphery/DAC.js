@@ -105,6 +105,16 @@ class DAC extends Periphery {
                 },
                 optionSelector: null,
                 textNode: "GND"
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: -8,
+                    y: 20
+                },
+                optionSelector: null,
+                textNode: "E"
             }
         ];
         this.properties = {}
@@ -129,6 +139,7 @@ class DAC extends Periphery {
         this.mainDot = null;
         this.interval = null;
         this.handChangeValue = null;
+        this.fallingEdge = false;
     }
 
     execute() {
@@ -140,6 +151,7 @@ class DAC extends Periphery {
             this.step = 0;
             this.stepSize = 0;
             this.handChangeValue = null;
+            this.fallingEdge = false;
             return;
         } else{
             this.analogOff = false;
@@ -170,10 +182,13 @@ class DAC extends Periphery {
             value = this.handChangeValue;
         }
 
-        if(value !== this.analogSetValue) {
+        if(value !== this.analogSetValue && this.fallingEdge === true && this.pins[10].pinValue === "GND") {
             this.step = 0;
             this.stepSize = (value - this.analogValue) / 10;
             this.analogSetValue = value;
+            this.fallingEdge = false;
+        } else if (this.pins[10].pinValue === 1 && this.fallingEdge === false) {
+            this.fallingEdge = true;
         }
     }
 
@@ -221,6 +236,12 @@ class DAC extends Periphery {
             infoBox2.classList.add("dac-pin-description-box");
             infoBox2.style.width = "100%";
             this.analogDisplay.appendChild(infoBox2);
+
+            // E description
+            let pd = document.createElement("div");
+            pd.classList.add("dac-pin-e-description");
+            pd.innerHTML = "E";
+            this.analogDisplay.appendChild(pd);
 
             // generate pin description for the 8 pins
             for (let i = 0; i < 8; i++) {
