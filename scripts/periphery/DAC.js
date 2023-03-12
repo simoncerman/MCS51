@@ -139,7 +139,7 @@ class DAC extends Periphery {
         this.mainDot = null;
         this.interval = null;
         this.handChangeValue = null;
-        this.fallingEdge = false;
+        this.fallingEdge = true;
     }
 
     execute() {
@@ -151,7 +151,7 @@ class DAC extends Periphery {
             this.step = 0;
             this.stepSize = 0;
             this.handChangeValue = null;
-            this.fallingEdge = false;
+            this.fallingEdge = true;
             return;
         } else{
             this.analogOff = false;

@@ -61,28 +61,16 @@ class Keyboard extends InputPeriphery{
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 if (this.buttons[i][j] === 1) {
-                    if (this.pinsLeft[i].pinValue === "GND" && this.isPPin(this.pinsTop[j].connectedTo)) {
+                    if (this.pinsLeft[i].pinValue === "GND" && isPPin(this.pinsTop[j].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pinsTop[j].connectedTo] = "GND";
                     }
-                    if (this.pinsTop[j].pinValue === "GND" && this.isPPin(this.pinsLeft[i].connectedTo)) {
+                    if (this.pinsTop[j].pinValue === "GND" && isPPin(this.pinsLeft[i].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pinsLeft[i].connectedTo] = "GND";
                     }
                 }
             }
         }
     }
-
-isPPin(pin){
-    let PPinArray = [
-        "P0.0","P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",
-        "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7",
-        "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
-        "P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7",
-    ]
-    // if pin is in PPinArray return true
-    return PPinArray.includes(pin);
-}
-
 
     getSVG() {
         return this.generateButtonMatrix();

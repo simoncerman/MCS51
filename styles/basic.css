@@ -425,7 +425,7 @@ p.pin-connection-text{
 
 .adc-holder{
 	border-radius: .25rem;
-	width: 150px;
+	width: 400px;
 	height: 150px;
 	display: flex;
 	background-color: white;
@@ -439,7 +439,7 @@ p.pin-connection-text{
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	justify-content: space-evenly;
+	justify-content: center;
 }
 
 .adc-output-holder > *{
@@ -563,7 +563,12 @@ p.pin-connection-text{
 	width: 1rem;
 	height: 1rem;
 }
-
+.adc-description{
+	position: absolute;
+}
+.adc-range{
+	width: 100%;
+}
 @keyframes spin-right {
 	0% {
 		transform: rotate(0deg);

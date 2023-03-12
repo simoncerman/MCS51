@@ -18,8 +18,89 @@ class ADC extends Periphery{
                 connectedTo: null,
                 pinValue : null,
                 pinPosition: {
-                    x: 65,
+                    x: 86,
                     y: 100
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            // output pins
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 2,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 14,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 26,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 38,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 50,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 62,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 74,
+                    y: -5
+                },
+                optionSelector: null,
+                textNode: null
+            },
+            {
+                connectedTo: null,
+                pinValue : null,
+                pinPosition: {
+                    x: 86,
+                    y: -5
                 },
                 optionSelector: null,
                 textNode: null
@@ -53,12 +134,24 @@ class ADC extends Periphery{
             this.voltage.innerHTML = (this.value / 255 * 5).toFixed(2) + " V";
         }
 
-        // update output
+        let output = "";
         for (let i = 0; i < 8; i++) {
             if (this.value & (1 << i)) {
                 this.outputDivs[7-i].innerHTML = "1";
+                output += "1";
             } else {
                 this.outputDivs[7-i].innerHTML = "0";
+                output += "0";
+            }
+        }
+
+        let bits = output.split("").reverse().join("");
+
+        // update leading edge values
+        for (let i = 0; i < 8; i++) {
+            let pinConnectedTo = this.pins[i+2].connectedTo;
+            if (isPPin(pinConnectedTo)) {
+                grid.leadingEdgeValuesArray[pinConnectedTo] = parseInt(bits[i]);
             }
         }
     }
@@ -122,6 +215,25 @@ class ADC extends Periphery{
         pinDescription2.style.bottom = "0%";
         holder.appendChild(pinDescription2);
 
+        let descriptions = this.generateDescriptions();
+        for (let i = 0; i < descriptions.length; i++) {
+            holder.appendChild(descriptions[i]);
+        }
+
+
         return holder;
+    }
+    generateDescriptions() {
+        let descriptions = [];
+        let descriptionsText = ["B7", "B6", "B5", "B4", "B3", "B2", "B1", "B0"];
+        for (let i = 2; i < this.pins.length; i++) {
+            let description = document.createElement("div");
+            description.classList.add("adc-description");
+            description.style.left = parseInt(this.pins[i].pinPosition.x+4) + "%";
+            description.style.top = parseInt(this.pins[i].pinPosition.y+10) + "%";
+            description.innerHTML = descriptionsText[i-2];
+            descriptions.push(description);
+        }
+        return descriptions;
     }
 }

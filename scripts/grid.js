@@ -170,6 +170,7 @@ class Grid {
         this.elements = [fourteenSegment];
         */
 
+        /*
         let dac = new DAC("p0");
         dac.pins[0].connectedTo = "P0.7";
         dac.pins[1].connectedTo = "P0.6";
@@ -182,7 +183,29 @@ class Grid {
         dac.pins[8].connectedTo = "V+";
         dac.pins[9].connectedTo = "GND";
         this.elements = [dac];
+         */
+/*
+        this.elements.push(l5);
 
+        let l6 = new LED("p6", "red");
+        l6.pins[0].connectedTo = "P1.2";
+        l6.pins[1].connectedTo = "GND";
+        this.elements.push(l6);
+
+        let l7 = new LED("p7", "red");
+        l7.pins[0].connectedTo = "P1.1";
+        l7.pins[1].connectedTo = "GND";
+        this.elements.push(l7);
+
+        let l8 = new LED("p8", "red");
+        l8.pins[0].connectedTo = "P1.0";
+        l8.pins[1].connectedTo = "GND";
+        this.elements.push(l8);
+
+
+
+
+*/
         this.updateGrid();
     }
 
@@ -475,6 +498,8 @@ class Grid {
         let jsonFile = JSON.stringify(peripheryFile);
         this.saveFile(jsonFile);
     }
+
+
 }
 
 let grid = new Grid();

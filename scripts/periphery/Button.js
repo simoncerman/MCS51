@@ -60,30 +60,30 @@ class Button extends InputPeriphery{
     execute() {
         if(!this.clicked) {
             // GND to P pins leading edge handling
-            if (this.pins[0].pinValue === "GND" && this.isPPin(this.pins[2].connectedTo)) {
+            if (this.pins[0].pinValue === "GND" && isPPin(this.pins[2].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[2].connectedTo] = 0;
             }
-            if (this.pins[2].pinValue === "GND" && this.isPPin(this.pins[0].connectedTo)) {
+            if (this.pins[2].pinValue === "GND" && isPPin(this.pins[0].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[0].connectedTo] = 0;
             }
-            if (this.pins[1].pinValue === "GND" && this.isPPin(this.pins[3].connectedTo)) {
+            if (this.pins[1].pinValue === "GND" && isPPin(this.pins[3].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[3].connectedTo] = 0;
             }
-            if (this.pins[3].pinValue === "GND" && this.isPPin(this.pins[1].connectedTo)) {
+            if (this.pins[3].pinValue === "GND" && isPPin(this.pins[1].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[1].connectedTo] = 0;
             }
 
             // VCC to P pins leading edge handling
-            if (this.pins[0].pinValue === 1 && this.isPPin(this.pins[2].connectedTo)) {
+            if (this.pins[0].pinValue === 1 && isPPin(this.pins[2].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[2].connectedTo] = 1;
             }
-            if (this.pins[2].pinValue === 1 && this.isPPin(this.pins[0].connectedTo)) {
+            if (this.pins[2].pinValue === 1 && isPPin(this.pins[0].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[0].connectedTo] = 1;
             }
-            if (this.pins[1].pinValue === 1 && this.isPPin(this.pins[3].connectedTo)) {
+            if (this.pins[1].pinValue === 1 && isPPin(this.pins[3].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[3].connectedTo] = 1;
             }
-            if (this.pins[3].pinValue === 1 && this.isPPin(this.pins[1].connectedTo)) {
+            if (this.pins[3].pinValue === 1 && isPPin(this.pins[1].connectedTo)) {
                 grid.leadingEdgeValuesArray[this.pins[1].connectedTo] = 1;
             }
         }
@@ -92,28 +92,28 @@ class Button extends InputPeriphery{
             // check if any of the pins is connected to GND
             if (this.pins[0].pinValue === "GND") {
                 [1, 2, 3].forEach((pin) => {
-                    if (this.isPPin(this.pins[pin].connectedTo)) {
+                    if (isPPin(this.pins[pin].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[1].pinValue === "GND") {
                 [0, 2, 3].forEach((pin) => {
-                    if (this.isPPin(this.pins[pin].connectedTo)) {
+                    if (isPPin(this.pins[pin].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[2].pinValue === "GND") {
                 [0, 1, 3].forEach((pin) => {
-                    if (this.isPPin(this.pins[pin].connectedTo)) {
+                    if (isPPin(this.pins[pin].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
             }
             if (this.pins[3].pinValue === "GND") {
                 [0, 1, 2].forEach((pin) => {
-                    if (this.isPPin(this.pins[pin].connectedTo)) {
+                    if (isPPin(this.pins[pin].connectedTo)) {
                         grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 0;
                     }
                 });
@@ -126,28 +126,28 @@ class Button extends InputPeriphery{
 
                 if (this.pins[0].pinValue === 1) {
                     [1, 2, 3].forEach((pin) => {
-                        if (this.isPPin(this.pins[pin].connectedTo)) {
+                        if (isPPin(this.pins[pin].connectedTo)) {
                             grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 1;
                         }
                     });
                 }
                 if (this.pins[1].pinValue === 1) {
                     [0, 2, 3].forEach((pin) => {
-                        if (this.isPPin(this.pins[pin].connectedTo)) {
+                        if (isPPin(this.pins[pin].connectedTo)) {
                             grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 1;
                         }
                     });
                 }
                 if (this.pins[2].pinValue === 1) {
                     [0, 1, 3].forEach((pin) => {
-                        if (this.isPPin(this.pins[pin].connectedTo)) {
+                        if (isPPin(this.pins[pin].connectedTo)) {
                             grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 1;
                         }
                     });
                 }
                 if (this.pins[3].pinValue === 1) {
                     [0, 1, 2].forEach((pin) => {
-                        if (this.isPPin(this.pins[pin].connectedTo)) {
+                        if (isPPin(this.pins[pin].connectedTo)) {
                             grid.leadingEdgeValuesArray[this.pins[pin].connectedTo] = 1;
                         }
                     });
@@ -155,17 +155,6 @@ class Button extends InputPeriphery{
             }
 
         }
-    }
-
-    isPPin(pin){
-        let PPinArray = [
-            "P0.0","P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",
-            "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7",
-            "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
-            "P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7",
-        ]
-        // if pin is in PPinArray return true
-        return PPinArray.includes(pin);
     }
 
     applySpecials(root) {
