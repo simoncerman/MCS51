@@ -294,10 +294,8 @@ class FourteenSegmentDisplay extends Periphery{
                 }
             }
         }
-        console.log(this.litAreas);
     }
     applySpecials(root) {
-        console.log("applySpecials");
         // for fourteen segment display
         for (const litAreasKey in this.litAreas) {
             const litArea = this.litAreas[litAreasKey];

@@ -1,4 +1,3 @@
-// TODO: Completly rework
 class DAC extends Periphery {
     constructor(peripheryId) {
         super(peripheryId);

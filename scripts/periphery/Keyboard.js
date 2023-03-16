@@ -1,5 +1,4 @@
 class Keyboard extends InputPeriphery{
-    // TODO: if P0.0 and P0.1 Are to one button, can it work?
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "Keyboard";
@@ -126,11 +125,6 @@ class Keyboard extends InputPeriphery{
             this.buttons[i][j] = 1;
             grid.updateGrid();
         }
-        /*
-        setTimeout(() => {
-            this.buttons[i][j] = 0;
-            grid.updateGrid();
-        }, 200);*/
     }
 
     getButton(isPressed, text) {

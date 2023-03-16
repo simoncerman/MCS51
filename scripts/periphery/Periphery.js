@@ -166,6 +166,8 @@ class Periphery {
         peripheryObject.id = this.peripheryId;
         if (this.title !== null){
             peripheryObject.title = this.title;
+        } else {
+            peripheryObject.title = this.name;
         }
         return peripheryObject;
     }
@@ -182,9 +184,6 @@ class Periphery {
     }
 
     updatePinConnection(pinNumber, newConnection){
-        console.log("update pin connection")
-        console.log(pinNumber, newConnection)
-        console.log("------------------");
         this.pins[pinNumber].connectedTo = newConnection;
     }
 

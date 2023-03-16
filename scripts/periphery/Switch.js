@@ -124,7 +124,7 @@ class Switch extends InputPeriphery{
         });
 
 
-        // FIXME: mouse down and up not working -> vyøešit s hamanovou
+        // not implemented yet - not working properly
         /*// set on push
         buttonClicker.addEventListener("mousedown", () => {
             this.buttonPush();

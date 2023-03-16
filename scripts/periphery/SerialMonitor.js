@@ -1,4 +1,3 @@
-// TODO: Complete implementation
 class SerialMonitor extends Periphery{
     constructor(peripheryId) {
         super(peripheryId);
@@ -60,11 +59,11 @@ class SerialMonitor extends Periphery{
         this.recieveTextArea = document.createElement("input");
         this.recieveTextArea.classList.add("receiveTextArea");
         this.recieveTextArea.type = "text";
-        this.recieveTextArea.placeholder = "Prijata data";
+        this.recieveTextArea.placeholder = "Received data";
 
         this.parityBit = document.createElement("div");
         this.parityBit.classList.add("parityBit");
-        this.parityBit.innerHTML = "Parita: 0";
+        this.parityBit.innerHTML = "Parity: 0";
 
         receiveArea.appendChild(this.recieveTextArea);
         receiveArea.appendChild(this.parityBit);
@@ -75,11 +74,11 @@ class SerialMonitor extends Periphery{
         this.sendTextArea = document.createElement("input");
         this.sendTextArea.classList.add("sendTextArea");
         this.sendTextArea.type = "text";
-        this.sendTextArea.placeholder = "Odeslat data";
+        this.sendTextArea.placeholder = "Transmit data";
 
         let sendButton = document.createElement("button");
         sendButton.classList.add("sendButton");
-        sendButton.innerHTML = "Odeslat";
+        sendButton.innerHTML = "Send";
         sendButton.onclick = () => {
             this.sendDataPrepare();
         }
@@ -141,11 +140,10 @@ class SerialMonitor extends Periphery{
         this.receiveQueue.push(bit);
         if (this.receiveQueue.length === 9) {
             let parityBit = this.receiveQueue.pop();
-            // TODO: show parity bit
+            this.parityBit.innerHTML = "Parity: " + parityBit;
             this.receiveQueue = this.receiveQueue.reverse();
             let hexValue = parseInt(this.receiveQueue.join(""), 2).toString(16);
             let char = String.fromCharCode(parseInt(hexValue, 16));
-            console.log(char);
             this.recieveTextArea.value += char;
             this.receiveQueue = [];
         }

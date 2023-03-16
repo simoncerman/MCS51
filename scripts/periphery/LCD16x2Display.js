@@ -18,7 +18,6 @@ class LCD16x2Display extends Periphery{
             [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
         ];
 
-        this.chars = [];
         this.displayPowered = false;
         this.display = {
             objectDisplay: null,
@@ -33,7 +32,6 @@ class LCD16x2Display extends Periphery{
             row: 0,
             isBlinking: false,
         }
-
 
         // set margins
         this.margin = {
@@ -310,7 +308,6 @@ class LCD16x2Display extends Periphery{
         // check contrast/opacity of the display
         this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
 
-
         // check if all db pins has value null -> no data -> return
         let allNull = true;
         for (let i = 0; i < DB.length; i++) {
@@ -324,17 +321,14 @@ class LCD16x2Display extends Periphery{
         }
         if (E === 1) this.isFallingEdge = true;
         if (E === "GND" && this.isFallingEdge) {
-            console.log("falling edge")
             this.isFallingEdge = false;
             // command mode
             if (RS === "GND") {
                 if (RW === "GND") {
-                    console.log("write command")
                     this.writeCommand(DB);
                 }
             } else {
                 if (RW === "GND") {
-                    console.log("write data")
                     this.writeData(DB);
                 }
             }
@@ -359,9 +353,6 @@ class LCD16x2Display extends Periphery{
         for (let i = 0; i < DB.length; i++) {
             command += DB[i] * Math.pow(2, i);
         }
-
-        console.log("command: " + command.toString(16).toUpperCase());
-
 
         // command switch
         switch (command) {
@@ -569,11 +560,9 @@ class LCD16x2Display extends Periphery{
         }
 
         if (!this.displayPowered) {
-            console.log("Power off");
             this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#ffffff";
 
         } else {
-            console.log("Power on");
             this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.backgroundColor = "#179CE5";
 
             // update the display with the data

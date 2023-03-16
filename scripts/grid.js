@@ -42,7 +42,6 @@ class Grid {
     setListeners(){
         document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()});
         document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
-        document.getElementById('addDefaultPeripheries').addEventListener('click', () => {this.defaultPeripheries()});
 
         // loading peripheries
         document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
@@ -451,17 +450,13 @@ class Grid {
             object.pins = element.pins;
             object.switchOn = element.switchOn;
         }
-        // TODO: To be created
         else if(element.name === "SerialMonitor"){
             object = new SerialMonitor("p"+ this.actualId);
-            object.pins = element.pins;
         }
-        // TODO: To be tested
         else if(element.name === "DAC") {
             object = new DAC("p" + this.actualId);
             object.pins = element.pins;
         }
-        // TODO: TO be tested
         else if(element.name === "ADC"){
             object = new ADC("p"+ this.actualId);
             object.pins = element.pins;

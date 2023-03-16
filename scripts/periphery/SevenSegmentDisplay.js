@@ -278,6 +278,5 @@ class SevenSegmentDisplay extends Periphery{
               </g>
             </svg>
         `
-        // return the svg code for the component
     }
 }

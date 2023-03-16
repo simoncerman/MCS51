@@ -4,7 +4,6 @@ class LEDMatrix extends Periphery{
         this.name = "LEDMatrix";
         this.peripheryId = peripheryId;
         this.type = matrixType;
-        // pin count = matrixWidth + matrixHeight
 
         this.pins = []
         this.pinsTop = [];
@@ -83,7 +82,6 @@ class LEDMatrix extends Periphery{
                         }
                     }
                     if(this.type === "Row Anode") {
-                        console.log(this.pinsTop[j], this.pinsLeft[i])
                         if(this.pinsTop[j].pinValue === "GND" && this.pinsLeft[i].pinValue === 1) {
                             this.LEDs[i][j] = 1;
                         } else {
@@ -255,16 +253,18 @@ class LEDMatrix extends Periphery{
     generateLeftTopPins() {
         this.pinsLeft = [];
         this.pinsTop = [];
+
         // working with this.pins
         // fist is left
         this.pinsLeft.push(this.pins[0]);
+
         // row of top
         for (let i = 0; i < this.matrixWidth; i++) {
             this.pinsTop.push(this.pins[i+1]);
         }
         // rest is left
         for (let y = 1; y < this.matrixHeight; y++) {
-            this.pinsLeft.push(this.pins[y + this.matrixHeight])
+            this.pinsLeft.push(this.pins[y + this.matrixWidth])
         }
     }
 }

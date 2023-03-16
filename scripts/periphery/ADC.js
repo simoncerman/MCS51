@@ -122,7 +122,7 @@ class ADC extends Periphery{
 
     execute() {
         if(this.holder === null) return;
-        // check if pins have good values (1 and GND)
+        // check if pins have right values (1 and GND)
         if (this.pins[0].pinValue === 1 && this.pins[1].pinValue === "GND") {
             this.value = this.range.value;
         } else{
@@ -219,7 +219,6 @@ class ADC extends Periphery{
         for (let i = 0; i < descriptions.length; i++) {
             holder.appendChild(descriptions[i]);
         }
-
 
         return holder;
     }

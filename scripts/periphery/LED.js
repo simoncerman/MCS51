@@ -34,7 +34,7 @@ class LED extends Periphery{
                 propertyKey: "ledColor"
             }
         }
-        this.ledColor = ledColor; // if null -> default color
+        this.ledColor = ledColor;
         this.isGlowing = false;
         this.zoomable = false;
     }
@@ -45,10 +45,10 @@ class LED extends Periphery{
     }
 
     applySpecials(root) {
-        // seting led color
+        // setting LED color
         root.getElementsByClassName("led-color")[0].style.fill = this.ledColor;
 
-        // seting led light
+        // setting LED light
         if(this.isGlowing) {
             root.getElementsByClassName("led-light")[0].style.fill = this.ledColor;
         }

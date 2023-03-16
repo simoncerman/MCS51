@@ -56,7 +56,6 @@ class Button extends InputPeriphery{
         }
         this.clicked = false;
     }
-
     execute() {
         if(!this.clicked) {
             // GND to P pins leading edge handling
@@ -118,7 +117,6 @@ class Button extends InputPeriphery{
                     }
                 });
             }
-
 
             // if no pins are connected to GND
             if (this.pins[0].pinValue !== "GND" && this.pins[1].pinValue !== "GND" && this.pins[2].pinValue !== "GND" && this.pins[3].pinValue !== "GND") {
@@ -236,7 +234,7 @@ class Button extends InputPeriphery{
         });
 
 
-        // FIXME: mouse down and up not working -> vyøešit s hamanovou
+        // not implemented yet - not working properly
         /*// set on push
         buttonClicker.addEventListener("mousedown", () => {
             this.buttonPush();
