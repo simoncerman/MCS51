@@ -95,6 +95,9 @@ class SerialHandler{
         let serialMonitors = this.getSerialMonitors()
         let bit = this.sendQueue.pop();
 
+        // set bit to wo
+        document.getElementById("wo").value = bit;
+
         for (let i = 0; i < serialMonitors.length; i++) {
             serialMonitors[i].receiveBit(bit);
         }
