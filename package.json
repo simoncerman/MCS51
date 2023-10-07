@@ -7,7 +7,7 @@
     "build-win32": "electron-packager . --platform=win32 --version= 10.1.1"
   },
   "devDependencies": {
-    "electron": "^10.1.1",
+    "electron": "^22.3.25",
     "electron-packager": "^15.1.0"
   },
   "dependencies": {
