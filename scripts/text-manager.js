@@ -1,22 +1,22 @@
 let codeText;
 
-function normalizeCode(){
+function normalizeCode() {
     removeComments();
     removeSpaces();
 }
 
-function removeComments(){
+function removeComments() {
     codeText = codeText.replace(/(?:;.*$)/gmi, "");
 }
 
-function removeSpaces(){
+function removeSpaces() {
     codeText = codeText.replace(/(?:^[ \t]*)|(?:(?<=\S+)\s*?(?<=$))/gmi, "")
     codeText = codeText.replace(/(?<=^\s*\w{1,5})(?:[ \t])+(?=(?:\w|@|#|[/]))/gmi, " "); //codeText = codeText.replace(/(?<=^\s*\w{1,5})\s+(?=(?:\w|@|#|[/]))/gmi, " "); //První mezera
     codeText = codeText.replace(/(?<=,)\s*(?=(?:\w|@|#|[/]))/gmi, " "); //Ostatní mezery
     codeText = codeText.replace(/\s*(?=,)/gmi, "");
 }
 
-function getCodeText(){
+function getCodeText() {
     codeText = getEditorText();
 }
 
@@ -24,34 +24,34 @@ function getFirstOperand(instruction) {
     try {
         return instruction.match(/(?<=^\s*\w{2,5}\s+)(?:.*?)(?=(?:,|$))/gmi)[0];
     }
-    catch {}
+    catch { }
 }
 
 function getSecondOperand(instruction) {
     try {
         return instruction.match(/(?<=^\s*\w{2,5}\s+[^\s]+?[\t\f\v ]+)(?:[^\s]*?)(?=(?:,|$))/gmi)[0];
     }
-    catch {}
+    catch { }
 }
 
 function getThirdOperand(instruction) {
     try {
         return instruction.match(/(?<=^\s*\w{2,5}\s+[^\s]+?[\t\f\v ]+[^\s]+?[\t\f\v ]+)(?:[^\s]*?)(?=(?:,|$))/gmi)[0];
     }
-    catch {}
+    catch { }
 }
 
-function ifEmptyLine(line){
+function ifEmptyLine(line) {
     let reg = new RegExp(/^\s*$/, "gmi");
     return reg.test(line);
 }
 
-function ifIsLabel(line){
-    let reg = new RegExp(/\b[a-z]{1}\w*(?=:$)/, "gmi")
+function ifIsLabel(line) {
+    let reg = new RegExp(/\b[a-z]{1}\w*(?=:.*$)/, "gmi")
     return reg.test(line);
 }
 
-function replaceSpecialAddresses(){
+function replaceSpecialAddresses() {
     codeText = codeText.replace(/\bacc\b/gmi, "E0h");
     codeText = codeText.replace(/\bb\b/gmi, "F0h");
     codeText = codeText.replace(/\bpsw\b/gmi, "D0h");
@@ -75,10 +75,10 @@ function replaceSpecialAddresses(){
     codeText = codeText.replace(/\btl1\b/gmi, "8Bh");
 }
 
-function removeLabels(){
+function removeLabels() {
     codeText = codeText.replace(/$\s*\b[a-z]{1}\w*:/gmi, "");
 }
 
-function removeEmptyLines(){
+function removeEmptyLines() {
     codeText = codeText.replace(/^(?:[\t ]*(?:\r?\n|\r))*/gmi, "");
 }

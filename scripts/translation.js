@@ -1,73 +1,92 @@
 let labelArray;
 let instructionsArray;
 
-function SyntaxDetection(){
+let currentByteCount = 0;
+
+function SyntaxDetection() {
 
     labelArray = new Array();
     instructionsArray = new Array();
-    
 
-    let currentByteCount = 0;
+
     let lineArray = codeText.split("\n");
     console.log(lineArray);
 
     for (let i = 0; i < lineArray.length; i++) {
-        if(!ifEmptyLine(lineArray[i])) {
-
-            let result = SyntaxDetectionSingle(lineArray[i]);
-            if(result != -1 && result != -2){
-
-                let id = instructions[result].id;
-                let instruction = lineArray[i];
-                let bytes = instructions[result].bytes;
-                let cycles = instructions[result].cycles;
-
-                instructionsArray.push({  "id": id,
-                                                "instruction": instruction,
-                                                "line": i,
-                                                "address": currentByteCount,
-                                                "bytes": bytes,
-                                                "cycles": cycles
-                                            });
-
-                currentByteCount += bytes;
-            }
-            else if (result == -1){
-                //Label found
-                let label = lineArray[i].substring(0, lineArray[i].length-1);
-                labelArray.push({   "name": label,
-                                    "refAddr": currentByteCount
-                    	        });
-                console.log(labelArray[labelArray.length-1]);
-            }
-            else
-            {
-                throwErrorAtLine(i);
-                break;
-            }
+        if (!ifEmptyLine(lineArray[i])) {
+            if (InstructionCreate(lineArray[i], i)) { break; }
         }
     }
 }
 
-function SyntaxDetectionSingle(instruction){
+function InstructionCreate(input, i) {
+    let result = SyntaxDetectionSingle(input);
+    if (result.result == -2) {
+        throwErrorAtLine(i);
+        return false;
+    }
+    else if (result.result == -1) {
+        //Label found
+        let label = input.substring(0, input.search(":"));
+        let intstruct = input.substring(input.search(":") + 1, input.length - input.search(":") + 1);
+        labelArray.push({
+            "name": label,
+            "refAddr": currentByteCount
+        });
+        console.log(labelArray[labelArray.length - 1]);
+        console.log(intstruct);
+        return InstructionCreate(intstruct, i);
+    }
+    else {
+        let id = instructions[result.result].id;
+        let instruction = result.output;
+        let bytes = instructions[result.result].bytes;
+        let cycles = instructions[result.result].cycles;
+
+        instructionsArray.push({
+            "id": id,
+            "instruction": instruction,
+            "line": i,
+            "address": currentByteCount,
+            "bytes": bytes,
+            "cycles": cycles
+        });
+
+        currentByteCount += bytes;
+    }
+    return true;
+}
+
+function SyntaxDetectionSingle(instruction) {
     for (let i = 0; i < instructions.length; i++) {
 
-        if(ifIsLabel(instruction)){
-            return -1
+        if (ifIsLabel(instruction)) {
+            return { "result": -1 }
         }
 
         let syntaxRegex = new RegExp(instructions[i].regex, "gmi");
-        if(syntaxRegex.test(instruction)){
-            return i;
+        if (syntaxRegex.test(instruction)) {
+            if (instruction.includes("$")) {
+                instruction = instruction.replace("$", `${currentByteCount}`);
+                console.log(`${instruction}`);
+                labelArray.push({
+                    "name": `${currentByteCount}`,
+                    "refAddr": currentByteCount
+                });
+            }
+            return {
+                "result": i,
+                "output": instruction
+            };
         }
     }
 
-    return -2;
+    return { "result": -2 };
 }
 
-function translateCode(){
+function translateCode() {
     let actualAddr = 0;
-    
+
     prog = new Array(0xFFFF).fill(0x0);
 
     let t1 = performance.now();
@@ -87,7 +106,7 @@ function translateCodeSingle(instruction, memoryAddr) {
     let second = getSecondOperand(instruction.instruction);
     let third = getThirdOperand(instruction.instruction);
 
-    switch(instruction.id){
+    switch (instruction.id) {
         case 0:
             changeCodeHexOnAddress(memoryAddr, 0x11);
             changeCodeHexOnAddress(memoryAddr + 1, retrieveCodeDirect(first));
@@ -562,7 +581,7 @@ function translateCodeSingle(instruction, memoryAddr) {
             changeCodeHexOnAddress(memoryAddr, 0x62);
             changeCodeHexOnAddress(memoryAddr + 1, retrieveCodeDirect(first));
             return 2;
-    }   
+    }
 }
 
 function changeCodeHexOnAddress(addr, value) {

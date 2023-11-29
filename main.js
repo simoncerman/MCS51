@@ -7,7 +7,7 @@ var { fs } = require('fs');
 var win;
 var child;
 
-function createWindow (url) {
+function createWindow(url) {
   //Create Menu
   createMenu();
   // Create the browser window.
@@ -19,7 +19,7 @@ function createWindow (url) {
       nodeIntegration: true,
       defaultFontFamily: "Consolas"
     }
-  });  
+  });
 
   // maximize window
   win.maximize();
@@ -30,152 +30,152 @@ function createWindow (url) {
   //win.webContents.openDevTools();
 }
 
-function createMenu (){
+function createMenu() {
   var menu = Menu.buildFromTemplate([
     {
-        label: 'File',
-        submenu: [
+      label: 'File',
+      submenu: [
         {
-            label: 'New File',
-            click: function(){
-              closeFileConfirmation();
-            }
+          label: 'New File',
+          click: function () {
+            closeFileConfirmation();
+          }
         },
         {
-            label: 'Open File...',
-            click: function(){
-                dialog.showOpenDialog(win, {
-                  properties: ['openFile']
-                }).then(result => {
-                  if(!result.canceled){
-                    var path = ("file://" + result.filePaths[0]).toString();
-                    path = path.replace(/(?<=(?:\w)|[:])\\/gmi, "//")
-                    win.webContents.executeJavaScript('doEditorTextOpen("' + path + '");');
-                    //console.log('doEditorTextOpen("' + path + '");');
-                  }
-                }).catch(err => {
-                  console.log(err)
-              })
-            }
+          label: 'Open File...',
+          click: function () {
+            dialog.showOpenDialog(win, {
+              properties: ['openFile']
+            }).then(result => {
+              if (!result.canceled) {
+                var path = ("file://" + result.filePaths[0]).toString();
+                path = path.replace(/(?<=(?:\w)|[:])\\/gmi, "//")
+                win.webContents.executeJavaScript('doEditorTextOpen("' + path + '");');
+                //console.log('doEditorTextOpen("' + path + '");');
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          }
         },/*
         {
             label: 'Save'
         },*/
         {
-            label: 'Save As...',
-            click: function(){win.webContents.executeJavaScript('doEditorTextSave();');}
+          label: 'Save As...',
+          click: function () { win.webContents.executeJavaScript('doEditorTextSave();'); }
         }]
     },
     {
-        label: 'Edit',
-        submenu: [
+      label: 'Edit',
+      submenu: [
         {
-            label: 'Undo',
-            role: "undo"
-            //click: function(){win.webContents.executeJavaScript('console.log("undo");');}
+          label: 'Undo',
+          role: "undo"
+          //click: function(){win.webContents.executeJavaScript('console.log("undo");');}
         },
         {
-            label: 'Redo',
-            role: 'redo'
-            //click: function(){win.webContents.executeJavaScript('console.log("redo");');}
+          label: 'Redo',
+          role: 'redo'
+          //click: function(){win.webContents.executeJavaScript('console.log("redo");');}
         },
         {
-            type: 'separator'
+          type: 'separator'
         },
         {
-            label: 'Cut',
-            role: 'cut',
-            accelerator: 'CommandOrControl+X'
+          label: 'Cut',
+          role: 'cut',
+          accelerator: 'CommandOrControl+X'
         },
         {
-            label: 'Copy',
-            role: 'copy',
-            accelerator: 'CommandOrControl+C'
+          label: 'Copy',
+          role: 'copy',
+          accelerator: 'CommandOrControl+C'
         },
         {
-            label: 'Paste',
-            role: 'paste',
-            accelerator: 'CommandOrControl+P'
+          label: 'Paste',
+          role: 'paste',
+          accelerator: 'CommandOrControl+P'
         },
         {
           label: 'Select All',
           //role: 'selectAll'
           accelerator: 'CommandOrControl+A',
-          click: function(){win.webContents.executeJavaScript('doEditorSelectAll();');}
+          click: function () { win.webContents.executeJavaScript('doEditorSelectAll();'); }
         }]
     },
     {
-        label: 'Format',
-        submenu: [
+      label: 'Format',
+      submenu: [
         {
-            label: 'Themes',
-            submenu: [
+          label: 'Themes',
+          submenu: [
             {
-                label: 'Defualt',
-                type: 'radio',
-                click: function(){
-                  win.webContents.executeJavaScript("changeEditorTheme('default');");
-                }
+              label: 'Defualt',
+              type: 'radio',
+              click: function () {
+                win.webContents.executeJavaScript("changeEditorTheme('default');");
+              }
             },
             {
-                label: 'Monokai',
-                type: 'radio',
-                click: function(){
-                  win.webContents.executeJavaScript("changeEditorTheme('monokai');");
-                }
+              label: 'Monokai',
+              type: 'radio',
+              click: function () {
+                win.webContents.executeJavaScript("changeEditorTheme('monokai');");
+              }
             },
             {
-                label: 'Dracula',
-                type: 'radio',
-                click: function(){
-                  win.webContents.executeJavaScript("changeEditorTheme('dracula');");
-                }
+              label: 'Dracula',
+              type: 'radio',
+              click: function () {
+                win.webContents.executeJavaScript("changeEditorTheme('dracula');");
+              }
             },
             {
               label: 'Darcula',
               type: 'radio',
-              click: function(){
+              click: function () {
                 win.webContents.executeJavaScript("changeEditorTheme('darcula');");
               }
             },
             {
               label: 'Gruvbox Dark',
               type: 'radio',
-              click: function(){
+              click: function () {
                 win.webContents.executeJavaScript("changeEditorTheme('gruvbox-dark');");
               }
             },
             {
               label: 'XQ-Light',
               type: 'radio',
-              click: function(){
+              click: function () {
                 win.webContents.executeJavaScript("changeEditorTheme('xq-light');");
               }
             }]
         },
         {
-            label: 'Fonts',
-            click: function(){
+          label: 'Fonts',
+          click: function () {
 
-              child = new BrowserWindow({
-                parent: win, 
-                modal: true, 
-                width:200, height:150,
-                resizable: false,
-                frame: true,
-                title: 'Fonts',
-                autoHideMenuBar: true,
-                webPreferences: {
-                    enableRemoteModule: true,
-                    nodeIntegration: true
-                }
-              }); 
-              
-              child.show();
-              child.loadFile('fonts/font-dialog.html');
-              //child.webContents.openDevTools();
+            child = new BrowserWindow({
+              parent: win,
+              modal: true,
+              width: 200, height: 150,
+              resizable: false,
+              frame: true,
+              title: 'Fonts',
+              autoHideMenuBar: true,
+              webPreferences: {
+                enableRemoteModule: true,
+                nodeIntegration: true
+              }
+            });
 
-            }
+            child.show();
+            child.loadFile('fonts/font-dialog.html');
+            //child.webContents.openDevTools();
+
+          }
         }]
     }]);
   Menu.setApplicationMenu(menu);
@@ -218,7 +218,7 @@ ipcMain.on('sendNewFont', (event, args) => {
   win.webContents.executeJavaScript("changeEditorFontFamily('" + family + "')");
 });
 
-function closeFileConfirmation(){
+function closeFileConfirmation() {
   const opts = {
     type: 'question',
     buttons: ['Cancel', 'Yes', 'No'],
@@ -229,17 +229,17 @@ function closeFileConfirmation(){
   }
 
   dialog.showMessageBox(win, opts).then(result => {
-        console.log(result.response);
-        switch(result.response){
-          case 1:   //YES
-            win.webContents.executeJavaScript('doEditorTextSave();');
-            win.webContents.executeJavaScript('clearEditorText();');
-            return 1;
-          case 2:   //NO
-            win.webContents.executeJavaScript('clearEditorText();');
-            return 2;
-          case 0:   //Cancel
-            return 0 
-        }
+    console.log(result.response);
+    switch (result.response) {
+      case 1:   //YES
+        win.webContents.executeJavaScript('doEditorTextSave();');
+        win.webContents.executeJavaScript('clearEditorText();');
+        return 1;
+      case 2:   //NO
+        win.webContents.executeJavaScript('clearEditorText();');
+        return 2;
+      case 0:   //Cancel
+        return 0
+    }
   });
 }
