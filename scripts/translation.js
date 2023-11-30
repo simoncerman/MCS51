@@ -7,7 +7,7 @@ function SyntaxDetection() {
 
     labelArray = new Array();
     instructionsArray = new Array();
-
+    currentByteCount = 0;
 
     let lineArray = codeText.split("\n");
     console.log(lineArray);
