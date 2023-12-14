@@ -90,3 +90,9 @@ function onClockSignal() {
         else
             onStopBtnClick();
 }
+
+
+
+function checkConfig(){
+
+}

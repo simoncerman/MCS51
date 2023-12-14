@@ -1,229 +1,243 @@
 <!doctype html>
 <html>
-    <head>
-        
-        <meta charset="utf-8">
-        
-        <!-- Include Styles -->
-        <link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css">
-        <link rel="stylesheet" href="scripts/codemirror/theme/darcula.css"/>
-        <link rel="stylesheet" href="scripts/codemirror/theme/dracula.css"/>
-        <link rel="stylesheet" href="scripts/codemirror/theme/monokai.css"/>
-        <link rel="stylesheet" href="scripts/codemirror/theme/gruvbox-dark.css"/>
-        <link rel="stylesheet" href="scripts/codemirror/theme/xq-light.css"/>
 
-        <link rel="stylesheet" href="scripts/codemirror/addons/hint/show-hint.css"/>
-        <link rel="stylesheet" href="scripts/codemirror/addons/folding/foldgutter.css"/>
-        
-        <link rel="stylesheet" href="styles/basic.css">
-        <link rel="stylesheet" href="styles/fonts.css">
+<head>
 
-        <title>MCSim 1.0.1</title>
+    <meta charset="utf-8">
 
-    </head>
-    <body class="body">
-        <header class="top-bar">
-            <button class="control-btn" id="run" onclick="onRunBtnClick();">Run</button>
-            <button class="control-btn" id="stop" style="font-weight: 10px;" disabled onclick="onStopBtnClick();">&#10073;&#10073;</button>
-            <button class="control-btn" id="step" onclick="onStepBtnClick();">Step</button>
-            <select class="control-btn" title="System Clock" id="clock">
-                <option value="1">1s</option>
-                <option value="10">100ms</option>
-                <option selected value="100">10ms</option>
-                <option value="1000">1ms</option>
-                <!--<option>10000</option>
-                <option>50000</option>-->
-            </select>
-            <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
-            <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
-        </header>
-        <div class="input">
-            <div class="left-data">
-                <div class="data">
-                    <div class="sContainer">
-                        <div style="align-self: center;">SBUF</div>
-                        <div style="display: flex; flex-direction: row;">
-                            <div class="vertItem">R/O<input type="text" id="ro" size="1" disabled></div>
-                            <div class="vertItem">W/O<input type="text" id="wo" size="1"></div>
-                        </div>
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <div class="vertItem">RXD<input type="text" id="rxd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
-                            <div class="vertItem">TXD<input type="text" id="txd" size="1" value="1" style="width: 17px; text-align: center;" disabled></div>
-                        </div>
-                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">SCON<input title="0x98" type="text" id="scon" size="3"></div>
-                        <div class="pContainer"></div>
+    <!-- Include Styles -->
+    <link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="scripts/codemirror/theme/darcula.css" />
+    <link rel="stylesheet" href="scripts/codemirror/theme/dracula.css" />
+    <link rel="stylesheet" href="scripts/codemirror/theme/monokai.css" />
+    <link rel="stylesheet" href="scripts/codemirror/theme/gruvbox-dark.css" />
+    <link rel="stylesheet" href="scripts/codemirror/theme/xq-light.css" />
+
+    <link rel="stylesheet" href="scripts/codemirror/addons/hint/show-hint.css" />
+    <link rel="stylesheet" href="scripts/codemirror/addons/folding/foldgutter.css" />
+
+    <link rel="stylesheet" href="styles/basic.css">
+    <link rel="stylesheet" href="styles/fonts.css">
+
+    <title>MCSim 1.0.1</title>
+
+</head>
+
+<body class="body">
+    <header class="top-bar">
+        <button class="control-btn" id="run" onclick="onRunBtnClick();">Run</button>
+        <button class="control-btn" id="stop" style="font-weight: 10px;" disabled
+            onclick="onStopBtnClick();">&#10073;&#10073;</button>
+        <button class="control-btn" id="step" onclick="onStepBtnClick();">Step</button>
+        <label>1 cyklus za</label>
+        <select class="control-btn" title="System Clock" id="clock">
+            <option value="1">1s</option>
+            <option value="10">100ms</option>
+            <option selected value="100">10ms</option>
+            <option value="1000">1ms</option>
+            <option value="10000">100µs</option>
+            <option value="100000">10µs</option>
+        </select>
+        <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
+        <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
+    </header>
+    <div class="input">
+        <div class="left-data">
+            <div class="data">
+                <div class="sContainer">
+                    <div style="align-self: center;">SBUF</div>
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="vertItem">R/O<input type="text" id="ro" size="1" disabled></div>
+                        <div class="vertItem">W/O<input type="text" id="wo" size="1"></div>
                     </div>
-                    <div class="tContainer">
-                        <div style="display: flex; flex-direction: row;">
-                            <div class="vertItem">TH0<input title="0x8C" type="text" id="th0" size="3"></div>
-                            <div class="vertItem">TL0<input title="0x8A" type="text" id="tl0" size="3"></div>
-                        </div>
-                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">TMOD<input title="0x89" type="text" id="tmod" size="3"></div>
-                        <div class="regItem" style="width: 100%; justify-content: space-evenly;">TCON<input title="0x88" type="text" id="tcon" size="3"></div>
-                        <div style="display: flex; flex-direction: row; justify-content: flex-start;">
-                            <div class="vertItem">TH1<input title="0x8D" type="text" id="th1" size="3"></div>
-                            <div class="vertItem">TL1<input title="0x8B" type="text" id="tl1" size="3"></div>
-                        </div>
-                        <div class="regItem" style="width: 100%; justify-content: space-around;">PC<input type="text" id="pc" size="5"></div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                        <div class="vertItem">RXD<input type="text" id="rxd" size="1" value="1"
+                                style="width: 17px; text-align: center;" disabled></div>
+                        <div class="vertItem">TXD<input type="text" id="txd" size="1" value="1"
+                                style="width: 17px; text-align: center;" disabled></div>
                     </div>
-                    <div class="rContainer"></div>
-                    <div class="specContainer"></div>
-                    <div class="tableContainer">
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <div style="display: flex; flex-direction: row; align-items: flex-end;">
-                                <div class="tableTabBtn" id="dataTab">Data</div>
-                                <div class="tableTabBtn" id="codeTab">Code</div>
-                                <div class="tableTabBtn" id="extTab">Ext.</div>
-                            </div>
-                            <div style="align-self: flex-end;">
-                                <input type="text" class="scrollBtn" style="height: 17px;" id="gotoInput" size="5" disabled value="0x0000">
-                                <button class="scrollBtn" style="margin-left: -8px; text-transform:uppercase" onclick="onGoClick()" disabled>Go</button>
-                                <button class="scrollBtn" onclick="scrollTableLeft()" disabled>←</button>
-                                <button class="scrollBtn" style="margin-left: -8px;" onclick="scrollTableRight()" disabled>→</button>
-                            </div>
-                        </div>
-                        <table id="dataTable"></table>
-                    </div>
+                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">SCON<input title="0x98"
+                            type="text" id="scon" size="3"></div>
+                    <div class="pContainer"></div>
                 </div>
-                <div class="peripheries">
-                    <div class="controls" id="controls" style="display: none">
-                        <div class="control-box">
-                            <div class="basic">
-                                <p>Add:</p>
-                                <select name="addPeriphery" id="addPeripheryValue">
-                                    <option value="LED">LED</option>
-                                    <option value="sevenSegment">7 segment display</option>
-                                    <option value="FourteenSegmentDisplay">14 segment display</option>
-                                    <option value="ledMatrix">LED matrix</option>
-                                    <option value="LCD16x2Display">LCD 16x2 Display</option>
-                                    <option value="button">Button</option>
-                                    <option value="switch">Switch</option>
-                                    <option value="Keyboard">Keyboard</option>
-                                    <option value="motorDC">DC engine</option>
-                                    <option value="stepEngine">Step engine</option>
-                                    <option value="serialMonitor">Serial monitor</option>
-                                    <option value="DAC">DAC</option>
-                                    <option value="ADC">ADC</option>
-                                </select>
-                                <button id="addPeripheryButton">Add</button>
-                            </div>
-                            <div class="advanced">
-                                <p>Properties:</p>
-                                <table id="peripheryProperties">
-                                    <tr>
-                                        <td>LED color</td>
-                                        <td>
-                                            <select name="" id="ledColor">
-                                                <option value="red">red</option>
-                                                <option value="green">green</option>
-                                                <option value="blue">blue</option>
-                                                <option value="yellow">yellow</option>
-                                                <option value="white">white</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                <div class="tContainer">
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="vertItem">TH0<input title="0x8C" type="text" id="th0" size="3"></div>
+                        <div class="vertItem">TL0<input title="0x8A" type="text" id="tl0" size="3"></div>
+                    </div>
+                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">TMOD<input title="0x89"
+                            type="text" id="tmod" size="3"></div>
+                    <div class="regItem" style="width: 100%; justify-content: space-evenly;">TCON<input title="0x88"
+                            type="text" id="tcon" size="3"></div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-start;">
+                        <div class="vertItem">TH1<input title="0x8D" type="text" id="th1" size="3"></div>
+                        <div class="vertItem">TL1<input title="0x8B" type="text" id="tl1" size="3"></div>
+                    </div>
+                    <div class="regItem" style="width: 100%; justify-content: space-around;">PC<input type="text"
+                            id="pc" size="5"></div>
+                </div>
+                <div class="rContainer"></div>
+                <div class="specContainer"></div>
+                <div class="tableContainer">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: row; align-items: flex-end;">
+                            <div class="tableTabBtn" id="dataTab">Data</div>
+                            <div class="tableTabBtn" id="codeTab">Code</div>
+                            <div class="tableTabBtn" id="extTab">Ext.</div>
                         </div>
-                        <div class="control-box">
-                            <p>Open periphery file</p>
-                            <input type="file" id="openPeripheryFile">
-                            <div class="open-options">
-                                <button id="openPeripheryAdd">Add to current</button>
-                                <button id="openPeripheryReplace">Replace current</button>
-                            </div>
+                        <div style="align-self: flex-end;">
+                            <input type="text" class="scrollBtn" style="height: 17px;" id="gotoInput" size="5" disabled
+                                value="0x0000">
+                            <button class="scrollBtn" style="margin-left: -8px; text-transform:uppercase"
+                                onclick="onGoClick()" disabled>Go</button>
+                            <button class="scrollBtn" onclick="scrollTableLeft()" disabled>←</button>
+                            <button class="scrollBtn" style="margin-left: -8px;" onclick="scrollTableRight()"
+                                disabled>→</button>
                         </div>
                     </div>
-                    <div id="peripheriesGrid">
-                    </div>
+                    <table id="dataTable"></table>
                 </div>
             </div>
-            <textarea id="code" name="code"></textarea>
+            <div class="peripheries">
+                <div class="controls" id="controls" style="display: none">
+                    <div class="control-box">
+                        <div class="basic">
+                            <p>Add:</p>
+                            <select name="addPeriphery" id="addPeripheryValue">
+                                <option value="LED">LED</option>
+                                <option value="sevenSegment">7 segment display</option>
+                                <option value="FourteenSegmentDisplay">14 segment display</option>
+                                <option value="ledMatrix">LED matrix</option>
+                                <option value="LCD16x2Display">LCD 16x2 Display</option>
+                                <option value="button">Button</option>
+                                <option value="switch">Switch</option>
+                                <option value="Keyboard">Keyboard</option>
+                                <option value="motorDC">DC engine</option>
+                                <option value="stepEngine">Step engine</option>
+                                <option value="serialMonitor">Serial monitor</option>
+                                <option value="DAC">DAC</option>
+                                <option value="ADC">ADC</option>
+                            </select>
+                            <button id="addPeripheryButton">Add</button>
+                        </div>
+                        <div class="advanced">
+                            <p>Properties:</p>
+                            <table id="peripheryProperties">
+                                <tr>
+                                    <td>LED color</td>
+                                    <td>
+                                        <select name="" id="ledColor">
+                                            <option value="red">red</option>
+                                            <option value="green">green</option>
+                                            <option value="blue">blue</option>
+                                            <option value="yellow">yellow</option>
+                                            <option value="white">white</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="control-box">
+                        <p>Open periphery file</p>
+                        <input type="file" id="openPeripheryFile">
+                        <div class="open-options">
+                            <button id="openPeripheryAdd">Add to current</button>
+                            <button id="openPeripheryReplace">Replace current</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="peripheriesGrid">
+                </div>
+            </div>
         </div>
+        <textarea id="code" name="code"></textarea>
+    </div>
 
-        <div id="modal">
-            <div id="modal-content"></div>
-            <div id="modal-background"></div>
-        </div>
+    <div id="modal">
+        <div id="modal-content"></div>
+        <div id="modal-background"></div>
+    </div>
 
-        <div id="file">
-            <a id="saveFile" href="data:application/xml;charset=utf-8,THIS IS TEST" download="*.51sim" style="display: none;">Save</a> <!-- SAVE FILE -->
-        </div>
-    </body>
+    <div id="file">
+        <a id="saveFile" href="data:application/xml;charset=utf-8,THIS IS TEST" download="*.51sim"
+            style="display: none;">Save</a> <!-- SAVE FILE -->
+    </div>
+</body>
 
-    <!-- Include Scripts -->
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script src="scripts/jquery-3.5.1.min.js"></script>
-    <script src="scripts/codemirror/lib/codemirror.js"></script>
-    <script src="scripts/codemirror/lib/codemirror_grammar.js"></script>
-    <script src="scripts/codemirror/grammars/assmbly.js"></script>
-    <!--<script src="scripts/codemirror/lib/grammar.js"></script>-->
-    <script src="scripts/codemirror/lib/codemirror_functions.js"></script>
-    <script src="scripts/codemirror/addons/hint/show-hint.js"></script>
-    <script src="scripts/codemirror/addons/hint/dictionary-hint.js"></script>
-    <script src="scripts/codemirror/addons/folding/foldcode.js"></script>
-    <script src="scripts/codemirror/addons/folding/foldgutter.js"></script>
-    <script src="scripts/codemirror/addons/folding/indent-fold.js"></script>
-    <script src="scripts/minor_functions.js"></script>
-    <script src="scripts/gui.js"></script>
-    <script src="scripts/data.js"></script>
-    <script src="scripts/control.js"></script>
-    <script src="scripts/text-manager.js"></script>
-    <script src="scripts/timer_counter.js"></script>
-    <script src="scripts/execution.js"></script>
-    <script src="scripts/translation.js"></script>
-    <script src="scripts/execution-functions.js"></script>
-    <script src="scripts/translation-functions.js"></script>
-    <script src="scripts/json/instructions.js"></script>
+<!-- Include Scripts -->
+<script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+<script src="scripts/jquery-3.5.1.min.js"></script>
+<script src="scripts/codemirror/lib/codemirror.js"></script>
+<script src="scripts/codemirror/lib/codemirror_grammar.js"></script>
+<script src="scripts/codemirror/grammars/assmbly.js"></script>
+<script src="scripts/codemirror/lib/grammar.js"></script>
+<script src="scripts/codemirror/lib/codemirror_functions.js"></script>
+<script src="scripts/codemirror/addons/hint/show-hint.js"></script>
+<script src="scripts/codemirror/addons/hint/dictionary-hint.js"></script>
+<script src="scripts/codemirror/addons/folding/foldcode.js"></script>
+<script src="scripts/codemirror/addons/folding/foldgutter.js"></script>
+<script src="scripts/codemirror/addons/folding/indent-fold.js"></script>
+<script src="scripts/minor_functions.js"></script>
+<script src="scripts/gui.js"></script>
+<script src="scripts/data.js"></script>
+<script src="scripts/control.js"></script>
+<script src="scripts/text-manager.js"></script>
+<script src="scripts/timer_counter.js"></script>
+<script src="scripts/execution.js"></script>
+<script src="scripts/translation.js"></script>
+<script src="scripts/execution-functions.js"></script>
+<script src="scripts/translation-functions.js"></script>
+<script src="scripts/json/instructions.js"></script>
 
-    <script src="scripts/grid.js"></script>
-    <script src="scripts/extra.js"></script>
+<script src="scripts/grid.js"></script>
+<script src="scripts/extra.js"></script>
 
-    <script>if (window.module) module = window.module;</script>
+<script>if (window.module) module = window.module;</script>
 
-    <!-- Local Scripts -->
-    <!--<script>codemirror_grammar_demo(document.getElementById("code"), "default");</script>-->
-    <script type="text/javascript">
+<!-- Local Scripts -->
+<!--<script>codemirror_grammar_demo(document.getElementById("code"), "default");</script>-->
+<script type="text/javascript">
 
-        var code = document.getElementById("code");
-        var opts = {
+    var code = document.getElementById("code");
+    var opts = {
         mode: "python",
         lineNumbers: true,
         theme: "gruvbox-dark",
         indentUnit: 3,
         indentWithTabs: true,
-        extraKeys: {"Ctrl-Space": "autocomplete"},
+        extraKeys: { "Ctrl-Space": "autocomplete" },
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "breakpoints"],
         foldGutter: true,
         lint: true,
-        };
-        var editor = CodeMirror.fromTextArea(code, opts);
+    };
+    var editor = CodeMirror.fromTextArea(code, opts);
 
-        editor.setSize("30%", $(window).height()-$(".top-bar").height() - 2 * pI($(".CodeMirror").css("margin-top")) - 1);
-        editor.on("gutterClick", function(cm, n) {
-            var info = cm.lineInfo(n);
-            cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());
-        });
-        editor.on("keyup", function (cm, event) {
-                if (!cm.state.completionActive && //Enables keyboard navigation in autocomplete list
-                    event.keyCode >= 65 &&
-                    event.keyCode <= 90) {        //Enter - do not open autocomplete list just after item has been selected in it
-                    CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
-                }
-        });
-        function makeMarker() {
-            var marker = document.createElement("div");
-            marker.style.color = "#822";
-            marker.style.position = "relative";
-            marker.style.margin.left = "-10px";
-            marker.innerHTML = "●";
-            return marker;
+    editor.setSize("30%", $(window).height() - $(".top-bar").height() - 2 * pI($(".CodeMirror").css("margin-top")) - 1);
+    editor.on("gutterClick", function (cm, n) {
+        var info = cm.lineInfo(n);
+        cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());
+    });
+    editor.on("keyup", function (cm, event) {
+        if (!cm.state.completionActive && //Enables keyboard navigation in autocomplete list
+            event.keyCode >= 65 &&
+            event.keyCode <= 90) {        //Enter - do not open autocomplete list just after item has been selected in it
+            CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
         }
-    </script>
-    <style>
-        
-        .CodeMirror{
-            font-family: monospace;
-        }
-    </style>
+    });
+    function makeMarker() {
+        var marker = document.createElement("div");
+        marker.style.color = "#822";
+        marker.style.position = "relative";
+        marker.style.margin.left = "-10px";
+        marker.innerHTML = "●";
+        return marker;
+    }
+</script>
+<style>
+    .CodeMirror {
+        font-family: monospace;
+    }
+</style>
+
 </html>

@@ -284,31 +284,31 @@ let instructions =
 		},
 		{
 			"id": 47,
-			"regex": "^\\s*jb\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jb\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JB bit, label
 		},
 		{
 			"id": 48,
-			"regex": "^\\s*jb\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jb\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JB spec, label
 		},
 		{
 			"id": 49,
-			"regex": "^\\s*jbc\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jbc\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JBC bit, label
 		},
 		{
 			"id": 50,
-			"regex": "^\\s*jbc\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jbc\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JBC spec, label
 		},
 		{
 			"id": 51,
-			"regex": "^\\s*jc\\s+[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jc\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 2,
 			"cycles": 2 //JC label
 		},
@@ -320,31 +320,31 @@ let instructions =
 		},
 		{
 			"id": 53,
-			"regex": "^\\s*jnb\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jnb\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JNB bit, label
 		},
 		{
 			"id": 54,
-			"regex": "^\\s*jnb\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s*[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jnb\\s+(?:(?:(?:b|a|p[0-3])[.][0-7])|(?:tf[01]|tr[01]|ie[01]|it[01]|sm[0-2]|ren|[tr]b8|[tr]i|e[as]|et[01]|ex[01]|px[01]|pt[0-2]|ps?|cy|ac|f0|rs[01]|ov))\\s*,\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 3,
 			"cycles": 2 //JNB spec, label
 		},
 		{
 			"id": 55,
-			"regex": "^\\s*jnc\\s+[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jnc\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 2,
 			"cycles": 2 //JNC label
 		},
 		{
 			"id": 56,
-			"regex": "^\\s*jnz\\s+[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jnz\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 2,
 			"cycles": 2 //JNZ label
 		},
 		{
 			"id": 57,
-			"regex": "^\\s*jz\\s+[a-z][a-z0-9]*\\s*$",
+			"regex": "^\\s*jz\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
 			"bytes": 2,
 			"cycles": 2 //JZ label
 		},
@@ -743,5 +743,17 @@ let instructions =
 			"regex": "^\\s*xrl\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s*a\\s*$",
 			"bytes": 2,
 			"cycles": 1 //XRL direct, A
+		},
+		{
+			"id": 124,
+			"regex": "^\\s*jmp\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
+			"bytes": 1,
+			"cycles": 2 //JMP @A+DPTR
+		},
+		{
+			"id": 125,
+			"regex": "^\\s*jmp\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,11}b)|(?:[0-9a-f]{1,3}h))\\s*$",
+			"bytes": 1,
+			"cycles": 2 //JMP @A+DPTR
 		}
 	]

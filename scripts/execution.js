@@ -23,8 +23,10 @@ function checkForBreakPoint(){
 
 const doInstructionStep = async () => {
     TTSetUp();
+
     currentInstruction = InstructionFromAddress(programCounter);
     let numCycles = doInstructionAction(currentInstruction)
+
     if(numCycles == undefined)
         incrementTT(0);
     else {
@@ -33,6 +35,7 @@ const doInstructionStep = async () => {
             timeElapsed += 1;
         }
     }
+    
     incrementTT(1);
     updateInfo();
 }
