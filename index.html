@@ -31,14 +31,16 @@
         <button class="control-btn" id="step" onclick="onStepBtnClick();">Step</button>
         <label>1 cyklus za</label>
         <select class="control-btn" title="System Clock" id="clock">
-            <option value="1">1s</option>
-            <option value="10">100ms</option>
-            <option selected value="100">10ms</option>
+            <option value="2000000">2s</option>
+            <option value="1000000">1s</option>
+            <option value="100000">100ms</option>
+            <option selected value="10000">10ms</option>
             <option value="1000">1ms</option>
-            <option value="10000">100µs</option>
-            <option value="100000">10µs</option>
         </select>
+        <label><input type="checkbox" id="randomdataControl">Náhodná data</label>
         <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
+        <button class="control-btn" id="peripheryControl" >Save</button>
+        <button class="control-btn" id="peripheryControl" >Load</button>
         <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
     </header>
     <div class="input">

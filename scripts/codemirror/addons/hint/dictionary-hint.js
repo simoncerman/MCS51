@@ -1,5 +1,5 @@
 var dictionary = [  "ACALL", "ADD", "ADDC", "AJMP", "ANL",
-                    "CJNE", "CLR", "CPL",
+                    "CJNE", "CLR", "CPL", "CALL",
                     "DA", "DEC", "DIV", "DJNZ",
                     "INC",
                     "JB", "JBC", "JC", "JMP", "JNB", "JNC", "JNZ", "JZ",

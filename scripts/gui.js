@@ -284,7 +284,7 @@ function highlightActiveLine() {
 }
 
 function getClockInterval() {
-	return 1 / parseInt($('#clock').val()) * 1000;
+	return parseInt($('#clock').val());
 }
 
 function scrollTableLeft(){
@@ -323,5 +323,5 @@ function updateInfo(){
 	}
 	
 	$("#info").show();
-	$("#info").text("Ins.: " + name + "; Time el.: " + (timeElapsed * getClockInterval()) + "ms");
+	$("#info").text("Ins.: " + name + "; Time el.: " + (timeElapsed * getClockInterval()) + "µs");
 }

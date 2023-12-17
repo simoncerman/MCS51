@@ -21,7 +21,7 @@
                         "dec", "div", "djnz", "inc", "jb", "jbc", "jc", "jmp", "jnb", "jnc", "jnz",
                         "jz", "lcall", "ljmp", "mov", "movc", "movx", "mul", "nop", "orl",
                         "pop", "push", "ret", "reti", "rl", "rlc", "rr", "rrc", "setb", "sjmp",
-                        "subb", "swap", "xch", "xchd", "xrl"];
+                        "subb", "swap", "xch", "xchd", "xrl", "call"];
     //CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
   
     function top(state) {

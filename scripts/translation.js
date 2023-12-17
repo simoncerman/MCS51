@@ -47,6 +47,9 @@ function InstructionCreate(input, i) {
             "id": id,
             "instruction": instruction,
             "line": i,
+            "parametrs":{
+                
+            },
             "address": currentByteCount,
             "bytes": bytes,
             "cycles": cycles

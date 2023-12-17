@@ -106,7 +106,7 @@ class SerialHandler{
             this.dataSender = setTimeout(() => {
                 this.sendData();
                 this.setTI(1);
-            }, getClockInterval()*5);
+            }, getClockInterval()/1000*5);
         } else {
             this.dataSender = null;
         }
