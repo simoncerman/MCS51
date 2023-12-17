@@ -10,6 +10,7 @@ let randomdataCheckbox = $('randomdataControl');
 function onRunBtnClick() {
     if (!isRunning) {
         isRunning = true;
+        checkTeacherConfig();
         changeGUIToRun();           //Upravení GUI
         getGutterColors();
         getCodeText();              //Získání textu
@@ -59,6 +60,7 @@ function onStopBtnClick() {
 function onStepBtnClick() {
     if (!isRunning) {
         isRunning = true;
+        checkTeacherConfig();
         changeGUIToRun();           //Upravení GUI
         getGutterColors();
         getCodeText();              //Získání textu
@@ -143,5 +145,5 @@ function saveDocument(){
 }
 
 function loadDocumnet(){
-    
+
 }
