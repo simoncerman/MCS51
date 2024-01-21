@@ -5,8 +5,6 @@ class SerialHandler {
         this.sendQueue = [];
         this.dataSender = null;
 
-        this.receiving = false;
-
         this.mode = 0;
         this.speed = 1;
     }
@@ -22,7 +20,6 @@ class SerialHandler {
     }
 
     receiveData(bit) {
-        this.receiving = true;
         this.ro.value = bit;
         this.receiveBitBuffer.unshift(bit);
         if (this.receiveBitBuffer.length === 9) {
@@ -37,7 +34,6 @@ class SerialHandler {
             this.moveToReceiveBuffer(value);
 
             this.receiveBitBuffer = [];
-            this.receiving = false;
         }
     }
 
@@ -79,6 +75,14 @@ class SerialHandler {
         return this.getSCON()[4];
     }
 
+    getRI() {
+        return this.getSCON()[7];
+    }
+
+    getTI() {
+        return this.getSCON()[6];
+    }
+
     setRB8(bit) {
         this.setSCONBit(5, bit);
     }
@@ -101,7 +105,7 @@ class SerialHandler {
     }
 
     sendDataPrepare(value) {
-        if(this.mode == 0 && this.receiving){return;}
+        if(this.mode == 0 && this.getTI() == 0){return;}
 
         this.sendQueue = [];
         let hex = parseInt(value, 10).toString(16);
