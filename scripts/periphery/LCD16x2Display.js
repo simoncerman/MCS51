@@ -1,7 +1,9 @@
-class LCD16x2Display extends Periphery{
+class LCD16x2Display extends Periphery {
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "LCD16x2Display";
+
+        this.highNibble = null;
 
         // properties for modal and zoom
         this.zoomable = true;
@@ -21,7 +23,7 @@ class LCD16x2Display extends Periphery{
         this.displayPowered = false;
         this.display = {
             objectDisplay: null,
-            isOn : true,
+            isOn: true,
         }
         this.generateDisplay();
 
@@ -47,158 +49,158 @@ class LCD16x2Display extends Periphery{
             // VSS - GND
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 11,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null,
-                description:{
+                description: {
                     text: "VSS",
                 }
             },
             // VCC - 5V
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 26,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // VEE - Contrast
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 41,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // RS - Register Select
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 56,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // RW - Read/Write
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 70,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // E - Enable
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 84,
                     y: -7
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB0 - Data Bit 0
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 7.5,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB1 - Data Bit 1
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 19,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB2 - Data Bit 2
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 30,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB3 - Data Bit 3
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 41.5,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB4 - Data Bit 4
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 52.5,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB5 - Data Bit 5
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 64,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB6 - Data Bit 6
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 75.5,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
             // DB7 - Data Bit 7
             {
                 connectedTo: null,
-                pinValue : null,
+                pinValue: null,
                 pinPosition: {
                     x: 86.5,
                     y: 100
                 },
-                optionSelector : null,
+                optionSelector: null,
                 textNode: null
             },
         ];
@@ -279,25 +281,35 @@ class LCD16x2Display extends Periphery{
         return [topPinDescriptionsDIV, bottomPinDescriptionsDIV];
     }
 
+    getData() {
+        let output = [
+            this.pins[0].pinValue,
+            this.pins[1].pinValue,
+            this.pins[2].pinValue,
+            this.pins[3].pinValue,
+            this.pins[4].pinValue,
+            this.pins[5].pinValue,
+            [
+                this.pins[6].pinValue,
+                this.pins[7].pinValue,
+                this.pins[8].pinValue,
+                this.pins[9].pinValue,
+                this.pins[10].pinValue,
+                this.pins[11].pinValue,
+                this.pins[12].pinValue,
+                this.pins[13].pinValue]
+        ];
+        for (let i = 0; i < this.pins.length; i++) {
+            this.pins[i].pinValue = null;
+        }
+        return output;
+    }
+
     execute() {
-        let GND = this.pins[0].pinValue; // ground
-        let VCC = this.pins[1].pinValue; // power
-        let VEE = this.pins[2].pinValue; // contrast -> opacity
-        let RS = this.pins[3].pinValue; // register select -> 0: command mode, 1: data mode
-        let RW = this.pins[4].pinValue; // read/write -> 0: write, 1: read
-        let E = this.pins[5].pinValue; // enable -> 0: disable, 1: enable : Always 1 to write data
-        let DB = [
-            this.pins[6].pinValue,
-            this.pins[7].pinValue,
-            this.pins[8].pinValue,
-            this.pins[9].pinValue,
-            this.pins[10].pinValue,
-            this.pins[11].pinValue,
-            this.pins[12].pinValue,
-            this.pins[13].pinValue]; // data bits
+        let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
 
         // check if the display is powered
-        if(GND === "GND" && VCC === 1) {
+        if (GND === "GND" && VCC === 1) {
             this.displayPowered = true;
         } else {
             this.displayPowered = false;
@@ -310,7 +322,7 @@ class LCD16x2Display extends Periphery{
 
         // check if all db pins has value null -> no data -> return
         let allNull = true;
-        for (let i = 0; i < DB.length; i++) {
+        for (let i = 4; i < DB.length; i++) {
             if (DB[i] !== null) {
                 allNull = false;
                 break;
@@ -325,18 +337,151 @@ class LCD16x2Display extends Periphery{
             // command mode
             if (RS === "GND") {
                 if (RW === "GND") {
-                    this.writeCommand(DB);
-                }
-            } else {
-                if (RW === "GND") {
-                    this.writeData(DB);
+                    for (let i = 0; i < DB.length; i++) {
+                        if (DB[i] === "GND") {
+                            DB[i] = 0;
+                        }
+                    }
+
+                    let command = 0;
+                    for (let i = 4; i < DB.length; i++) {
+                        command += DB[i] * Math.pow(2, i);
+                    }
+                    switch (command) {
+                        case 0x20:
+                            this.turn4bitmode();
+                            break;
+                        case 0x30:
+                            this.turn8bitmode();
+                            break;
+                        default: return;
+                    }
                 }
             }
         }
+    }
 
-        // reset all pins values to null
-        for (let i = 0; i < this.pins.length; i++) {
-            this.pins[i].pinValue = null;
+    turn8bitmode() {
+        this.execute = function () {
+            let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
+            // check if the display is powered
+            if (GND === "GND" && VCC === 1) {
+                this.displayPowered = true;
+            } else {
+                this.displayPowered = false;
+                this.clearDisplay();
+                return;
+            }
+
+            // check contrast/opacity of the display
+            this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
+
+            // check if all db pins has value null -> no data -> return
+            let allNull = true;
+            for (let i = 0; i < DB.length; i++) {
+                if (DB[i] !== null) {
+                    allNull = false;
+                    break;
+                }
+            }
+            if (allNull) {
+                return;
+            }
+            if (E === 1) this.isFallingEdge = true;
+            if (E === "GND" && this.isFallingEdge) {
+                this.isFallingEdge = false;
+                // command mode
+                if (RS === "GND") {
+                    if (RW === "GND") {
+                        this.writeCommand(DB);
+                    }
+                } else {
+                    if (RW === "GND") {
+                        this.writeData(DB);
+                    }
+                }
+            }
+        }
+    }
+
+    turn4bitmode() {
+        this.execute = function () {
+            let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
+            // check if the display is powered
+            if (GND === "GND" && VCC === 1) {
+                this.displayPowered = true;
+            } else {
+                this.displayPowered = false;
+                this.clearDisplay();
+                return;
+            }
+            // check contrast/opacity of the display
+            this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
+            // check if all db pins has value null -> no data -> return
+            let allNull = true;
+            for (let i = 4; i < DB.length; i++) {
+                if (DB[i] !== null) {
+                    allNull = false;
+                    break;
+                }
+            }
+            if (allNull) {
+                return;
+            }
+            if (E === 1) this.isFallingEdge = true;
+            if (E === "GND" && this.isFallingEdge) {
+                this.isFallingEdge = false;
+                // command mode
+                if (RS === "GND") {
+                    if (RW === "GND") {
+                        if (this.highNibble != null) {
+                            this.writeCommand([
+                                this.highNibble[0],
+                                this.highNibble[1],
+                                this.highNibble[2],
+                                this.highNibble[3],
+                                DB[4],
+                                DB[5],
+                                DB[6],
+                                DB[7]
+                            ]);
+                            this.highNibble = null;
+                        } else {
+                            this.highNibble = [
+                                DB[4],
+                                DB[5],
+                                DB[6],
+                                DB[7]
+                            ]
+                        }
+
+                    }
+                } else {
+                    if (RW === "GND") {
+                        if (this.highNibble != null) {
+                            this.writeData([
+                                this.highNibble[0],
+                                this.highNibble[1],
+                                this.highNibble[2],
+                                this.highNibble[3],
+                                DB[4],
+                                DB[5],
+                                DB[6],
+                                DB[7]
+                            ]);
+                            this.highNibble = null;
+                        } else {
+                            this.highNibble = [
+                                DB[4],
+                                DB[5],
+                                DB[6],
+                                DB[7]
+                            ]
+                        }
+
+                    }
+                }
+            }
         }
     }
 
@@ -441,10 +586,12 @@ class LCD16x2Display extends Periphery{
             // Function set
             case 0x80: // Force cursor to the beginning ( 1st line)
                 break;
-            case 0xC0: // Force cursor to the beginning ( 2nd line)
+            case 0xC0:
+                break; // Force cursor to the beginning ( 2nd line)
         }
 
     }
+
     writeData(DB) {
         // convert all "GND" to 0 and all 1 to 1
         for (let i = 0; i < DB.length; i++) {
@@ -462,7 +609,6 @@ class LCD16x2Display extends Periphery{
         this.rows[this.cursor.row][this.cursor.position] = data;
         this.cursorShiftRightWithRowJump();
     }
-
 
     // will clear the display data
     clearDisplay() {
@@ -506,7 +652,7 @@ class LCD16x2Display extends Periphery{
     }
 
     cursorShiftLeftWithRowJump() {
-        if (this.cursor.position === 0 && this.cursor.row === 1){
+        if (this.cursor.position === 0 && this.cursor.row === 1) {
             this.cursor.row = 0;
             this.cursor.position = 15;
         } else {
@@ -515,7 +661,7 @@ class LCD16x2Display extends Periphery{
     }
 
     cursorShiftRightWithRowJump() {
-        if (this.cursor.position === 15 && this.cursor.row === 0){
+        if (this.cursor.position === 15 && this.cursor.row === 0) {
             this.cursor.row = 1;
             this.cursor.position = 0;
         } else {

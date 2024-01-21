@@ -1,4 +1,4 @@
-class SerialMonitor extends Periphery{
+class SerialMonitor extends Periphery {
     constructor(peripheryId) {
         super(peripheryId);
         this.name = "SerialMonitor";
@@ -17,8 +17,15 @@ class SerialMonitor extends Periphery{
         this.recieveTextArea = null;
         this.sendTextArea = null;
         this.dataSender = null;
+        this.modeSwitch = null;
+        this.connectionSettings = null;
         this.sendQueue = [];
         this.receiveQueue = [];
+
+        this.mode = 0;
+        this.speed = 1;
+
+
     }
 
     prepare() {
@@ -34,6 +41,11 @@ class SerialMonitor extends Periphery{
             this.serialMonitor = this.generateMonitor();
         return this.serialMonitor;
     }
+
+    getSettings() {
+        return `${this.mode} + ${this.speed}`;
+    }
+
     generateMonitor() {
         let serialMonitor = document.createElement("div");
         serialMonitor.classList.add("serialMonitor");
@@ -46,12 +58,61 @@ class SerialMonitor extends Periphery{
         let name = document.createElement("div");
         name.innerHTML = this.name;
 
-        let baudRate = document.createElement("div");
-        baudRate.classList.add("baudRate");
-        baudRate.innerHTML = "Baud Rate: 9600";
+        this.connectionSettings = document.createElement("div");
+        this.connectionSettings.classList.add("connectionSettings");
+
+        this.modeSwitch = document.createElement("select");
+        this.modeSwitch.classList.add("modeSwitch");
+        this.modeSwitch.innerHTML = `
+            <option selected="selected" value="0">Mód 0</option>
+            <option value="1">Mód 1</option>
+            <option value="2">Mód 2</option>
+            <option value="3">Mód 3</option>
+        `;
+        let ptr = this;
+        this.modeSwitch.onchange = function () {
+            switch (this.value) {
+                case "0":
+                    ptr.connectionSettings.innerHTML = ``;
+                    ptr.mode = 1;
+                    ptr.speed = 1;
+
+                    break;
+                case "1":
+                    ptr.mode = 1;
+                    ptr.connectionSettings = document.createElement("input");
+                    ptr.connectionSettings.type = "number";
+                    ptr.connectionSettings.onchange = function () {
+                        ptr.speed = parseFloat(this.value);
+                    }
+
+                    break;
+                case "2":
+                    ptr.mode = 2;
+                    ptr.connectionSettings = document.createElement("input");
+                    ptr.connectionSettings.type = "number";
+                    ptr.connectionSettings.onchange = function () {
+                        ptr.speed = parseFloat(this.value);
+                    }
+
+                    break;
+                case "3":
+                    ptr.mode = 3;
+                    ptr.connectionSettings = document.createElement("input");
+                    ptr.connectionSettings.type = "number";
+                    ptr.connectionSettings.onchange = function () {
+                        ptr.speed = parseFloat(this.value);
+                    }
+
+                    break;
+                default: return;
+            };
+        }
+
 
         topDetails.appendChild(name);
-        topDetails.appendChild(baudRate);
+        topDetails.appendChild(this.connectionSettings);
+        topDetails.appendChild(this.modeSwitch);
 
         let receiveArea = document.createElement("div");
         receiveArea.classList.add("receiveArea");
@@ -63,7 +124,7 @@ class SerialMonitor extends Periphery{
 
         this.parityBit = document.createElement("div");
         this.parityBit.classList.add("parityBit");
-        this.parityBit.innerHTML = "Parity: 0";
+        //this.parityBit.innerHTML = "Parity: 0";
 
         receiveArea.appendChild(this.recieveTextArea);
         receiveArea.appendChild(this.parityBit);
@@ -94,6 +155,8 @@ class SerialMonitor extends Periphery{
         return serialMonitor;
     }
     sendDataPrepare() {
+        if(!serialHandler.controlSettings()){return}
+
         let data = this.sendTextArea.value;
         this.sendTextArea.value = "";
         data = data.split("");
@@ -114,10 +177,11 @@ class SerialMonitor extends Periphery{
                 this.sendQueue.push(binary[j]);
             }
         }
-        if (this.dataSender == null){
+        if (this.dataSender == null) {
             this.sendData();
         }
     }
+
     sendData() {
         if (this.sendQueue.length === 0) {
             this.dataSender = null;
@@ -128,7 +192,7 @@ class SerialMonitor extends Periphery{
         if (this.sendQueue.length !== 0) {
             this.dataSender = setTimeout(() => {
                 this.sendData();
-            }, getClockInterval()*5);
+            }, getClockInterval() / (1000*this.speed));
         } else {
             this.dataSender = null;
         }
@@ -136,11 +200,13 @@ class SerialMonitor extends Periphery{
     }
 
     receiveBit(bit) {
+
         console.log(bit);
         this.receiveQueue.push(bit);
+        
         if (this.receiveQueue.length === 9) {
-            let parityBit = this.receiveQueue.pop();
-            this.parityBit.innerHTML = "Parity: " + parityBit;
+            //let parityBit = this.receiveQueue.pop();
+            //this.parityBit.innerHTML = "Parity: " + parityBit;
             this.receiveQueue = this.receiveQueue.reverse();
             let hexValue = parseInt(this.receiveQueue.join(""), 2).toString(16);
             let char = String.fromCharCode(parseInt(hexValue, 16));

@@ -214,6 +214,20 @@ class Grid {
         this.saveFile(jsonFile);
     }
 
+    getPeripheryJson(){
+        if (this.elements.length === 0) {
+            console.log("No peripheries to save")
+            return;
+        }
+        let peripheryFile = {
+            "elements": []
+        }
+        this.elements.forEach((element) => {
+            peripheryFile.elements.push(element);
+        });
+        return JSON.stringify(peripheryFile);
+    }
+
     saveFile(jsonFIle) {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonFIle));

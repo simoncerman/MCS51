@@ -3,8 +3,6 @@ let timeElapsed = 0;
 
 let currentDocument;
 
-let fs = require('fs');
-
 let randomdataCheckbox = $('randomdataControl');
 
 function onRunBtnClick() {
@@ -108,19 +106,6 @@ function checkStudentConfig() {
         randomdataCheckbox.checked = configFile.Random_data;
 
     }
-    reader.onerror = () => {
-        let j = {
-            "Random_data": false,
-        };
-        fs.writeFile("G:\\MCSim_config_file.json", j.toString(), (err) => { });
-    }
-}
-
-function saveConfig() {
-    let j = {
-        "Random_data": randomdataCheckbox.checked,
-    };
-    fs.writeFile("G:\\MCSim_config_file.json", j.toString(), (err) => { });
 }
 
 function checkTeacherConfig() {
@@ -129,7 +114,7 @@ function checkTeacherConfig() {
     reader.onload = () => {
         let result = reader.result.toString();
         let configFile = JSON.parse(result);
-        if (onfigFile.Random_data == true || onfigFile.Random_data == false) {
+        if (configFile.Random_data == true || configFile.Random_data == false) {
             randomdataCheckbox.checked = configFile.Random_data;
             randomdataCheckbox.disabled = true;
         }
@@ -140,10 +125,8 @@ function checkTeacherConfig() {
     }
 }
 
-function saveDocument(){
-
-}
-
-function loadDocumnet(){
-
+function getSettings(fs){
+    return {
+        "Random_data": randomdataCheckbox.checked,
+    }.toString();
 }

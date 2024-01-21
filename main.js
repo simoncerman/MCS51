@@ -3,9 +3,11 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 var { fs } = require('fs');
 
-
 var win;
 var child;
+
+var saveFunction = function(){};
+let path = null;
 
 function createWindow(url) {
   //Create Menu
@@ -27,7 +29,7 @@ function createWindow(url) {
   // and load the index.html of the app.
   win.loadFile(url);
   //Open DevTools
-  //win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
 function createMenu() {
@@ -44,23 +46,28 @@ function createMenu() {
         {
           label: 'Open File...',
           click: function () {
+            if(path != null){
+              if(closeFileConfirmation()==0){return;}
+            }
             dialog.showOpenDialog(win, {
               properties: ['openFile']
             }).then(result => {
               if (!result.canceled) {
-                var path = ("file://" + result.filePaths[0]).toString();
-                path = path.replace(/(?<=(?:\w)|[:])\\/gmi, "//")
-                win.webContents.executeJavaScript('doEditorTextOpen("' + path + '");');
-                //console.log('doEditorTextOpen("' + path + '");');
+                
+                
               }
             }).catch(err => {
               console.log(err)
             })
           }
-        },/*
+        },
         {
-            label: 'Save'
-        },*/
+          label: 'Save',
+          accelerator: 'CommandOrControl+S',
+          click: function(){
+            win.webContents.executeJavaScript(`saveFunction();`)
+          }
+        },
         {
           label: 'Save As...',
           click: function () { win.webContents.executeJavaScript('doEditorTextSave();'); }
@@ -186,6 +193,23 @@ function createMenu() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow('index.html');
+  saveFunction = function () {
+    dialog.showSaveDialog(win, {
+      properties: ['saveFile']
+    }).then(result => {
+      if (!result.canceled) {
+        let s = {
+          "Code": getEditorText(),
+          "Periphery": grid.getPeripheryJson()
+        };
+        if (path != null) {
+
+        }
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -193,9 +217,16 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    //saveConfig();
+    //saveFunction();
     app.quit()
   }
 });
+
+function saveConfig() {
+  fs.writeFile("G:\\MCSim_config_file.json", j.toString(), (err) => { });
+  win.webContents.executeJavaScript(`getSettings(${fs});`);
+}
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
