@@ -7,6 +7,7 @@ class SerialHandler {
 
         this.mode = 0;
         this.speed = 1;
+        this.bitNumber = 8;
     }
 
     getSerialMonitors() {
@@ -20,17 +21,19 @@ class SerialHandler {
     }
 
     receiveData(bit) {
+        if(this.mode == 0 && this.getTI() == 0){return;}
+
         this.ro.value = bit;
         this.receiveBitBuffer.unshift(bit);
-        if (this.receiveBitBuffer.length === 9) {
+        if (this.receiveBitBuffer.length === this.bitNumber) {
             // parity bit is first bit - get it and leave 8 bits alone
-            let parityBit = this.receiveBitBuffer.pop();
+            let nineBit = 0;
+            if(this.mode!=0){nineBit = this.receiveBitBuffer.pop(); this.setRI(1);}
             let hexValue = parseInt(this.receiveBitBuffer.join(""), 2).toString(16);
             // convert to decimal
             let value = parseInt(hexValue, 16).toString(10);
 
-            this.setRB8(parityBit);
-            this.setRI(1);
+            this.setRB8(nineBit);
             this.moveToReceiveBuffer(value);
 
             this.receiveBitBuffer = [];
@@ -50,10 +53,10 @@ class SerialHandler {
     getSpeed() {
         this.getMODE();
         switch (this.mode) {
-            case "0": this.speed = 1; break;
-            case "1": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (12 * (256 - getDataValueFrom(TH1))); break;
-            case "2": this.speed = Math.pow(2, this.getSMOD()) / 64 * 1000000; break;
-            case "3": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (12 * (256 - getDataValueFrom(TH1))); break;
+            case "0": this.speed = 1; ptr.bitNumber = 8; break;
+            case "1": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1)); ptr.bitNumber = 8; break;
+            case "2": this.speed = Math.pow(2, this.getSMOD()) / 64 * 12000000; ptr.bitNumber = 9; break;
+            case "3": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1)); ptr.bitNumber = 9; break;
             default: return;
         }
     }
@@ -105,7 +108,7 @@ class SerialHandler {
     }
 
     sendDataPrepare(value) {
-        if(this.mode == 0 && this.getTI() == 0){return;}
+        if(this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)){return;}
 
         this.sendQueue = [];
         let hex = parseInt(value, 10).toString(16);
@@ -117,7 +120,7 @@ class SerialHandler {
         if (this.mode == 2 || this.mode == 3) {
             binary.unshift(this.getTB8());
         } else if (this.mode == 1) {
-            binary.unshift(1);
+            binary.unshift(0);
         }
         for (let j = 0; j < binary.length; j++) {
             this.sendQueue.push(binary[j]);
@@ -150,7 +153,7 @@ class SerialHandler {
             this.dataSender = setTimeout(() => {
                 this.sendData();
                 this.setTI(1);
-            }, getClockInterval() / (1000 * this.speed));
+            }, getClockInterval() / (this.speed));
         } else {
             this.dataSender = null;
         }

@@ -24,6 +24,7 @@ class SerialMonitor extends Periphery {
 
         this.mode = 0;
         this.speed = 1;
+        this.bitNumber = 8;
 
 
     }
@@ -76,6 +77,7 @@ class SerialMonitor extends Periphery {
                     ptr.connectionSettings.innerHTML = ``;
                     ptr.mode = 1;
                     ptr.speed = 1;
+                    ptr.bitNumber = 8;
 
                     break;
                 case "1":
@@ -85,6 +87,7 @@ class SerialMonitor extends Periphery {
                     ptr.connectionSettings.onchange = function () {
                         ptr.speed = parseFloat(this.value);
                     }
+                    ptr.bitNumber = 8;
 
                     break;
                 case "2":
@@ -94,6 +97,7 @@ class SerialMonitor extends Periphery {
                     ptr.connectionSettings.onchange = function () {
                         ptr.speed = parseFloat(this.value);
                     }
+                    ptr.bitNumber = 9;
 
                     break;
                 case "3":
@@ -103,6 +107,7 @@ class SerialMonitor extends Periphery {
                     ptr.connectionSettings.onchange = function () {
                         ptr.speed = parseFloat(this.value);
                     }
+                    ptr.bitNumber = 9;
 
                     break;
                 default: return;
@@ -155,7 +160,8 @@ class SerialMonitor extends Periphery {
         return serialMonitor;
     }
     sendDataPrepare() {
-        if(!serialHandler.controlSettings()){return}
+        if(!serialHandler.controlSettings(this)){return;}
+        if(this.mode == 0 && serialHandler.getTI){return;}
 
         let data = this.sendTextArea.value;
         this.sendTextArea.value = "";
@@ -165,14 +171,16 @@ class SerialMonitor extends Periphery {
             // hex to binary conversion
             let binary = parseInt(hex, 16).toString(2);
             // binary to 8 bit binary conversion
-            while (binary.length < 8) {
+            while (binary.length < this.bitNumber) {
                 binary = "0" + binary;
             }
             // reverse binary
             binary = binary.split("").reverse().join("");
             binary = binary.split("");
-            let parityBit = serialHandler.generateParityBit(binary);
-            binary.unshift(parityBit);
+            if(this.mode = 1){;
+                binary.unshift(0);
+            }
+            
             for (let j = 0; j < binary.length; j++) {
                 this.sendQueue.push(binary[j]);
             }
@@ -192,7 +200,7 @@ class SerialMonitor extends Periphery {
         if (this.sendQueue.length !== 0) {
             this.dataSender = setTimeout(() => {
                 this.sendData();
-            }, getClockInterval() / (1000*this.speed));
+            }, getClockInterval() / (this.speed));
         } else {
             this.dataSender = null;
         }
@@ -204,7 +212,7 @@ class SerialMonitor extends Periphery {
         console.log(bit);
         this.receiveQueue.push(bit);
         
-        if (this.receiveQueue.length === 9) {
+        if (this.receiveQueue.length === this.bitNumber) {
             //let parityBit = this.receiveQueue.pop();
             //this.parityBit.innerHTML = "Parity: " + parityBit;
             this.receiveQueue = this.receiveQueue.reverse();
