@@ -2,9 +2,8 @@
 <html>
 
 <head>
-
+    
     <meta charset="utf-8">
-
     <!-- Include Styles -->
     <link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="scripts/codemirror/theme/darcula.css" />
@@ -12,15 +11,11 @@
     <link rel="stylesheet" href="scripts/codemirror/theme/monokai.css" />
     <link rel="stylesheet" href="scripts/codemirror/theme/gruvbox-dark.css" />
     <link rel="stylesheet" href="scripts/codemirror/theme/xq-light.css" />
-
     <link rel="stylesheet" href="scripts/codemirror/addons/hint/show-hint.css" />
     <link rel="stylesheet" href="scripts/codemirror/addons/folding/foldgutter.css" />
-
     <link rel="stylesheet" href="styles/basic.css">
     <link rel="stylesheet" href="styles/fonts.css">
-
     <title>MCSim 1.0.1</title>
-
 </head>
 
 <body class="body">
@@ -37,7 +32,7 @@
             <option selected value="10000">10ms</option>
             <option value="1000">1ms</option>
         </select>
-        <label><input type="checkbox" id="randomdataControl">Náhodná data</label>
+        <label><input type="checkbox" id="randomdataControl" value="r">Náhodná data</label>
         <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
         <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
     </header>
@@ -160,7 +155,7 @@
     </div>
 
     <div id="file">
-        <a id="saveFile" href="data:application/xml;charset=utf-8,THIS IS TEST" download="*.51sim"
+        <a id="saveFile" href="data:application/xml;charset=utf-8,THIS IS TEST" download="*.sim51"
             style="display: none;">Save</a> <!-- SAVE FILE -->
     </div>
 </body>
@@ -239,5 +234,7 @@
         font-family: monospace;
     }
 </style>
+<script type="text/javascript">
 
+</script>
 </html>

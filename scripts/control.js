@@ -3,7 +3,10 @@ let timeElapsed = 0;
 
 let currentDocument;
 
-let randomdataCheckbox = $('randomdataControl');
+let randomdataCheckbox = document.getElementById("randomdataControl");
+
+let path = null;
+
 
 function onRunBtnClick() {
     if (!isRunning) {
@@ -108,9 +111,13 @@ function checkStudentConfig() {
     }
 }
 
-function checkTeacherConfig() {
+function inicializeTeacherConfig() {
+
+}
+
+let checkTeacherConfig = function () {
     let reader = new FileReader();
-    reader.readAsText(); //config od učitele, ale nevém jakou mám použít cestu
+    reader.readAsText(); //config od učitele, ale nevém jakou mám použít cestu, buďto něco na dyscu studium, nebo ve složce aplikace
     reader.onload = () => {
         let result = reader.result.toString();
         let configFile = JSON.parse(result);
@@ -125,8 +132,37 @@ function checkTeacherConfig() {
     }
 }
 
-function getSettings(fs){
-    return {
+window.events.onSave(()=>{
+    let data = {
+        "Code": getEditorText(),
+        "Periphery": grid.getPeripheryJson()
+    };
+    window.fileManager.saveFile(JSON.stringify(data));
+})
+
+window.events.onOpen((data)=>{
+   let d = JSON.parse(data);
+   
+})
+
+window.events.onSaveConfig(()=>{
+    let s = {
+        "Random_data":randomdataCheckbox.checked,
+
+    };
+    window.fileManager.saveConfig(JSON.stringify(s));
+})
+
+window.events.onClose(()=>{
+    let s = {
         "Random_data": randomdataCheckbox.checked,
-    }.toString();
-}
+        
+    };
+    let data = {
+        "Code": getEditorText(),
+        "Periphery": grid.getPeripheryJson()
+    };
+    console.log(s);
+    console.log(JSON.stringify(s));
+    window.fileManager.closeApp(JSON.stringify(s),JSON.stringify(data));
+})

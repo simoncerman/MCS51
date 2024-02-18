@@ -49,7 +49,6 @@ function pI(value){
 }
 
 function doEditorTextSave(){
-	
 	$('#saveFile').attr('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(getEditorText()));
 	console.log(getEditorText());
 	document.getElementById('saveFile').click();

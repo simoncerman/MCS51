@@ -1,13 +1,101 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
-var { fs } = require('fs');
+const fs = require('fs');
+const path = require('node:path');
 
 var win;
 var child;
 
-var saveFunction = function(){};
-let path = null;
+let filePath = null;
+
+let saveFile = function (sender, data) {
+  dialog.showSaveDialog(sender, {
+    defaultPath: 'G:\\',
+    title: 'Save object',
+    filters: [
+      { name: 'projekt', extensions: ['sim51'] }
+    ]
+  }).then(result => {
+    if (!result.canceled) {
+      console.log(result.filePath);
+      filePath = result.filePath
+      fs.writeFile(result.Path, data, function (err) {
+      });
+      saveFile = function (sender, data) {
+        fs.writeFile(filePath, data, function (err) {
+        });
+      }
+    }
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+ipcMain.handle("saveSettings", (sender, s) => {
+  fs.writeFile("MCSim_config_file.json","zk",function(err){
+    console.log(err);
+  });
+});
+
+ipcMain.handle("Save", (sender, data) => {
+  saveFile(sender, data);
+});
+
+ipcMain.handle("Open", (sender) => {
+  return dialog.showOpenDialog(sender, {
+    title: "open",
+    properties: ['openFile'],
+    filters: [
+      { name: 'projekt', extensions: ['51sim'] },
+    ],
+
+
+  }).then(result => {
+    if (!result.canceled) {
+      return result.filePaths;
+    }
+    return "c";
+  }).catch(err => {
+    return err
+  })
+});
+
+function openFile(){
+  if(filePath == null){
+    if(closeFileConfirmation()==0){
+      return;
+    }
+  }
+  dialog.showOpenDialog(win, {
+    title: "open",
+    properties: ['openFile'],
+    filters: [
+      { name: 'projekt', extensions: ['sim51'] },
+    ],
+  }).then(result => {
+    if (!result.canceled) {
+      filePath = result.filePaths[0];
+      saveFile = function (sender, data) {
+        fs.writeFile(filePath, data, function (err) {
+        });
+      }
+      fs.readFile(result.filePaths[0],'utf8',function(err,data){
+        win.webContents.send('open_event',data);
+      })
+    }
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+ipcMain.handle("Close", (sender,s, data) => {
+
+  fs.writeFile("G:\\MCSim_config_file.json",s,function(err){
+    console.log(err);
+  });
+  win.destroy();
+});
 
 function createWindow(url) {
   //Create Menu
@@ -18,6 +106,7 @@ function createWindow(url) {
     height: 600,
     frame: true,
     webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       defaultFontFamily: "Consolas"
     }
@@ -30,6 +119,11 @@ function createWindow(url) {
   win.loadFile(url);
   //Open DevTools
   win.webContents.openDevTools();
+
+  win.on("close",e=>{
+    e.preventDefault();
+    win.webContents.send('close_event');
+  })
 }
 
 function createMenu() {
@@ -40,33 +134,42 @@ function createMenu() {
         {
           label: 'New File',
           click: function () {
-            closeFileConfirmation();
+            if(filePath == null){
+              closeFileConfirmation();
+            }
+            saveFile = function (sender, data) {
+              dialog.showSaveDialog(sender, {
+                defaultPath: 'G:\\',
+                title: 'Save object',
+                filters: [
+                  { name: 'projekt', extensions: ['sim51'] }
+                ]
+              }).then(result => {
+                if (!result.canceled) {
+                  console.log(result.filePath);
+                  filePath = result.filePath
+                  fs.writeFile(result.Path, data, function (err) {
+                  });
+                  saveFile = function (sender, data) {
+                    fs.writeFile(filePath, data, function (err) {
+                    });
+                  }
+                }
+              }).catch(err => {
+                console.log(err);
+              })
+            }
+            filePath = null;
           }
         },
         {
           label: 'Open File...',
-          click: function () {
-            if(path != null){
-              if(closeFileConfirmation()==0){return;}
-            }
-            dialog.showOpenDialog(win, {
-              properties: ['openFile']
-            }).then(result => {
-              if (!result.canceled) {
-                
-                
-              }
-            }).catch(err => {
-              console.log(err)
-            })
-          }
+          click: () => openFile()
         },
         {
           label: 'Save',
           accelerator: 'CommandOrControl+S',
-          click: function(){
-            win.webContents.executeJavaScript(`saveFunction();`)
-          }
+          click: () => win.webContents.send('save_event')
         },
         {
           label: 'Save As...',
@@ -193,23 +296,7 @@ function createMenu() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow('index.html');
-  saveFunction = function () {
-    dialog.showSaveDialog(win, {
-      properties: ['saveFile']
-    }).then(result => {
-      if (!result.canceled) {
-        let s = {
-          "Code": getEditorText(),
-          "Periphery": grid.getPeripheryJson()
-        };
-        if (path != null) {
 
-        }
-      }
-    }).catch(err => {
-      console.log(err)
-    })
-  }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -217,16 +304,9 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    //saveConfig();
-    //saveFunction();
     app.quit()
   }
 });
-
-function saveConfig() {
-  fs.writeFile("G:\\MCSim_config_file.json", j.toString(), (err) => { });
-  win.webContents.executeJavaScript(`getSettings(${fs});`);
-}
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -263,7 +343,7 @@ function closeFileConfirmation() {
     console.log(result.response);
     switch (result.response) {
       case 1:   //YES
-        win.webContents.executeJavaScript('doEditorTextSave();');
+      win.webContents.send('save_event');
         win.webContents.executeJavaScript('clearEditorText();');
         return 1;
       case 2:   //NO
