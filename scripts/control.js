@@ -132,7 +132,7 @@ let checkTeacherConfig = function () {
     }
 }
 
-window.events.onSave(()=>{
+window.events.onSave(() => {
     let data = {
         "Code": getEditorText(),
         "Periphery": grid.getPeripheryJson()
@@ -140,23 +140,23 @@ window.events.onSave(()=>{
     window.fileManager.saveFile(JSON.stringify(data));
 })
 
-window.events.onOpen((data)=>{
-   let d = JSON.parse(data);
-   
+window.events.onOpen((data) => {
+    setEditorText(data.Code);
+    grid.peripheryReplace(data.Periphery);
 })
 
-window.events.onSaveConfig(()=>{
+window.events.onSaveConfig(() => {
     let s = {
-        "Random_data":randomdataCheckbox.checked,
+        "Random_data": randomdataCheckbox.checked,
 
     };
     window.fileManager.saveConfig(JSON.stringify(s));
 })
 
-window.events.onClose(()=>{
+window.events.onClose(() => {
     let s = {
         "Random_data": randomdataCheckbox.checked,
-        
+
     };
     let data = {
         "Code": getEditorText(),
@@ -164,5 +164,5 @@ window.events.onClose(()=>{
     };
     console.log(s);
     console.log(JSON.stringify(s));
-    window.fileManager.closeApp(JSON.stringify(s),JSON.stringify(data));
+    window.fileManager.closeApp(JSON.stringify(s), JSON.stringify(data));
 })

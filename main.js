@@ -81,7 +81,7 @@ function openFile(){
         });
       }
       fs.readFile(result.filePaths[0],'utf8',function(err,data){
-        win.webContents.send('open_event',data);
+        win.webContents.send('open_event',JSON.parse(data));
       })
     }
   }).catch(err => {

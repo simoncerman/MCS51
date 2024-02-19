@@ -1,5 +1,5 @@
 class Grid {
-    constructor(){
+    constructor() {
         this.elements = [];
         this.setListeners();
         this.leadingEdgeValuesArray = {
@@ -39,85 +39,85 @@ class Grid {
         this.actualId = 0;
     }
 
-    setListeners(){
-        document.getElementById('addPeripheryButton').addEventListener('click', () => {this.addPeriphery()});
-        document.getElementById('addPeripheryValue').addEventListener('change',() => {this.showPeripheryProperties()});
+    setListeners() {
+        document.getElementById('addPeripheryButton').addEventListener('click', () => { this.addPeriphery() });
+        document.getElementById('addPeripheryValue').addEventListener('change', () => { this.showPeripheryProperties() });
 
         // loading peripheries
-        document.getElementById('openPeripheryAdd').addEventListener('click', () => {this.openPeripheryAdd()});
-        document.getElementById('openPeripheryReplace').addEventListener('click', () => {this.openPeripheryReplace()});
+        document.getElementById('openPeripheryAdd').addEventListener('click', () => { this.openPeripheryAdd() });
+        document.getElementById('openPeripheryReplace').addEventListener('click', () => { this.openPeripheryReplace() });
         document.onmousedown = (e) => {
-            if(e.button === 0 || e.button === 2){
-                if(!e.target.classList.contains('context-menu-option')){
+            if (e.button === 0 || e.button === 2) {
+                if (!e.target.classList.contains('context-menu-option')) {
                     contextMenu.closeContextMenu();
                 }
             }
         }
         // after 10 ms call this.defaultPeripheries()
-        setTimeout(() => {this.defaultPeripheries()}, 500);
+        setTimeout(() => { this.defaultPeripheries() }, 500);
     }
 
-    defaultPeripheries(){
+    defaultPeripheries() {
 
         this.updateGrid();
     }
 
-    addPeriphery(){
+    addPeriphery() {
         let newPeripheryName = document.getElementById("addPeripheryValue").value;
         let newPeriphery = null;
         this.actualId++;
 
-        if (newPeripheryName === ""){
+        if (newPeripheryName === "") {
             alert("Periphery name cannot be empty");
-        } else if(newPeripheryName === "LED"){
+        } else if (newPeripheryName === "LED") {
             let ledColor = document.getElementById("ledColor").value;
-            newPeriphery = new LED("p"+ this.actualId, ledColor);
-        } else if(newPeripheryName === "sevenSegment"){
+            newPeriphery = new LED("p" + this.actualId, ledColor);
+        } else if (newPeripheryName === "sevenSegment") {
             let sevenSegmentType = document.getElementById("sevenSegmentType").value;
-            newPeriphery = new SevenSegmentDisplay("p"+ this.actualId, sevenSegmentType);
-        } else if(newPeripheryName === "motorDC"){
-            newPeriphery = new MotorDC("p"+ this.actualId)
-        } else if(newPeripheryName === "ledMatrix"){
+            newPeriphery = new SevenSegmentDisplay("p" + this.actualId, sevenSegmentType);
+        } else if (newPeripheryName === "motorDC") {
+            newPeriphery = new MotorDC("p" + this.actualId)
+        } else if (newPeripheryName === "ledMatrix") {
             let ledMatrixWidth = document.getElementById("matrixWidth").value;
             let ledMatrixHeight = document.getElementById("matrixHeight").value;
             let ledMatrixType = document.getElementById("matrixType").value;
-            newPeriphery = new LEDMatrix("p"+ this.actualId, ledMatrixWidth, ledMatrixHeight, ledMatrixType);
-        } else if(newPeripheryName === "stepEngine"){
-            newPeriphery = new StepEngine("p"+ this.actualId);
-        } else if(newPeripheryName === "LCD16x2Display"){
-            newPeriphery = new LCD16x2Display("p"+ this.actualId);
-        } else if(newPeripheryName === "button"){
-            newPeriphery = new Button("p"+ this.actualId);
-        } else if(newPeripheryName === "switch"){
-            newPeriphery = new Switch("p"+ this.actualId);
-        } else if(newPeripheryName === "serialMonitor"){
-            newPeriphery = new SerialMonitor("p"+ this.actualId);
-        } else if (newPeripheryName === "DAC"){
-            newPeriphery = new DAC("p"+ this.actualId);
-        } else if (newPeripheryName === "ADC"){
-            newPeriphery = new ADC("p"+ this.actualId);
-        } else if (newPeripheryName === "Keyboard"){
-            newPeriphery = new Keyboard("p"+ this.actualId);
-        } else if (newPeripheryName === "FourteenSegmentDisplay"){
+            newPeriphery = new LEDMatrix("p" + this.actualId, ledMatrixWidth, ledMatrixHeight, ledMatrixType);
+        } else if (newPeripheryName === "stepEngine") {
+            newPeriphery = new StepEngine("p" + this.actualId);
+        } else if (newPeripheryName === "LCD16x2Display") {
+            newPeriphery = new LCD16x2Display("p" + this.actualId);
+        } else if (newPeripheryName === "button") {
+            newPeriphery = new Button("p" + this.actualId);
+        } else if (newPeripheryName === "switch") {
+            newPeriphery = new Switch("p" + this.actualId);
+        } else if (newPeripheryName === "serialMonitor") {
+            newPeriphery = new SerialMonitor("p" + this.actualId);
+        } else if (newPeripheryName === "DAC") {
+            newPeriphery = new DAC("p" + this.actualId);
+        } else if (newPeripheryName === "ADC") {
+            newPeriphery = new ADC("p" + this.actualId);
+        } else if (newPeripheryName === "Keyboard") {
+            newPeriphery = new Keyboard("p" + this.actualId);
+        } else if (newPeripheryName === "FourteenSegmentDisplay") {
             let fourteenSegmentDisplayType = document.getElementById("fourteenSegmentType").value;
             newPeriphery = new FourteenSegmentDisplay("p" + this.actualId, fourteenSegmentDisplayType);
         }
 
 
 
-        if(newPeriphery){
+        if (newPeriphery) {
             this.elements.push(newPeriphery);
             this.updateGrid();
         }
     }
 
-    clearLeadingEdgeValuesArray(){
-        for(let key in this.leadingEdgeValuesArray){
+    clearLeadingEdgeValuesArray() {
+        for (let key in this.leadingEdgeValuesArray) {
             this.leadingEdgeValuesArray[key] = null;
         }
     }
 
-    updateGrid(){
+    updateGrid() {
         this.clearLeadingEdgeValuesArray();
 
         // priority properties what are of class Button do first
@@ -153,9 +153,9 @@ class Grid {
         modal.openElement(null);
     }
 
-    updatePinConnections(peripheryId, pinNumber, connectedTo){
+    updatePinConnections(peripheryId, pinNumber, connectedTo) {
         this.elements.forEach((element) => {
-            if(element.peripheryId === peripheryId){
+            if (element.peripheryId === peripheryId) {
                 element.updatePinConnection(pinNumber, connectedTo);
             }
         });
@@ -163,14 +163,14 @@ class Grid {
 
     }
 
-    resetPinValues(){
+    resetPinValues() {
         this.elements.forEach((element) => {
             element.setPinValuesToDefault();
         });
         this.updateGrid();
     }
 
-    showPeripheryProperties(){
+    showPeripheryProperties() {
         let peripheryName = document.getElementById("addPeripheryValue").value;
 
         // table
@@ -193,7 +193,7 @@ class Grid {
             "Keyboard": Keyboard,
         }
 
-        if(peripheryPropertyTable[peripheryName]){
+        if (peripheryPropertyTable[peripheryName]) {
             let peripheryObject = new peripheryPropertyTable[peripheryName]()
             peripheryObject.getPropertiesHTML(peripheryProperties);
         }
@@ -214,7 +214,7 @@ class Grid {
         this.saveFile(jsonFile);
     }
 
-    getPeripheryJson(){
+    getPeripheryJson() {
         if (this.elements.length === 0) {
             console.log("No peripheries to save")
             return;
@@ -263,90 +263,94 @@ class Grid {
         reader.onload = () => {
             // stringify the JSON object
             let result = reader.result.toString();
-            let peripheryFile = JSON.parse(result);
-            grid.elements = [];
-            peripheryFile.elements.forEach((element) => {
-                let object = this.objectDeserialization(element);
-                grid.elements.push(object);
-            });
-            this.updateGrid();
+            this.peripheryReplace(JSON.parse(result));
         }
     }
 
-    objectDeserialization(element){
+    peripheryReplace(data) {
+        let peripheryFile = JSON.parse(data);
+        grid.elements = [];
+        peripheryFile.elements.forEach((element) => {
+            let object = this.objectDeserialization(element);
+            grid.elements.push(object);
+        });
+        this.updateGrid();
+    }
+
+    objectDeserialization(element) {
         let object = null;
         this.actualId++;
 
-        if(element.name === "LED"){
-            object = new LED("p"+ this.actualId, element.ledColor);
+        if (element.name === "LED") {
+            object = new LED("p" + this.actualId, element.ledColor);
             object.pins = element.pins;
         }
-        else if(element.name === "SevenSegmentDisplay"){
-            object = new SevenSegmentDisplay("p"+ this.actualId);
+        else if (element.name === "SevenSegmentDisplay") {
+            object = new SevenSegmentDisplay("p" + this.actualId);
             object.pins = element.pins;
             object.type = element.type;
         }
-        else if(element.name === "MotorDC"){
-            object = new MotorDC("p"+ this.actualId);
+        else if (element.name === "MotorDC") {
+            object = new MotorDC("p" + this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "LEDMatrix"){
+        else if (element.name === "LEDMatrix") {
             let matrixWidth = element.matrixWidth;
             let matrixHeight = element.matrixHeight;
             let matrixType = element.type;
-            object = new LEDMatrix("p"+ this.actualId, matrixWidth, matrixHeight, matrixType);
+            object = new LEDMatrix("p" + this.actualId, matrixWidth, matrixHeight, matrixType);
             object.pins = element.pins;
             // for correct relations
             object.generateLeftTopPins();
         }
-        else if(element.name === "StepEngine"){
-            object = new StepEngine("p"+ this.actualId);
+        else if (element.name === "StepEngine") {
+            object = new StepEngine("p" + this.actualId);
             object.pins = element.pins;
             object.rotation.value = element.rotation.value;
         }
-        else if(element.name === "LCD16x2Display"){
-            object = new LCD16x2Display("p"+ this.actualId);
+        else if (element.name === "LCD16x2Display") {
+            object = new LCD16x2Display("p" + this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "Button"){
-            object = new Button("p"+ this.actualId);
+        else if (element.name === "Button") {
+            object = new Button("p" + this.actualId);
             object.pins = element.pins;
             object.clicked = element.clicked;
         }
-        else if(element.name === "Switch"){
-            object = new Switch("p"+ this.actualId);
+        else if (element.name === "Switch") {
+            object = new Switch("p" + this.actualId);
             object.pins = element.pins;
             object.switchOn = element.switchOn;
         }
-        else if(element.name === "SerialMonitor"){
-            object = new SerialMonitor("p"+ this.actualId);
+        else if (element.name === "SerialMonitor") {
+            object = new SerialMonitor("p" + this.actualId);
         }
-        else if(element.name === "DAC") {
+        else if (element.name === "DAC") {
             object = new DAC("p" + this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "ADC"){
-            object = new ADC("p"+ this.actualId);
+        else if (element.name === "ADC") {
+            object = new ADC("p" + this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "Keyboard"){
-            object = new Keyboard("p"+ this.actualId);
+        else if (element.name === "Keyboard") {
+            object = new Keyboard("p" + this.actualId);
             object.pins = element.pins;
         }
-        else if(element.name === "FourteenSegmentDisplay"){
-            object = new FourteenSegmentDisplay("p"+ this.actualId);
+        else if (element.name === "FourteenSegmentDisplay") {
+            object = new FourteenSegmentDisplay("p" + this.actualId);
             object.pins = element.pins;
             object.type = element.type;
         }
         return object;
     }
-    removePeriphery(peripheryId){
+    removePeriphery(peripheryId) {
         let index = this.elements.findIndex((element) => element.peripheryId === peripheryId);
         this.elements.splice(index, 1);
         this.updateGrid();
     }
 
-    removeAllPeripheries(){
+    removeAllPeripheries() {
         this.elements = [];
         this.updateGrid();
     }
