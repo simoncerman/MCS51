@@ -97,24 +97,6 @@ function onClockSignal() {
     else
         onStopBtnClick();
 }
-
-let checkTeacherConfig = function () {
-    let reader = new FileReader();
-    reader.readAsText("U:\\_MCSIM\\config.json"); //config od učitele, ale nevím jakou mám použít cestu, buďto něco na disku studium, nebo ve složce aplikace
-    reader.onload = () => {
-        let result = reader.result.toString();
-        let configFile = JSON.parse(result);
-        if (configFile.Random_data == true || configFile.Random_data == false) {
-            randomdataCheckbox.checked = configFile.Random_data;
-            randomdataCheckbox.disabled = true;
-        }
-        else {
-            randomdataCheckbox.disabled = false;
-        }
-
-    }
-}
-
 window.events.onSave(() => {
     let data = {
         "Code": getEditorText(),

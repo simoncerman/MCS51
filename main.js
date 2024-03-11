@@ -1,7 +1,6 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
-const { exec } = require("child_process");
 const fs = require('fs');
 const path = require('node:path');
 
@@ -21,49 +20,12 @@ const opts = {
 }
 
 
-let checkConfig = function () {
-  let reader = new FileReader();
-  reader.readAsText("U:\\_MCSIM\\config.json"); //config od učitele, ale nevím jakou mám použít cestu, buďto něco na disku studium, nebo ve složce aplikace
-  reader.onload = () => {
-    let result = reader.result.toString();
-    let configFile = JSON.parse(result);
-    if (configFile.Random_data == true || configFile.Random_data == false) {
-      randomdataCheckbox.checked = configFile.Random_data;
-      randomdataCheckbox.disabled = true;
-    }
-    else {
-      randomdataCheckbox.disabled = false;
-    }
-
-  }
-}
-
-function checkToken() {
-  exec("whoami /groups", (error, stdout, stderr) => {
-    if (stout.includes("studenti")) {
-      checkConfig = function () {
-
-      }
-    }
-    else {
-      checkConfig = function () {
-        fs.readFile(result.filePaths[0], 'utf8', function (err, data) {
-          win.webContents.send('config_event', function () {
-            let configFile = JSON.parse(data);
-            randomdataCheckbox.checked = configFile.Random_data;
-          });
-        });
-      }
-    }
-  });
-}
-
 ipcMain.handle("configCheck", (sender) => {
 });
 
 let saveFile = function (sender, data) {
   dialog.showSaveDialog(sender, {
-    defaultPath: "G:\\projekt.sim51",
+    defaultPath: "G:\\",
     title: "Save object",
     filters: [
       { name: "projekt", extensions: ["sim51"] }
