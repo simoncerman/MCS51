@@ -215,17 +215,11 @@ class Grid {
     }
 
     getPeripheryJson() {
-        if (this.elements.length === 0) {
-            console.log("No peripheries to save")
-            return;
-        }
-        let peripheryFile = {
-            "elements": []
-        }
+        let elements = [];
         this.elements.forEach((element) => {
-            peripheryFile.elements.push(element);
+            elements.push(element);
         });
-        return JSON.stringify(peripheryFile);
+        return elements;
     }
 
     saveFile(jsonFIle) {
@@ -263,14 +257,13 @@ class Grid {
         reader.onload = () => {
             // stringify the JSON object
             let result = reader.result.toString();
-            this.peripheryReplace(JSON.parse(result));
+            this.peripheryReplace(JSON.parse(result).elements);
         }
     }
 
     peripheryReplace(data) {
-        let peripheryFile = JSON.parse(data);
         grid.elements = [];
-        peripheryFile.elements.forEach((element) => {
+        data.forEach((element) => {
             let object = this.objectDeserialization(element);
             grid.elements.push(object);
         });

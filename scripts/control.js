@@ -11,7 +11,6 @@ let path = null;
 function onRunBtnClick() {
     if (!isRunning) {
         isRunning = true;
-        checkTeacherConfig();
         changeGUIToRun();           //Upravení GUI
         getGutterColors();
         getCodeText();              //Získání textu
@@ -61,7 +60,6 @@ function onStopBtnClick() {
 function onStepBtnClick() {
     if (!isRunning) {
         isRunning = true;
-        checkTeacherConfig();
         changeGUIToRun();           //Upravení GUI
         getGutterColors();
         getCodeText();              //Získání textu
@@ -100,24 +98,9 @@ function onClockSignal() {
         onStopBtnClick();
 }
 
-function checkStudentConfig() {
-    let reader = new FileReader();
-    reader.readAsText("G:\\MCSim_config_file.json");
-    reader.onload = () => {
-        let result = reader.result.toString();
-        let configFile = JSON.parse(result);
-        randomdataCheckbox.checked = configFile.Random_data;
-
-    }
-}
-
-function inicializeTeacherConfig() {
-
-}
-
 let checkTeacherConfig = function () {
     let reader = new FileReader();
-    reader.readAsText(); //config od učitele, ale nevém jakou mám použít cestu, buďto něco na dyscu studium, nebo ve složce aplikace
+    reader.readAsText("U:\\_MCSIM\\config.json"); //config od učitele, ale nevím jakou mám použít cestu, buďto něco na disku studium, nebo ve složce aplikace
     reader.onload = () => {
         let result = reader.result.toString();
         let configFile = JSON.parse(result);
@@ -145,15 +128,15 @@ window.events.onOpen((data) => {
     grid.peripheryReplace(data.Periphery);
 })
 
-window.events.onSaveConfig(() => {
+/*window.events.onSaveConfig(() => {
     let s = {
         "Random_data": randomdataCheckbox.checked,
 
     };
     window.fileManager.saveConfig(JSON.stringify(s));
-})
+})*/
 
-window.events.onClose(() => {
+/*window.events.onClose(() => {
     let s = {
         "Random_data": randomdataCheckbox.checked,
 
@@ -165,4 +148,8 @@ window.events.onClose(() => {
     console.log(s);
     console.log(JSON.stringify(s));
     window.fileManager.closeApp(JSON.stringify(s), JSON.stringify(data));
-})
+})*/
+
+/*window.events.onConfigCheck((config) => {
+    
+})*/

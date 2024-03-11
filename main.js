@@ -1,6 +1,7 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { exec } = require("child_process");
 const fs = require('fs');
 const path = require('node:path');
 
@@ -8,13 +9,64 @@ var win;
 var child;
 
 let filePath = null;
+let notEmty = false;
+
+const opts = {
+  type: 'question',
+  buttons: ['Cancel', 'Yes', 'No'],
+  defaultId: 1,
+  cancelId: 0,
+  title: 'Question',
+  message: 'Do you want to save the current program?'
+}
+
+
+let checkConfig = function () {
+  let reader = new FileReader();
+  reader.readAsText("U:\\_MCSIM\\config.json"); //config od učitele, ale nevím jakou mám použít cestu, buďto něco na disku studium, nebo ve složce aplikace
+  reader.onload = () => {
+    let result = reader.result.toString();
+    let configFile = JSON.parse(result);
+    if (configFile.Random_data == true || configFile.Random_data == false) {
+      randomdataCheckbox.checked = configFile.Random_data;
+      randomdataCheckbox.disabled = true;
+    }
+    else {
+      randomdataCheckbox.disabled = false;
+    }
+
+  }
+}
+
+function checkToken() {
+  exec("whoami /groups", (error, stdout, stderr) => {
+    if (stout.includes("studenti")) {
+      checkConfig = function () {
+
+      }
+    }
+    else {
+      checkConfig = function () {
+        fs.readFile(result.filePaths[0], 'utf8', function (err, data) {
+          win.webContents.send('config_event', function () {
+            let configFile = JSON.parse(data);
+            randomdataCheckbox.checked = configFile.Random_data;
+          });
+        });
+      }
+    }
+  });
+}
+
+ipcMain.handle("configCheck", (sender) => {
+});
 
 let saveFile = function (sender, data) {
   dialog.showSaveDialog(sender, {
-    defaultPath: 'G:\\',
-    title: 'Save object',
+    defaultPath: "G:\\projekt.sim51",
+    title: "Save object",
     filters: [
-      { name: 'projekt', extensions: ['sim51'] }
+      { name: "projekt", extensions: ["sim51"] }
     ]
   }).then(result => {
     if (!result.canceled) {
@@ -25,15 +77,25 @@ let saveFile = function (sender, data) {
       saveFile = function (sender, data) {
         fs.writeFile(filePath, data, function (err) {
         });
-      }
+      };
+      autoSave = function (data) {
+        fs.writeFile(filePath, data, function (err) {
+        });
+      };
+      notEmty = false;
     }
   }).catch(err => {
     console.log(err);
   })
 }
 
+let autoSave = function (data) {
+  let d = JSON.parse(data);
+  notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery == [];
+};
+
 ipcMain.handle("saveSettings", (sender, s) => {
-  fs.writeFile("MCSim_config_file.json","zk",function(err){
+  fs.writeFile("MCSim_config_file.json", "zk", function (err) {
     console.log(err);
   });
 });
@@ -42,28 +104,13 @@ ipcMain.handle("Save", (sender, data) => {
   saveFile(sender, data);
 });
 
-ipcMain.handle("Open", (sender) => {
-  return dialog.showOpenDialog(sender, {
-    title: "open",
-    properties: ['openFile'],
-    filters: [
-      { name: 'projekt', extensions: ['51sim'] },
-    ],
-
-
-  }).then(result => {
-    if (!result.canceled) {
-      return result.filePaths;
-    }
-    return "c";
-  }).catch(err => {
-    return err
-  })
+ipcMain.handle("autoSave", (sender, data) => {
+  autoSave(data);
 });
 
-function openFile(){
-  if(filePath == null){
-    if(closeFileConfirmation()==0){
+function openFile() {
+  if (filePath != null) {
+    if (closeFileConfirmation() == 0) {
       return;
     }
   }
@@ -76,26 +123,31 @@ function openFile(){
   }).then(result => {
     if (!result.canceled) {
       filePath = result.filePaths[0];
+      notEmty = false;
       saveFile = function (sender, data) {
         fs.writeFile(filePath, data, function (err) {
         });
-      }
-      fs.readFile(result.filePaths[0],'utf8',function(err,data){
-        win.webContents.send('open_event',JSON.parse(data));
-      })
+      };
+      autoSave = function (data) {
+        fs.writeFile(filePath, data, function (err) {
+        });
+      };
+      notEmty = false;
+      fs.readFile(result.filePaths[0], 'utf8', function (err, data) {
+        win.webContents.send('open_event', JSON.parse(data));
+      });
     }
   }).catch(err => {
     console.log(err);
   })
 }
 
-ipcMain.handle("Close", (sender,s, data) => {
-
-  fs.writeFile("G:\\MCSim_config_file.json",s,function(err){
-    console.log(err);
-  });
+/*ipcMain.handle("Close", (sender, s, data) => {
+  if (notEmty) {
+    if (closeFileConfirmation()) { return };
+  }
   win.destroy();
-});
+});*/
 
 function createWindow(url) {
   //Create Menu
@@ -120,10 +172,70 @@ function createWindow(url) {
   //Open DevTools
   win.webContents.openDevTools();
 
-  win.on("close",e=>{
+  win.on("close", e => {
     e.preventDefault();
-    win.webContents.send('close_event');
+    if (notEmty) {
+      dialog.showMessageBox(win, opts).then(result => {
+        console.log(result.response);
+        switch (result.response) {
+          case 1:   //YES
+            win.webContents.send('save_event');
+            win.destroy();
+            return false;
+          case 2:   //NO
+            win.destroy();
+            return false;
+          case 0:   //Cancel
+            break;
+        }
+      });
+    }
+    else {
+      win.webContents.send('save_event');
+      win.destroy();
+    }
+
   })
+}
+
+function newFile() {
+  win.webContents.send('open_event', {
+    "Code": '',
+    "Periphery": []
+  });
+  saveFile = function (sender, data) {
+    dialog.showSaveDialog(sender, {
+      defaultPath: 'G:\\projekt.sim51',
+      title: 'Save object',
+      filters: [
+        { name: 'projekt', extensions: ['sim51'] }
+      ]
+    }).then(result => {
+      if (!result.canceled) {
+        console.log(result.filePath);
+        filePath = result.filePath
+        fs.writeFile(result.Path, data, function (err) {
+        });
+        saveFile = function (sender, data) {
+          fs.writeFile(filePath, data, function (err) {
+          });
+        };
+        autoSave = function (data) {
+          fs.writeFile(filePath, data, function (err) {
+          });
+        };
+        notEmty = false;
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+  autoSave = function (data) {
+    let d = JSON.parse(data);
+    notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery == [];
+  };
+  filePath = null;
+  notEmty = false;
 }
 
 function createMenu() {
@@ -134,37 +246,45 @@ function createMenu() {
         {
           label: 'New File',
           click: function () {
-            if(filePath == null){
-              closeFileConfirmation();
-            }
-            saveFile = function (sender, data) {
-              dialog.showSaveDialog(sender, {
-                defaultPath: 'G:\\',
-                title: 'Save object',
-                filters: [
-                  { name: 'projekt', extensions: ['sim51'] }
-                ]
-              }).then(result => {
-                if (!result.canceled) {
-                  console.log(result.filePath);
-                  filePath = result.filePath
-                  fs.writeFile(result.Path, data, function (err) {
-                  });
-                  saveFile = function (sender, data) {
-                    fs.writeFile(filePath, data, function (err) {
-                    });
-                  }
+            if (notEmty) {
+              dialog.showMessageBox(win, opts).then(result => {
+                console.log(result.response);
+                switch (result.response) {
+                  case 1:   //YES
+                    win.webContents.send('save_event');
+                    newFile();
+                    return false;
+                  case 2:   //NO
+                    newFile();
+                    return false;
+                  case 0:   //Cancel
+                    break;
                 }
-              }).catch(err => {
-                console.log(err);
-              })
-            }
-            filePath = null;
+              });
+            } else { newFile(); }
           }
         },
         {
           label: 'Open File...',
-          click: () => openFile()
+          accelerator: 'CommandOrControl+O',
+          click: function () {
+            if (notEmty) {
+              dialog.showMessageBox(win, opts).then(result => {
+                console.log(result.response);
+                switch (result.response) {
+                  case 1:   //YES
+                    win.webContents.send('save_event');
+                    openFile();
+                    return false;
+                  case 2:   //NO
+                    openFile();
+                    return false;
+                  case 0:   //Cancel
+                    break;
+                }
+              });
+            } else { openFile(); }
+          }
         },
         {
           label: 'Save',
@@ -296,7 +416,6 @@ function createMenu() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow('index.html');
-
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -330,27 +449,17 @@ ipcMain.on('sendNewFont', (event, args) => {
 });
 
 function closeFileConfirmation() {
-  const opts = {
-    type: 'question',
-    buttons: ['Cancel', 'Yes', 'No'],
-    defaultId: 1,
-    cancelId: 0,
-    title: 'Question',
-    message: 'Do you want to save the current program?'
-  }
 
   dialog.showMessageBox(win, opts).then(result => {
     console.log(result.response);
     switch (result.response) {
       case 1:   //YES
-      win.webContents.send('save_event');
-        win.webContents.executeJavaScript('clearEditorText();');
-        return 1;
+        win.webContents.send('save_event');
+        return false;
       case 2:   //NO
-        win.webContents.executeJavaScript('clearEditorText();');
-        return 2;
+        return false;
       case 0:   //Cancel
-        return 0
+        return true
     }
   });
 }

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    
+
     <meta charset="utf-8">
     <!-- Include Styles -->
     <link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css">
@@ -161,7 +161,9 @@
 </body>
 
 <!-- Include Scripts -->
-<script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+<script type="text/javascript">
+    if (typeof module === 'object') { window.module = module; module = undefined; } 
+</script>
 <script src="scripts/jquery-3.5.1.min.js"></script>
 <script src="scripts/codemirror/lib/codemirror.js"></script>
 <script src="scripts/codemirror/lib/codemirror_grammar.js"></script>
@@ -191,7 +193,7 @@
 <script>if (window.module) module = window.module;</script>
 
 <!-- Local Scripts -->
-<!--<script>codemirror_grammar_demo(document.getElementById("code"), "default");</script>-->
+<!-- <script>codemirror_grammar_demo(document.getElementById("code"), "default");</script> -->
 <script type="text/javascript">
 
     var code = document.getElementById("code");
@@ -220,6 +222,35 @@
             CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
         }
     });
+    
+    let saveInterval = null;
+    let saveDelay = 200;
+
+    editor.on("change", function () {
+        switch (saveInterval) {
+            case null:
+                saveInterval = setInterval(saveF, 100);
+                break;
+
+            default:
+                saveDelay = 5;
+                break;
+        }
+    });
+
+    function saveF() {
+        saveDelay--;
+        if (saveDelay == 0) {
+            clearInterval(saveInterval);
+            saveInterval = null;
+            let data = {
+                "Code": getEditorText(),
+                "Periphery": grid.getPeripheryJson()
+            };
+            window.fileManager.autosaveFile(JSON.stringify(data));
+        }
+    }
+
     function makeMarker() {
         var marker = document.createElement("div");
         marker.style.color = "#822";
@@ -237,4 +268,5 @@
 <script type="text/javascript">
 
 </script>
+
 </html>
