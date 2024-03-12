@@ -23,20 +23,21 @@ const opts = {
 ipcMain.handle("configCheck", (sender) => {
 });
 
-let saveFile = function (sender, data) {
-  dialog.showSaveDialog(sender, {
+let saveFile = function (data) {
+  dialog.showSaveDialog(win,{
     defaultPath: "G:\\",
     title: "Save object",
+    properties: ['saveFile'],
     filters: [
       { name: "projekt", extensions: ["sim51"] }
-    ]
+    ],
   }).then(result => {
     if (!result.canceled) {
       console.log(result.filePath);
       filePath = result.filePath
       fs.writeFile(result.Path, data, function (err) {
       });
-      saveFile = function (sender, data) {
+      saveFile = function (data) {
         fs.writeFile(filePath, data, function (err) {
         });
       };
@@ -56,14 +57,8 @@ let autoSave = function (data) {
   notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery == [];
 };
 
-ipcMain.handle("saveSettings", (sender, s) => {
-  fs.writeFile("MCSim_config_file.json", "zk", function (err) {
-    console.log(err);
-  });
-});
-
 ipcMain.handle("Save", (sender, data) => {
-  saveFile(sender, data);
+  saveFile(data);
 });
 
 ipcMain.handle("autoSave", (sender, data) => {
@@ -77,6 +72,7 @@ function openFile() {
     }
   }
   dialog.showOpenDialog(win, {
+    defaultPath: "G:\\",
     title: "open",
     properties: ['openFile'],
     filters: [
@@ -86,7 +82,7 @@ function openFile() {
     if (!result.canceled) {
       filePath = result.filePaths[0];
       notEmty = false;
-      saveFile = function (sender, data) {
+      saveFile = function (data) {
         fs.writeFile(filePath, data, function (err) {
         });
       };
@@ -165,8 +161,8 @@ function newFile() {
     "Code": '',
     "Periphery": []
   });
-  saveFile = function (sender, data) {
-    dialog.showSaveDialog(sender, {
+  saveFile = function (data) {
+    dialog.showSaveDialog(win, {
       defaultPath: 'G:\\projekt.sim51',
       title: 'Save object',
       filters: [
@@ -178,7 +174,7 @@ function newFile() {
         filePath = result.filePath
         fs.writeFile(result.Path, data, function (err) {
         });
-        saveFile = function (sender, data) {
+        saveFile = function ( data) {
           fs.writeFile(filePath, data, function (err) {
           });
         };

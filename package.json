@@ -7,8 +7,8 @@
     "build-win32": "electron-packager . --platform=win32 --version= 10.1.1"
   },
   "devDependencies": {
-    "electron": "^10.1.1",
-    "electron-packager": "^15.1.0"
+    "electron": "^29.1.1",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
