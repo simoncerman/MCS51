@@ -151,6 +151,14 @@ class Grid {
         });
 
         modal.openElement(null);
+
+        if(!isRunning){
+            let data = {
+                "Code": getEditorText(),
+                "Periphery": this.getPeripheryJson()
+            };
+            window.fileManager.autosaveFile(JSON.stringify(data));
+        }
     }
 
     updatePinConnections(peripheryId, pinNumber, connectedTo) {

@@ -102,6 +102,14 @@ window.events.onSave(() => {
     window.fileManager.saveFile(JSON.stringify(data));
 })
 
+window.events.onSaveAs(() => {
+    let data = {
+        "Code": getEditorText(),
+        "Periphery": grid.getPeripheryJson()
+    };
+    window.fileManager.saveFileAs(JSON.stringify(data));
+})
+
 window.events.onOpen((data) => {
     setEditorText(data.Code);
     grid.peripheryReplace(data.Periphery);

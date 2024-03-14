@@ -20,13 +20,29 @@ const opts = {
 }
 
 
-ipcMain.handle("configCheck", (sender) => {
+ipcMain.handle("SaveAs", (sender) => {
+  ialog.showSaveDialog(win,{
+    defaultPath: "G:\\",
+    title: "Save as",
+    properties: ['saveFile'],
+    filters: [
+      { name: "projekt", extensions: ["sim51"] }
+    ],
+  }).then(result => {
+    if (!result.canceled) {
+      filePath = result.filePath
+      fs.writeFile(result.filePath, data, function (err) {
+      });
+    }
+  }).catch(err => {
+    console.log(err);
+  })
 });
 
 let saveFile = function (data) {
   dialog.showSaveDialog(win,{
     defaultPath: "G:\\",
-    title: "Save object",
+    title: "Save",
     properties: ['saveFile'],
     filters: [
       { name: "projekt", extensions: ["sim51"] }
@@ -251,7 +267,7 @@ function createMenu() {
         },
         {
           label: 'Save As...',
-          click: function () { win.webContents.executeJavaScript('doEditorTextSave();'); }
+          click: () => win.webContents.send('save_as_event')
         }]
     },
     {
