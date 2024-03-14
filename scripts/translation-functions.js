@@ -146,6 +146,6 @@ function retrieveAddrFromLabel(label){
             return labelArray[i].refAddr;
         }
     }
-    debugger;
+    //debugger;
     return 0;
 }

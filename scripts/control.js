@@ -5,9 +5,6 @@ let currentDocument;
 
 let randomdataCheckbox = document.getElementById("randomdataControl");
 
-let path = null;
-
-
 function onRunBtnClick() {
     if (!isRunning) {
         isRunning = true;
@@ -65,7 +62,7 @@ function onStepBtnClick() {
         getCodeText();              //Získání textu
         normalizeCode();            //Upravení textu
         replaceSpecialAddresses();  //Nahrazení speciálních registrů
-        SyntaxDetection();          //Kontrolo Syntaxe, detekce labelů
+        SyntaxDetection();          //Kontrola Syntaxe, detekce labelů
         removeComments();           //Odstranění komentářů
         removeEmptyLines();         //Odstranění prázdných řádků
         translateCode();            //Přeložení kódu
@@ -109,29 +106,3 @@ window.events.onOpen((data) => {
     setEditorText(data.Code);
     grid.peripheryReplace(data.Periphery);
 })
-
-/*window.events.onSaveConfig(() => {
-    let s = {
-        "Random_data": randomdataCheckbox.checked,
-
-    };
-    window.fileManager.saveConfig(JSON.stringify(s));
-})*/
-
-/*window.events.onClose(() => {
-    let s = {
-        "Random_data": randomdataCheckbox.checked,
-
-    };
-    let data = {
-        "Code": getEditorText(),
-        "Periphery": grid.getPeripheryJson()
-    };
-    console.log(s);
-    console.log(JSON.stringify(s));
-    window.fileManager.closeApp(JSON.stringify(s), JSON.stringify(data));
-})*/
-
-/*window.events.onConfigCheck((config) => {
-    
-})*/

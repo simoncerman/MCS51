@@ -16,7 +16,7 @@ $(document).ready(function () {
 
 	fillUpSpecials();
 
-	$("input:not(#gotoInput)" ).change(function() {
+	$("input:not(#gotoInput,#randomdataControl)" ).change(function() {
 		recognizeAndUpdateDataFromInput(this);
 	});
 });

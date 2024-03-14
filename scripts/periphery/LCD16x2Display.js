@@ -501,6 +501,12 @@ class LCD16x2Display extends Periphery {
 
         // command switch
         switch (command) {
+            case 0x20:
+                this.turn4bitmode();
+                break;
+            case 0x30:
+                this.turn8bitmode();
+                break;
             // Clear display
             case 0x01: // clear display
                 this.clearDisplay();

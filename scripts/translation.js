@@ -14,13 +14,14 @@ function SyntaxDetection() {
 
     for (let i = 0; i < lineArray.length; i++) {
         if (!ifEmptyLine(lineArray[i])) {
-            if (InstructionCreate(lineArray[i], i)) { break; }
+            if (!InstructionCreate(lineArray[i], i)) { break; }
         }
     }
 }
 
 function InstructionCreate(input, i) {
     let result = SyntaxDetectionSingle(input);
+    console.log(result.result);
     if (result.result == -2) {
         throwErrorAtLine(i);
         return false;
@@ -28,13 +29,13 @@ function InstructionCreate(input, i) {
     else if (result.result == -1) {
         //Label found
         let label = input.substring(0, input.search(":"));
+        if(dictionary.includes(label)){return false}
         let intstruct = input.substring(input.search(":") + 1, input.length - input.search(":") + 1);
         labelArray.push({
             "name": label,
             "refAddr": currentByteCount
         });
-        console.log(labelArray[labelArray.length - 1]);
-        console.log(intstruct);
+        if (ifEmptyLine(intstruct)) {return true}
         return InstructionCreate(intstruct, i);
     }
     else {
@@ -47,9 +48,6 @@ function InstructionCreate(input, i) {
             "id": id,
             "instruction": instruction,
             "line": i,
-            "parametrs":{
-                
-            },
             "address": currentByteCount,
             "bytes": bytes,
             "cycles": cycles
@@ -61,12 +59,11 @@ function InstructionCreate(input, i) {
 }
 
 function SyntaxDetectionSingle(instruction) {
+    if (ifIsLabel(instruction)) {
+        return { "result": -1 }
+    }
+
     for (let i = 0; i < instructions.length; i++) {
-
-        if (ifIsLabel(instruction)) {
-            return { "result": -1 }
-        }
-
         let syntaxRegex = new RegExp(instructions[i].regex, "gmi");
         if (syntaxRegex.test(instruction)) {
             if (instruction.includes("$")) {
@@ -83,14 +80,19 @@ function SyntaxDetectionSingle(instruction) {
             };
         }
     }
-
     return { "result": -2 };
 }
 
 function translateCode() {
     let actualAddr = 0;
 
-    prog = new Array(0xFFFF).fill(0x0);
+    if(randomdataCheckbox.checked){
+
+        prog = Array.from({length: 0xFFFF}, () => Math.floor(Math.random() * 256));
+    }
+    else{
+        prog = new Array(0xFFFF).fill(0x0);
+    }
 
     let t1 = performance.now();
 
@@ -153,6 +155,7 @@ function translateCodeSingle(instruction, memoryAddr) {
         case 11:
             changeCodeHexOnAddress(memoryAddr, 0x1);
             changeCodeHexOnAddress(memoryAddr + 1, retrieveAddrFromLabel(first));
+            console.log(retrieveAddrFromLabel(first));
             return 2;
         case 12:
             changeCodeHexOnAddress(memoryAddr, 0x54);

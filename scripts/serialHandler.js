@@ -21,6 +21,7 @@ class SerialHandler {
     }
 
     receiveData(bit) {
+        this.getSpeed();
         if(this.mode == 0 && this.getTI() == 0){return;}
 
         this.ro.value = bit;
@@ -108,6 +109,7 @@ class SerialHandler {
     }
 
     sendDataPrepare(value) {
+        this.getSpeed();
         if(this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)){return;}
 
         this.sendQueue = [];
@@ -120,7 +122,7 @@ class SerialHandler {
         if (this.mode == 2 || this.mode == 3) {
             binary.unshift(this.getTB8());
         } else if (this.mode == 1) {
-            binary.unshift(0);
+           // binary.unshift(1);
         }
         for (let j = 0; j < binary.length; j++) {
             this.sendQueue.push(binary[j]);

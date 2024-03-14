@@ -35,7 +35,7 @@ let saveFile = function (data) {
     if (!result.canceled) {
       console.log(result.filePath);
       filePath = result.filePath
-      fs.writeFile(result.Path, data, function (err) {
+      fs.writeFile(result.filePath, data, function (err) {
       });
       saveFile = function (data) {
         fs.writeFile(filePath, data, function (err) {
@@ -172,7 +172,7 @@ function newFile() {
       if (!result.canceled) {
         console.log(result.filePath);
         filePath = result.filePath
-        fs.writeFile(result.Path, data, function (err) {
+        fs.writeFile(result.filePath, data, function (err) {
         });
         saveFile = function ( data) {
           fs.writeFile(filePath, data, function (err) {
@@ -405,19 +405,3 @@ ipcMain.on('sendNewFont', (event, args) => {
   win.webContents.executeJavaScript("changeEditorFontSize(" + size + ")");
   win.webContents.executeJavaScript("changeEditorFontFamily('" + family + "')");
 });
-
-function closeFileConfirmation() {
-
-  dialog.showMessageBox(win, opts).then(result => {
-    console.log(result.response);
-    switch (result.response) {
-      case 1:   //YES
-        win.webContents.send('save_event');
-        return false;
-      case 2:   //NO
-        return false;
-      case 0:   //Cancel
-        return true
-    }
-  });
-}
