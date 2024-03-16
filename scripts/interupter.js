@@ -28,6 +28,11 @@ class interuptersystem {
                 if (GetOverflow(1) == 1) {
                     setBitInAddr(TCON, 7, 0);
                     i.interupt(0x001B);
+                    if (serialHandler.sendQueue.length !== 0) {
+                        if (serialHandler.mode == 1 || serialHandler.mode == 3) {
+                            serialHandler.sendData();
+                        }
+                    }
                 }
             },
             function (i) {

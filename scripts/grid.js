@@ -92,6 +92,7 @@ class Grid {
             newPeriphery = new Switch("p" + this.actualId);
         } else if (newPeripheryName === "serialMonitor") {
             newPeriphery = new SerialMonitor("p" + this.actualId);
+            document.getElementById("sermor").disabled = true;
         } else if (newPeripheryName === "DAC") {
             newPeriphery = new DAC("p" + this.actualId);
         } else if (newPeripheryName === "ADC") {
@@ -120,6 +121,10 @@ class Grid {
     updateGrid() {
         this.clearLeadingEdgeValuesArray();
 
+        if(serialHandler.getSerialMonitors() == null){
+            document.getElementById("sermor").disabled = false;
+        }
+
         // priority properties what are of class Button do first
         this.elements.forEach((element) => {
             if (element instanceof Button || element instanceof Switch || element instanceof Keyboard) {
@@ -142,6 +147,11 @@ class Grid {
             }
         });
 
+        var selectobject = document.getElementById("addPeripheryValue");
+        for (var i = 0; i < selectobject.length; i++) {
+            if (selectobject.options[i].value == "serialMonitor" && this.serialExist)
+                selectobject.remove(i);
+        }
 
         // update the grid
         let grid = document.getElementById("peripheriesGrid");

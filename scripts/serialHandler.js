@@ -11,34 +11,45 @@ class SerialHandler {
     }
 
     getSerialMonitors() {
-        let serialMonitors = [];
         for (let i = 0; i < grid.elements.length; i++) {
             if (grid.elements[i].name === "SerialMonitor") {
-                serialMonitors.push(grid.elements[i]);
+                return grid.elements[i];
             }
         }
-        return serialMonitors;
+        return null;
     }
 
     receiveData(bit) {
         this.getSpeed();
-        if(this.mode == 0 && this.getTI() == 0){return;}
+
+        if (this.mode == 0 && this.getTI() == 1) { return; }
+        if (this.mode != 0 && this.getRI() == 0) { return; }
 
         this.ro.value = bit;
         this.receiveBitBuffer.unshift(bit);
         if (this.receiveBitBuffer.length === this.bitNumber) {
             // parity bit is first bit - get it and leave 8 bits alone
             let nineBit = 0;
-            if(this.mode!=0){nineBit = this.receiveBitBuffer.pop(); this.setRI(1);}
+            if (this.mode != 0) {
+                if (this.mode == 1) {
+                    nineBit = 1;
+                } else {
+                    nineBit = this.receiveBitBuffer.pop();
+                }
+                this.setRB8(nineBit);
+            }
             let hexValue = parseInt(this.receiveBitBuffer.join(""), 2).toString(16);
             // convert to decimal
             let value = parseInt(hexValue, 16).toString(10);
 
-            this.setRB8(nineBit);
             this.moveToReceiveBuffer(value);
 
             this.receiveBitBuffer = [];
         }
+        if((this.mode == 2 || this.mode == 1) && this.getSM2 == 1 && nineBit == 0){
+            return;
+        }
+        this.setRI(1);
     }
 
     controlSettings(monitor) {
@@ -51,16 +62,16 @@ class SerialHandler {
         setDataValueTo(0x99, intValue);
     }
 
-    getCustomSpeed(){
-        switch(TT1.mode ){
+    getCustomSpeed() {
+        switch (TT1.mode) {
             case 0:
-                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (8191 -  parseInt(getDataValueFrom(TH1).toString(2)+getDataValueFrom(TL1).toString(2).substring(0,5),2));
+                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (8191 - parseInt(getDataValueFrom(TH1).toString(2) + getDataValueFrom(TL1).toString(2).substring(0, 5), 2));
             case 1:
-                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (65536 -  parseInt(getDataValueFrom(TH1).toString(2)+getDataValueFrom(TL1).toString(2),2));
+                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (65536 - parseInt(getDataValueFrom(TH1).toString(2) + getDataValueFrom(TL1).toString(2), 2));
             case 2:
                 return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1));
         }
-    } 
+    }
 
     getSpeed() {
         this.getMODE();
@@ -71,6 +82,10 @@ class SerialHandler {
             case "3": this.speed = this.getCustomSpeed; ptr.bitNumber = 9; break;
             default: return;
         }
+    }
+
+    getREN() {
+        return this.getSCON[3];
     }
 
     getSCON() {
@@ -107,6 +122,11 @@ class SerialHandler {
     setRI(bit) {
         this.setSCONBit(7, bit);
     }
+
+    getSM2() {
+        return this.getSCON[2];
+    }
+
     setSCONBit(position, bit) {
         let SCONBinaryArray = this.getSCON();
         while (SCONBinaryArray.length < 8) {
@@ -120,9 +140,12 @@ class SerialHandler {
     }
 
     sendDataPrepare(value) {
+        if (serialHandler.getSerialMonitors() == null) {
+            return;
+        }
         this.getSpeed();
-        if(this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)){return;}
-        if((this.mode == 1 || this.mode == 3) && getBitFromAddr(TCON,5) != 1){return;}
+        if (this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)) { return; }
+        if ((this.mode == 1 || this.mode == 3) && getBitFromAddr(IE, 3) == 0) { return; }
 
         this.sendQueue = [];
         let hex = parseInt(value, 10).toString(16);
@@ -130,17 +153,20 @@ class SerialHandler {
         while (binary.length < 8) {
             binary = "0" + binary;
         }
+
         binary = binary.split("");
         if (this.mode == 2 || this.mode == 3) {
             binary.unshift(this.getTB8());
-        } else if (this.mode == 1) {
-           // binary.unshift(1);
         }
+
         for (let j = 0; j < binary.length; j++) {
             this.sendQueue.push(binary[j]);
         }
+
         if (this.dataSender == null) {
-            this.sendData();
+            if(this.mode == 0 || this.mode == 2){
+                this.sendData();
+            }
         }
     }
 
@@ -152,36 +178,26 @@ class SerialHandler {
         }
 
         let serialMonitors = this.getSerialMonitors()
+        if(serialMonitors == null){return;}
         let bit = this.sendQueue.pop();
 
         // set bit to wo
         document.getElementById("wo").value = bit;
 
-        for (let i = 0; i < serialMonitors.length; i++) {
-            if (this.controlSettings(serialMonitors[i])) {
-                serialMonitors[i].receiveBit(bit);
-            }
+        if (this.controlSettings(serialMonitors[i])) {
+            serialMonitors.receiveBit(bit);
         }
 
         if (this.sendQueue.length !== 0) {
-            this.dataSender = setTimeout(() => {
-                this.sendData();
-                this.setTI(1);
-                if(this.mode == 1 || this.mode == 3){
-                    switch(TT1.mode ){
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                    }
-                }
-
-
-            }, getClockInterval() / ((this.speed)*1000));
+            if(this.mode == 0 || this.mode == 2){
+                this.dataSender = setTimeout(() => {
+                    this.sendData();
+                }, getClockInterval() / ((this.speed) * 1000));
+            }
+            
         } else {
             this.dataSender = null;
+            this.setTI(1);
         }
     }
 

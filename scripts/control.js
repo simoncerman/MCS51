@@ -3,7 +3,7 @@ let timeElapsed = 0;
 
 let currentDocument;
 
-let randomdataCheckbox = document.getElementById("randomdataControl");
+//let randomdataCheckbox = document.getElementById("randomdataControl");
 
 function onRunBtnClick() {
     if (!isRunning) {

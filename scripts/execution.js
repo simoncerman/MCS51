@@ -544,8 +544,14 @@ function doInstructionAction(instruction) {
             setBitInAddr(addr, bit, result);
             return 1;
         case 34:
-            incrementPCby(1);       //DA A
-
+            incrementPCby(1);console.log("dsf");       //DA A
+            if(getBitFromAddr(PSW,6) == 1){
+                
+                setDataValueTo(ACC,getDataValueFrom(ACC)+6);
+            }
+            if(getBitFromAddr(PSW,7) == 1){
+                setDataValueTo(ACC,getDataValueFrom(ACC)+0x60);
+            }
             return 1;
         case 35:
             incrementPCby(1);
@@ -602,7 +608,7 @@ function doInstructionAction(instruction) {
             num1 -= 1;
             setDataValueTo(addr, num1);
             if(num1 != 0)
-                setPCValueTo(labelArray);
+                setPCValueTo(label);
             return 2;
         case 41:
             incrementPCby(2);
@@ -611,8 +617,9 @@ function doInstructionAction(instruction) {
             label = retrieveAddrFromLabel(second);
             num1 -= 1;
             setDataValueTo(addr, num1);
+            console.log(label);
             if(num1 != 0)
-                setPCValueTo(labelArray);
+                setPCValueTo(label);
             return 2;
         case 42:
             incrementPCby(1);

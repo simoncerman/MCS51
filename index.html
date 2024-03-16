@@ -24,7 +24,7 @@
         <button class="control-btn" id="stop" style="font-weight: 10px;" disabled
             onclick="onStopBtnClick();">&#10073;&#10073;</button>
         <button class="control-btn" id="step" onclick="onStepBtnClick();">Step</button>
-        <label>1 cyklus za</label>
+        <label> 1 cyklus za: </label>
         <select class="control-btn" title="System Clock" id="clock">
             <option value="2000000">2s</option>
             <option value="1000000">1s</option>
@@ -32,8 +32,8 @@
             <option selected value="10000">10ms</option>
             <option value="1000">1ms</option>
         </select>
-        <label><input type="checkbox" id="randomdataControl" value="r">Náhodná data</label>
-        <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>
+        <!--<label><input type="checkbox" id="randomdataControl" value="r">Náhodná data</label>
+        <button class="control-btn" id="peripheryControl" onclick="modal.openSettings();">Peripheries</button>-->
         <div style="width: 60%; display: flex; justify-content: flex-end;" id="info" hidden></div>
     </header>
     <div class="input">
@@ -109,7 +109,7 @@
                                 <option value="Keyboard">Keyboard</option>
                                 <option value="motorDC">DC engine</option>
                                 <option value="stepEngine">Step engine</option>
-                                <option value="serialMonitor">Serial monitor</option>
+                                <option value="serialMonitor" id="sermor">Serial monitor</option>
                                 <option value="DAC">DAC</option>
                                 <option value="ADC">ADC</option>
                             </select>
