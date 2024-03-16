@@ -51,13 +51,24 @@ class SerialHandler {
         setDataValueTo(0x99, intValue);
     }
 
+    getCustomSpeed(){
+        switch(TT1.mode ){
+            case 0:
+                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (8191 -  parseInt(getDataValueFrom(TH1).toString(2)+getDataValueFrom(TL1).toString(2).substring(0,5),2));
+            case 1:
+                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (65536 -  parseInt(getDataValueFrom(TH1).toString(2)+getDataValueFrom(TL1).toString(2),2));
+            case 2:
+                return (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1));
+        }
+    } 
+
     getSpeed() {
         this.getMODE();
         switch (this.mode) {
             case "0": this.speed = 1; ptr.bitNumber = 8; break;
-            case "1": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1)); ptr.bitNumber = 8; break;
+            case "1": this.speed = this.getCustomSpeed; ptr.bitNumber = 8; break;
             case "2": this.speed = Math.pow(2, this.getSMOD()) / 64 * 12000000; ptr.bitNumber = 9; break;
-            case "3": this.speed = (Math.pow(2, this.getSMOD()) / 32) * 1000000 / (256 - getDataValueFrom(TH1)); ptr.bitNumber = 9; break;
+            case "3": this.speed = this.getCustomSpeed; ptr.bitNumber = 9; break;
             default: return;
         }
     }
@@ -111,6 +122,7 @@ class SerialHandler {
     sendDataPrepare(value) {
         this.getSpeed();
         if(this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)){return;}
+        if((this.mode == 1 || this.mode == 3) && getBitFromAddr(TCON,5) != 1){return;}
 
         this.sendQueue = [];
         let hex = parseInt(value, 10).toString(16);
@@ -155,7 +167,19 @@ class SerialHandler {
             this.dataSender = setTimeout(() => {
                 this.sendData();
                 this.setTI(1);
-            }, getClockInterval() / (this.speed));
+                if(this.mode == 1 || this.mode == 3){
+                    switch(TT1.mode ){
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }
+                }
+
+
+            }, getClockInterval() / ((this.speed)*1000));
         } else {
             this.dataSender = null;
         }

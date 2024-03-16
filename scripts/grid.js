@@ -153,11 +153,15 @@ class Grid {
         modal.openElement(null);
 
         if(!isRunning){
-            let data = {
-                "Code": getEditorText(),
-                "Periphery": this.getPeripheryJson()
-            };
-            window.fileManager.autosaveFile(JSON.stringify(data));
+            switch (saveInterval) {
+                case null:
+                    saveInterval = setInterval(saveF, 100);
+                    break;
+    
+                default:
+                    saveDelay = 5;
+                    break;
+            }
         }
     }
 

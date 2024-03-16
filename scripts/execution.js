@@ -1129,6 +1129,7 @@ function doInstructionAction(instruction) {
             num2 = getDataValueFrom(getDataValueFrom(SP));      //RETI
             decrementSPby(1);
             setPCValueTo(combineTo16bit(num1, num2));
+            interupter.nulation();
             return 2;
         case 101:
             incrementPCby(1);
@@ -1437,4 +1438,3 @@ function doInstructionAction(instruction) {
             return 1;
     } 
 }
-

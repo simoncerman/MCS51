@@ -50,7 +50,7 @@ function incrementTT(signal){
             case 2:
                 incrementInAddr(TL0);
                 if(getDataValueFrom(TL0) > 0xFF) {
-                    setDataValueTo(TL0, 0x0);
+                    setDataValueTo(TL0, getDataValueFrom(TH1));
                     setOverflow(0);
                 }
                 break
@@ -96,7 +96,7 @@ function incrementTT(signal){
             case 2:
                 incrementInAddr(TL1);
                 if(getDataValueFrom(TL1) > 0xFF) {
-                    setDataValueTo(TL1, 0x0);
+                    setDataValueTo(TL1, getDataValueFrom(TH1));
                     setOverflow(0);
                 }
                 break
@@ -132,7 +132,7 @@ function incrementTT(signal){
             case 2:
                 incrementInAddr(TL0);
                 if(getDataValueFrom(TL0) > 0xFF) {
-                    setDataValueTo(TL0, 0x0);
+                    setDataValueTo(TL0, getDataValueFrom(TH1));
                     setOverflow(0);
                 }
                 break
@@ -178,7 +178,7 @@ function incrementTT(signal){
             case 2:
                 incrementInAddr(TL1);
                 if(getDataValueFrom(TL1) > 0xFF) {
-                    setDataValueTo(TL1, 0x0);
+                    setDataValueTo(TL1, getDataValueFrom(TH1));
                     setOverflow(0);
                 }
                 break
@@ -196,5 +196,14 @@ function setOverflow(index){
         case 1:
             setBitInAddr(TCON, 7, 1);
             break;
+    }
+}
+
+function GetOverflow(index){
+    switch (index){
+        case 0:
+            return getBitFromAddr(TCON, 5);
+        case 1:
+            return getBitFromAddr(TCON, 7);
     }
 }

@@ -49,6 +49,7 @@ function onStopBtnClick() {
         clearGutter();
         if (getClockInterval() / 1000 >= 100)
             highlightActiveLine();
+        interupter.execute();
         delay(currentInstruction.cycles * getClockInterval() / 1000);
         interval = setInterval(onClockSignal, getClockInterval() / 1000);
     }
@@ -72,6 +73,7 @@ function onStepBtnClick() {
         grid.updateGrid();
         clearGutter();
         highlightActiveLine();
+        interupter.execute();
     }
     else {
         //Do Step
@@ -79,6 +81,7 @@ function onStepBtnClick() {
         grid.updateGrid();
         clearGutter();
         highlightActiveLine();
+        interupter.execute();
     }
 }
 
@@ -89,6 +92,7 @@ function onClockSignal() {
         clearGutter();
         if (getClockInterval() / 1000 >= 100)
             highlightActiveLine();
+        interupter.execute();
         delay(currentInstruction.cycles * getClockInterval() / 1000);
     }
     else

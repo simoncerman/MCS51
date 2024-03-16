@@ -6,11 +6,11 @@ function retrieveCodeRn(operand){
 }
 
 function retrieveCodeDirect(operand){
-    if(operand.includes("h")){  //Hex
+    if(operand.includes("h") || operand.includes("H")){  //Hex
         num = parseInt(operand.substring(0, operand.length - 1), 16);
         return num;
     }
-    else if(operand.includes("b")) {    //Binary
+    else if(operand.includes("b") || operand.includes("B")) {    //Binary
         num = parseInt(operand.substring(0, operand.length - 1), 2);
         return num;
     }
@@ -21,11 +21,11 @@ function retrieveCodeDirect(operand){
 
 function retrieveCodeImmediate(operand){
     operand = operand.substring(1);
-    if(operand.includes("h")){  //Hex
+    if(operand.includes("h") || operand.includes("H")){  //Hex
         num = parseInt(operand.substring(0, operand.length - 1), 16);
         return num;
     }
-    else if(operand.includes("b")) {    //Binary
+    else if(operand.includes("b") || operand.includes("B")) {    //Binary
         num = parseInt(operand.substring(0, operand.length - 1), 2);
         return num;
     }
@@ -41,9 +41,9 @@ function retrieveCodeAdRi(operand){
 }
 
 function retrieveCodeBit(operand){
-    if(operand.includes("h"))  //Hex
+    if(operand.includes("h") || operand.includes("H"))  //Hex
         num = parseInt(operand.substring(0, operand.length - 1), 16);
-    else if(operand.includes("b"))    //Binary
+    else if(operand.includes("b") || operand.includes("B"))    //Binary
         num = parseInt(operand.substring(0, operand.length - 1), 2);
     else  //Dec
         num = parseInt(operand);

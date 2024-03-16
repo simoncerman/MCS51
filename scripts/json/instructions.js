@@ -20,9 +20,9 @@ function regexCheck(input, expresions) {
 	return -1
 }
 
-let first = getFirstOperand(instruction.instruction);
-let second = getSecondOperand(instruction.instruction);
-let third = getThirdOperand(instruction.instruction);
+//let first = getFirstOperand(instruction.instruction);
+//let second = getSecondOperand(instruction.instruction);
+//let third = getThirdOperand(instruction.instruction);
 
 
 let instructionRegex = {
@@ -31,7 +31,7 @@ let instructionRegex = {
 			"^\\s*acall\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,11}b)|(?:[0-9][0-9a-f]{1,2}h)|(?:0[a-f][0-9a-f]{1,2}h))\\s*$",
 			"^\\s*acall\\s+[a-z][a-z0-9]*\\s*$"
 		];
-		return (regexCheck(input, ex)); 
+		return regexCheck(input, ex); 
 	},
 	"ADD": function (input) {
 		let ex = [
@@ -379,7 +379,21 @@ let instructionRegex = {
 			"^\\s*xrl\\s+(?:(?:[0-9]{1,3})|(?:[0-1]{1,8}b)|(?:[0-9a-f]{1,2}h))\\s*,\\s*a\\s*$",
 		]
 		return regexCheck(input, ex)
+	},
+	"ORG": function(input){
+		let ex = [
+			"^\\s*org\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,8}b)|(?:[0-9][0-9a-f]{1,2}h)|(?:0[a-f][0-9a-f]{1,2}h))\\s*$",
+			"^\\s*org\\s+(?:(?:[0-9]{1,5})|(?:[0-1]{1,16}b)|(?:[0-9][0-9a-f]{1,3}h)|(?:0[a-f][0-9a-f]{1,3}h))\\s*$",
+		]
+		return regexCheck(input, ex)
+	},
+	"END": function(input){
+		let ex = [
+			"^\\s*end\\s*$"
+		]
+		return regexCheck(input, ex)
 	}
+
 }
 
 let instructions = [
@@ -1150,5 +1164,17 @@ let instructions = [
 		"regex": "^\\s*jmp\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,11}b)|(?:[0-9][0-9a-f]{1,2}h)|(?:0[a-f][0-9a-f]{1,2}h))\\s*$",
 		"bytes": 1,
 		"cycles": 2 //JMP @A+DPTR
+	},
+	{
+		"id":124,
+		"regex": "^\\s*org\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,11}b)|(?:[0-9][0-9a-f]{1,2}h)|(?:0[a-f][0-9a-f]{1,2}h))\\s*$"
+	},
+	{
+		"id":125,
+		"regex": "^\\s*org\\s+(?:(?:[0-9]{1,5})|(?:[0-1]{1,16}b)|(?:[0-9][0-9a-f]{1,3}h)|(?:0[a-f][0-9a-f]{1,3}h))\\s*$"
+	},
+	{
+		"id":126,
+		"regex": "^\\s*end\\s*$"
 	}
 ]
