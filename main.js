@@ -144,7 +144,7 @@ function createWindow(url) {
   // and load the index.html of the app.
   win.loadFile(url);
   //Open DevTools
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 
   win.on("close", e => {
     e.preventDefault();
