@@ -75,6 +75,8 @@ function replaceSpecialAddresses() {
     codeText = codeText.replace(/\btl1\b/gmi, "8Bh");
 }
 
+let specialAdrress = ["E0h","F0h","D0h","83h","82h","81h","80h","90h","A0h","B0h","87h","98h","88h","89h","A8h","B8h","99h","8Ch","8Dh","8Ah","8Bh"];
+
 function removeLabels() {
     codeText = codeText.replace(/$\s*\b[a-z]{1}\w*:/gmi, "");
 }

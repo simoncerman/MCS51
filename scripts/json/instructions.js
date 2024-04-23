@@ -758,13 +758,13 @@ let instructions = [
 	{
 		"id": 108,
 		"regex": "^\\s*jmp\\s+(?:(?:[a-z][a-z0-9]*)|(?:\\$))\\s*$",
-		"bytes": 1,
+		"bytes": 2,
 		"cycles": 2 //JMP @A+DPTR
 	},
 	{
 		"id": 10,
 		"regex": "^\\s*jmp\\s+(?:(?:[0-9]{1,4})|(?:[0-1]{1,11}b)|(?:[0-9][0-9a-f]{1,2}h)|(?:0[a-f][0-9a-f]{1,2}h))\\s*$",
-		"bytes": 1,
+		"bytes": 2,
 		"cycles": 2 //JMP @A+DPTR
 	},
 	{
