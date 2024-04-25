@@ -111,7 +111,7 @@ class interuptersystem {
                 if (getBitFromAddr(IP, j) == i) {
                     if (getBitFromAddr(IE, j) == 1) {
                         let priority = 7 * i - j + 7;
-                        if (priority <= this.currentIntPriority) { continue; }
+                        if (priority < this.currentIntPriority) { continue; }
                         this.currentIntPriority = priority;
                         this.source = j;
                         this.interupts[j](this);

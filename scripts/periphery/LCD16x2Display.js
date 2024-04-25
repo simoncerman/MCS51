@@ -309,7 +309,7 @@ class LCD16x2Display extends Periphery {
         let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
 
         // check if the display is powered
-        if (GND === "GND" && VCC === 1) {
+        if (GND === "GND" && VCC === 1 && isRunning) {
             this.displayPowered = true;
         } else {
             this.displayPowered = false;
@@ -365,11 +365,66 @@ class LCD16x2Display extends Periphery {
         this.execute = function () {
             let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
             // check if the display is powered
-            if (GND === "GND" && VCC === 1) {
+            if (GND === "GND" && VCC === 1 && isRunning) {
                 this.displayPowered = true;
             } else {
                 this.displayPowered = false;
                 this.clearDisplay();
+                this.execute = function () {
+                    let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
+
+                    // check if the display is powered
+                    if (GND === "GND" && VCC === 1 && isRunning) {
+                        this.displayPowered = true;
+                    } else {
+                        this.displayPowered = false;
+                        this.clearDisplay();
+                        return;
+                    }
+
+                    // check contrast/opacity of the display
+                    this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
+
+                    // check if all db pins has value null -> no data -> return
+                    let allNull = true;
+                    for (let i = 4; i < DB.length; i++) {
+                        if (DB[i] !== null) {
+                            allNull = false;
+                            break;
+                        }
+                    }
+                    if (allNull) {
+                        return;
+                    }
+                    if (E === 1) this.isFallingEdge = true;
+                    if (E === "GND" && this.isFallingEdge) {
+                        this.isFallingEdge = false;
+                        // command mode
+                        if (RS === "GND") {
+                            if (RW === "GND") {
+                                for (let i = 0; i < DB.length; i++) {
+                                    if (DB[i] === "GND") {
+                                        DB[i] = 0;
+                                    }
+                                }
+
+                                let command = 0;
+                                for (let i = 4; i < DB.length; i++) {
+                                    command += DB[i] * Math.pow(2, i);
+                                }
+                                switch (command) {
+                                    case 0x20:
+                                        this.turn4bitmode();
+                                        break;
+                                    case 0x30:
+                                        this.turn8bitmode();
+                                        break;
+                                    default: return;
+                                }
+                            }
+                        }
+                    }
+                }
                 return;
             }
 
@@ -405,14 +460,70 @@ class LCD16x2Display extends Periphery {
     }
 
     turn4bitmode() {
+        console.log("dfsjh");
         this.execute = function () {
             let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
             // check if the display is powered
-            if (GND === "GND" && VCC === 1) {
+            if (GND === "GND" && VCC === 1 && isRunning) {
                 this.displayPowered = true;
             } else {
                 this.displayPowered = false;
                 this.clearDisplay();
+                this.execute = function () {
+                    let [GND, VCC, VEE, RS, RW, E, DB] = this.getData();
+
+                    // check if the display is powered
+                    if (GND === "GND" && VCC === 1 && isRunning) {
+                        this.displayPowered = true;
+                    } else {
+                        this.displayPowered = false;
+                        this.clearDisplay();
+                        return;
+                    }
+
+                    // check contrast/opacity of the display
+                    this.display.objectDisplay.getElementsByClassName("display-inner")[0].style.opacity = VEE;
+
+                    // check if all db pins has value null -> no data -> return
+                    let allNull = true;
+                    for (let i = 4; i < DB.length; i++) {
+                        if (DB[i] !== null) {
+                            allNull = false;
+                            break;
+                        }
+                    }
+                    if (allNull) {
+                        return;
+                    }
+                    if (E === 1) this.isFallingEdge = true;
+                    if (E === "GND" && this.isFallingEdge) {
+                        this.isFallingEdge = false;
+                        // command mode
+                        if (RS === "GND") {
+                            if (RW === "GND") {
+                                for (let i = 0; i < DB.length; i++) {
+                                    if (DB[i] === "GND") {
+                                        DB[i] = 0;
+                                    }
+                                }
+
+                                let command = 0;
+                                for (let i = 4; i < DB.length; i++) {
+                                    command += DB[i] * Math.pow(2, i);
+                                }
+                                switch (command) {
+                                    case 0x20:
+                                        this.turn4bitmode();
+                                        break;
+                                    case 0x30:
+                                        this.turn8bitmode();
+                                        break;
+                                    default: return;
+                                }
+                            }
+                        }
+                    }
+                }
                 return;
             }
             // check contrast/opacity of the display

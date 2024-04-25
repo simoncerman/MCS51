@@ -31,6 +31,9 @@ class Modal{
         this.modal.style.display = "block";
         this.modalContent.innerHTML = "";
         this.modalContent.appendChild(this.settings);
+        if(serialHandler.getSerialMonitors() == null){
+            document.getElementById("sermor").disabled = false;
+        }
     }
     open(object, closeAction = null){
         if (closeAction){
