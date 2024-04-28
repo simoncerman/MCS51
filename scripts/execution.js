@@ -494,7 +494,10 @@ function doInstructionAction(instruction) {
         case 29:
             incrementPCby(2);
             add = retrieveSpecialBit(first).address;
+            console.log(add);
             bit = retrieveSpecialBit(first).bit;
+            console.log(bit)
+            console.log(getDataValueFrom(SCON));
             setBitInAddr(add, bit, 0);
             return 1;
         case 30:

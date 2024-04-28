@@ -21,7 +21,7 @@ const opts = {
 
 
 ipcMain.handle("SaveAs", (sender) => {
-  ialog.showSaveDialog(win,{
+  dialog.showSaveDialog(win,{
     defaultPath: "G:\\",
     title: "Save as",
     properties: ['saveFile'],
@@ -70,7 +70,7 @@ let saveFile = function (data) {
 
 let autoSave = function (data) {
   let d = JSON.parse(data);
-  notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery == [];
+  notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery.length != 0;
 };
 
 ipcMain.handle("Save", (sender, data) => {
@@ -206,7 +206,7 @@ function newFile() {
   }
   autoSave = function (data) {
     let d = JSON.parse(data);
-    notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery == [];
+    notEmty = d.Code.replace(/\s+/g, '') != '' || d.Periphery.length != 0;
   };
   filePath = null;
   notEmty = false;

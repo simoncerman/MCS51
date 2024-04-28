@@ -160,7 +160,7 @@ class Grid {
                     break;
     
                 default:
-                    saveDelay = 5;
+                    saveDelay = 10;
                     break;
             }
         }

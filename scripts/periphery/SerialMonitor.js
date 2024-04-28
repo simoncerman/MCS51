@@ -59,7 +59,15 @@ class SerialMonitor extends Periphery {
         let name = document.createElement("div");
         name.innerHTML = this.name;
 
-        this.connectionSettings = document.createElement("div");
+
+
+        this.connectionSettings = document.createElement("input");
+        this.connectionSettings.type = "number";
+        this.connectionSettings.disabled = true;
+        this.connectionSettings.placeholder = "Communication speed";
+        this.connectionSettings.onchange = function () {
+            this.speed = parseInt(this.value);
+        }
         this.connectionSettings.classList.add("connectionSettings");
 
         this.modeSwitch = document.createElement("select");
@@ -74,41 +82,25 @@ class SerialMonitor extends Periphery {
         this.modeSwitch.onchange = function () {
             switch (this.value) {
                 case "0":
-                    ptr.connectionSettings.innerHTML = ``;
+                    ptr.connectionSettings.disabled = true;
                     ptr.mode = 1;
                     ptr.speed = 1;
                     ptr.bitNumber = 8;
-
                     break;
                 case "1":
+                    ptr.connectionSettings.disabled = false;
                     ptr.mode = 1;
-                    ptr.connectionSettings = document.createElement("input");
-                    ptr.connectionSettings.type = "number";
-                    ptr.connectionSettings.onchange = function () {
-                        ptr.speed = parseFloat(this.value);
-                    }
                     ptr.bitNumber = 8;
-
                     break;
                 case "2":
+                    ptr.connectionSettings.disabled = false;
                     ptr.mode = 2;
-                    ptr.connectionSettings = document.createElement("input");
-                    ptr.connectionSettings.type = "number";
-                    ptr.connectionSettings.onchange = function () {
-                        ptr.speed = parseFloat(this.value);
-                    }
                     ptr.bitNumber = 9;
-
                     break;
                 case "3":
+                    ptr.connectionSettings.disabled = false;
                     ptr.mode = 3;
-                    ptr.connectionSettings = document.createElement("input");
-                    ptr.connectionSettings.type = "number";
-                    ptr.connectionSettings.onchange = function () {
-                        ptr.speed = parseFloat(this.value);
-                    }
                     ptr.bitNumber = 9;
-
                     break;
                 default: return;
             };
@@ -177,7 +169,10 @@ class SerialMonitor extends Periphery {
             // reverse binary
             binary = binary.split("").reverse().join("");
             binary = binary.split("");
-            if(this.mode = 1){;
+            if(this.mode == 1){;
+                //binary.unshift(0);
+            }
+            if(this.mode == 2 || this.mode == 3){;
                 binary.unshift(0);
             }
             
@@ -196,11 +191,13 @@ class SerialMonitor extends Periphery {
             return;
         }
         let bit = this.sendQueue.shift();
-        serialHandler.receiveData(bit)
+        if(this.serialHandler.controlSettings(this)){
+            serialHandler.receiveData(bit)
+        }
         if (this.sendQueue.length !== 0) {
             this.dataSender = setTimeout(() => {
                 this.sendData();
-            }, getClockInterval() / (this.speed));
+            }, getClockInterval() * (this.speed)/100);
         } else {
             this.dataSender = null;
         }
@@ -208,14 +205,13 @@ class SerialMonitor extends Periphery {
     }
 
     receiveBit(bit) {
-
-        console.log(bit);
         this.receiveQueue.push(bit);
         
         if (this.receiveQueue.length === this.bitNumber) {
             //let parityBit = this.receiveQueue.pop();
             //this.parityBit.innerHTML = "Parity: " + parityBit;
             this.receiveQueue = this.receiveQueue.reverse();
+            console.log(this.receiveQueue);
             let hexValue = parseInt(this.receiveQueue.join(""), 2).toString(16);
             let char = String.fromCharCode(parseInt(hexValue, 16));
             this.recieveTextArea.value += char;

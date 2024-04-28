@@ -78,7 +78,7 @@ function incrementTT(signal){
                     incrementInAddr(TH1);
                     if (getDataValueFrom(TH1) > 0xFF) {
                         setDataValueTo(TH1, 0x0);
-                        setOverflow(0);
+                        setOverflow(1);
                     }
                 }
                 break
@@ -89,7 +89,7 @@ function incrementTT(signal){
                     incrementInAddr(TH1);
                     if (getDataValueFrom(TH1) > 0xFF) {
                         setDataValueTo(TH1, 0x0);
-                        setOverflow(0);
+                        setOverflow(1);
                     }
                 }
                 break
@@ -97,7 +97,7 @@ function incrementTT(signal){
                 incrementInAddr(TL1);
                 if(getDataValueFrom(TL1) > 0xFF) {
                     setDataValueTo(TL1, getDataValueFrom(TH1));
-                    setOverflow(0);
+                    setOverflow(1);
                 }
                 break
             case 3:
@@ -160,7 +160,7 @@ function incrementTT(signal){
                     incrementInAddr(TH1);
                     if (getDataValueFrom(TH1) > 0xFF) {
                         setDataValueTo(TH1, 0x0);
-                        setOverflow(0);
+                        setOverflow(1);
                     }
                 }
                 break
@@ -171,7 +171,7 @@ function incrementTT(signal){
                     incrementInAddr(TH1);
                     if (getDataValueFrom(TH1) > 0xFF) {
                         setDataValueTo(TH1, 0x0);
-                        setOverflow(0);
+                        setOverflow(1);
                     }
                 }
                 break
@@ -179,7 +179,7 @@ function incrementTT(signal){
                 incrementInAddr(TL1);
                 if(getDataValueFrom(TL1) > 0xFF) {
                     setDataValueTo(TL1, getDataValueFrom(TH1));
-                    setOverflow(0);
+                    setOverflow(1);
                 }
                 break
             case 3:

@@ -22,7 +22,7 @@ class SerialHandler {
     receiveData(bit) {
         this.getSpeed();
 
-        if (this.mode == 0 && this.getTI() == 1) { return; }
+        //if (this.mode == 0 && this.getTI() == 1) { return; }
         if (this.mode != 0 && this.getRI() == 0) { return; }
 
         this.ro.value = bit;
@@ -77,28 +77,32 @@ class SerialHandler {
         this.getMODE();
         switch (this.mode) {
             case "0": this.speed = 1; ptr.bitNumber = 8; break;
-            case "1": this.speed = this.getCustomSpeed; ptr.bitNumber = 8; break;
-            case "2": this.speed = Math.pow(2, this.getSMOD()) / 64 * 12000000; ptr.bitNumber = 9; break;
-            case "3": this.speed = this.getCustomSpeed; ptr.bitNumber = 9; break;
+            case "1": this.speed = Math.floor(this.getCustomSpeed()); ptr.bitNumber = 8; break;
+            case "2": this.speed = Math.floor(Math.pow(2, this.getSMOD()) / 64 * 12000000); ptr.bitNumber = 9; break;
+            case "3": this.speed = Math.floor(this.getCustomSpeed()); ptr.bitNumber = 9; break;
             default: return;
         }
     }
 
     getREN() {
-        return this.getSCON[3];
+        return this.getSCON()[3];
     }
 
     getSCON() {
-        return parseInt(parseInt(getDataValueFrom(SCON), 10).toString(16), 16).toString(2).split("");
+        let SCONBinaryArray = parseInt(parseInt(getDataValueFrom(SCON), 10).toString(16), 16).toString(2).split("");
+        while (SCONBinaryArray.length < 8) {
+            SCONBinaryArray.unshift("0");
+        }
+        return SCONBinaryArray;
     }
 
     getSMOD() {
-        parseInt(parseInt(parseInt(getDataValueFrom(PCON), 10).toString(16), 16).toString(2).split("")[0]);
+       return parseInt(parseInt(parseInt(getDataValueFrom(PCON), 10).toString(16), 16).toString(2).split("")[0]);
     }
 
     getMODE() {
         let SCONBinaryArray = this.getSCON();
-        this.mode = parseInt(SCONBinaryArray[0]) * 2 + arseInt(SCONBinaryArray[1])
+        this.mode = parseInt(SCONBinaryArray[0]) * 2 + parseInt(SCONBinaryArray[1])
     }
 
     getTB8() {
@@ -129,11 +133,8 @@ class SerialHandler {
 
     setSCONBit(position, bit) {
         let SCONBinaryArray = this.getSCON();
-        while (SCONBinaryArray.length < 8) {
-            SCONBinaryArray.unshift("0");
-        }
         SCONBinaryArray[position] = bit.toString();
-        console.log(SCONBinaryArray);
+        //console.log(SCONBinaryArray);
         setDataValueTo(SCON, parseInt(parseInt(SCONBinaryArray.join(""), 2).toString(16), 16).toString(10));
         // update table of data
         updateTableData();
@@ -144,7 +145,7 @@ class SerialHandler {
             return;
         }
         this.getSpeed();
-        if (this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)) { return; }
+        //if (this.mode == 0 && (this.getRI() == 0 || this.getTI == 1)) { return; }
         if ((this.mode == 1 || this.mode == 3) && getBitFromAddr(IE, 3) == 0) { return; }
 
         this.sendQueue = [];
@@ -162,37 +163,37 @@ class SerialHandler {
         for (let j = 0; j < binary.length; j++) {
             this.sendQueue.push(binary[j]);
         }
-
+        console.log(this.sendQueue);
         if (this.dataSender == null) {
             if(this.mode == 0 || this.mode == 2){
                 this.sendData();
             }
         }
+        console.log(value);
     }
 
     sendData() {
-        console.log(this.sendQueue)
         if (this.sendQueue.length === 0) {
             this.dataSender = null;
             return;
         }
 
-        let serialMonitors = this.getSerialMonitors()
-        if(serialMonitors == null){return;}
+        let serialMonitor = this.getSerialMonitors()
+        if(serialMonitor == null){return;}
         let bit = this.sendQueue.pop();
 
         // set bit to wo
         document.getElementById("wo").value = bit;
 
-        if (this.controlSettings(serialMonitors[i])) {
-            serialMonitors.receiveBit(bit);
+        if (this.controlSettings(serialMonitor)) {
+            serialMonitor.receiveBit(bit);
         }
 
         if (this.sendQueue.length !== 0) {
             if(this.mode == 0 || this.mode == 2){
                 this.dataSender = setTimeout(() => {
                     this.sendData();
-                }, getClockInterval() / ((this.speed) * 1000));
+                }, getClockInterval() * this.speed / 100);
             }
             
         } else {

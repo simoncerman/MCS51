@@ -1,33 +1,33 @@
 class interuptersystem {
     constructor() {
         this.interupts = [
-            function (i) {
+            function (i,priority) {
                 if (getBitInAddr(TCON, 1) == 1) {
                     if (getBitFromAddr(TCON, 0) == 1) {
                         setBitInAddr(TCON, 1, 0);
                     }
-                    i.interupt(0x0003);
+                    i.interupt(0x0003,priority);
                 }
             },
-            function (i) {
+            function (i,priority) {
                 if (GetOverflow(0) == 1) {
                     setBitInAddr(TCON, 5, 0);
-                    i.interupt(0x000B);
+                    i.interupt(0x000B,priority);
                 }
 
             },
-            function (i) {
+            function (i,priority) {
                 if (getBitInAddr(TCON, 3) == 1) {
                     if (getBitFromAddr(TCON, 2) == 1) {
                         setBitInAddr(TCON, 3, 0);
                     }
-                    i.interupt(0x0013);
+                    i.interupt(0x0013,priority);
                 }
             },
-            function (i) {
+            function (i,priority) {
                 if (GetOverflow(1) == 1) {
                     setBitInAddr(TCON, 7, 0);
-                    i.interupt(0x001B);
+                    i.interupt(0x001B,priority);
                     if (serialHandler.sendQueue.length !== 0) {
                         if (serialHandler.mode == 1 || serialHandler.mode == 3) {
                             serialHandler.sendData();
@@ -35,9 +35,9 @@ class interuptersystem {
                     }
                 }
             },
-            function (i) {
-                if (serialHandler.getTI == 1 || serialHandler.getRI == 1) {
-                    i.interupt(0x0023);
+            function (i,priority) {
+                if (serialHandler.getTI() == 1 || serialHandler.getRI() == 1) {
+                    i.interupt(0x0023,priority);
                 }
             }
         ]
@@ -48,6 +48,7 @@ class interuptersystem {
 
         this.int0last = 1;
         this.int1last = 1;
+
     }
 
     nulation() {
@@ -55,7 +56,8 @@ class interuptersystem {
         this.currentIntPriority = 0;
     }
 
-    interupt(progAddress) {
+    interupt(progAddress,priority) {
+        this.currentIntPriority = priority;
         incrementSPby(1);
         data[data[SP]] = retrieve8bitsOfPC(false);
         incrementSPby(1);
@@ -111,10 +113,9 @@ class interuptersystem {
                 if (getBitFromAddr(IP, j) == i) {
                     if (getBitFromAddr(IE, j) == 1) {
                         let priority = 7 * i - j + 7;
-                        if (priority < this.currentIntPriority) { continue; }
-                        this.currentIntPriority = priority;
+                        if (priority <= this.currentIntPriority) { continue; }
                         this.source = j;
-                        this.interupts[j](this);
+                        this.interupts[j](this,priority);
                     }
                 }
             }

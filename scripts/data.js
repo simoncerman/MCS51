@@ -83,8 +83,10 @@ function getBitFromAddr(addr, bit){
 }
 
 function setBitInAddr(addr, bit, value){
-    text = data[addr].toString(2).padStart(8, '0');
+    text = parseInt(data[addr]).toString(2).padStart(8, '0');
+    console.log(text);
     num = parseInt(text.substring(0, 7 - bit) + value + text.substring( 7 - bit + 1), 2);
+    console.log(num);
     setDataValueTo(addr, num);
 }
 

@@ -227,7 +227,7 @@
     });
     
     let saveInterval = null;
-    let saveDelay = 200;
+    let saveDelay = 10;
 
     editor.on("change", function () {
         switch (saveInterval) {
@@ -236,7 +236,7 @@
                 break;
 
             default:
-                saveDelay = 5;
+                saveDelay = 10;
                 break;
         }
     });
@@ -251,6 +251,7 @@
                 "Periphery": grid.getPeripheryJson()
             };
             window.fileManager.autosaveFile(JSON.stringify(data));
+            saveDelay = 10;
         }
     }
 
